@@ -1,6 +1,6 @@
 <?php
 
-$connect = new PDO("mysql:host=localhost;dbname=ruang_riung;charset=utf8mb4", "root", "");
+$connect = new PDO("mysql:host=localhost;dbname=smkikaka_ruangriung;charset=utf8mb4", "smkikaka_ruangriung", "123ruangriung456");
 
 date_default_timezone_set('Asia/Jakarta');
 

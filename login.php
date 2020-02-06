@@ -1,5 +1,4 @@
 <?php
-//test
 include('inc/koneksi.php');
 session_start();
 $message = '';
