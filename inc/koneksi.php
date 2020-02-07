@@ -1,8 +1,21 @@
 <?php
 
-$connect = new PDO("mysql:host=localhost;dbname=smkikaka_ruangriung;charset=utf8mb4", "smkikaka_ruangriung", "123ruangriung456");
+$connect = new PDO("mysql:host=localhost;dbname=ruang_riung;charset=utf8mb4", "root", "");
+//$connect = new PDO("mysql:host=localhost;dbname=smkikaka_ruangriung;charset=utf8mb4", "smkikaka_ruangriung", "123ruangriung456");
 
 date_default_timezone_set('Asia/Jakarta');
+
+function get_image_post($connect, $post_id)
+{
+  $query_delete = "SELECT post_gambar FROM postingan WHERE post_id = '$post_id'";
+  $statement = $connect->prepare($query_delete);
+  $statement->execute();
+  $result = $statement->fetchAll();
+  foreach($result as $row)
+  {
+    return $row["post_gambar"];
+  }
+}
 
 function Count_notification($connect, $receiver_id)
 {

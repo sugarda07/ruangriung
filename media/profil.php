@@ -15,14 +15,14 @@
 	            	<div class="col-xs-12">
 			            <div class="description-block" style="margin-top: 20px;">
 			              <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#edit_profilModal" title="Klik untuk edit data"><?php echo $log['nama_depan']; ?></a></h5>
-			              <span class="description-text"><?php echo $log['nama_belakang']; ?></span>
+			              <span class="description"><?php echo $log['email']; ?></span>
 			            </div>
 			          </div>
 	              <div class="row">
 	                <div class="col-xs-4 border-right">
 	                  <div class="description-block">
 	                    <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#pengikut_modal"><?php echo $log["follower_number"];?></a></h5>
-	                    <span class="description-text">Pengikut</span>
+	                    <span class="description">Pengikut</span>
 	                  </div>
 	                  <!-- /.description-block -->
 	                </div>
@@ -30,7 +30,7 @@
 	                <div class="col-xs-4 border-right">
 	                  <div class="description-block">
 	                    <h5 class="description-header"><a href="#" class="view_post_profil" data-user_id="<?php echo $log["user_id"]; ?>"><?php echo count_postingan($connect, $log["user_id"]); ?></a></h5>
-	                    <span class="description-text">Post</span>
+	                    <span class="description">Post</span>
 	                  </div>
 	                  <!-- /.description-block -->
 	                </div>
@@ -38,7 +38,7 @@
 	                <div class="col-xs-4">
 	                  <div class="description-block">
 	                    <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#mengikuti_modal"><?php echo count_mengikuti($connect, $log["user_id"]); ?></a></h5>
-	                    <span class="description-text">Mengikuti</span>
+	                    <span class="description">Mengikuti</span>
 	                  </div>
 	                  <!-- /.description-block -->
 	                </div>

@@ -482,4 +482,15 @@ if(isset($_POST['proses']))
         }
         echo $output;
 	}
+
+
+	if($_POST['proses'] == 'tombol_follow_profil_cari')
+	{
+        if($_POST["user_id"] != $_SESSION["user_id"])
+      	{
+        	echo make_follow_button_profil($connect, $_POST["user_id"], $_SESSION["user_id"]);
+      	}
+        echo $output;
+	}
+
 }

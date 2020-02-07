@@ -119,24 +119,19 @@ foreach($result as $row)
                   <div class="col-xs-12">
                     <div class="description-block" style="margin-top: 20px;">
                       <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#edit_profilModal" title="Klik untuk edit data"><?php echo $row['nama_depan']; ?></a></h5>
-                      <span class="description-text"><?php echo $row['nama_belakang']; ?></span>
+                      <span class="description"><?php echo $row['nama_belakang']; ?></span>
                     </div>
                   </div>                  
                 <div class="row">
                   <div class="col-xs-12" id="tombol_follow_profil_cari">
-                  <?php
-                  if($user_id != $_SESSION["user_id"])
-                  {
-                    echo make_follow_button_profil($connect, $user_id, $_SESSION["user_id"]);
-                  }
-                  ?>
+
                   </div>
                 </div>
                   <div class="row">
                     <div class="col-xs-4 border-right">
                       <div class="description-block">
                         <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#pengikut_profil_cari_modal"><?php echo $row["follower_number"];?></a></h5>
-                        <span class="description-text">Pengikut</span>
+                        <span class="description">Pengikut</span>
                       </div>
                       <!-- /.description-block -->
                     </div>
@@ -144,7 +139,7 @@ foreach($result as $row)
                     <div class="col-xs-4 border-right">
                       <div class="description-block">
                         <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#view_postmodal"><?php echo count_postingan($connect, $row["user_id"]); ?></a></h5>
-                        <span class="description-text">Post</span>
+                        <span class="description">Post</span>
                       </div>
                       <!-- /.description-block -->
                     </div>
@@ -152,7 +147,7 @@ foreach($result as $row)
                     <div class="col-xs-4">
                       <div class="description-block">
                         <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#mengikuti_profil_cari_modal"><?php echo count_mengikuti($connect, $row["user_id"]); ?></a></h5>
-                        <span class="description-text">Mengikuti</span>
+                        <span class="description">Mengikuti</span>
                       </div>
                       <!-- /.description-block -->
                     </div>
@@ -374,6 +369,7 @@ $(document).ready(function(){
             {
                 pengikut_profil_cari();
                 mengikuti_profil_cari();
+                tombol_follow_profil_cari();
             }
         })
     });
@@ -460,6 +456,24 @@ $(document).ready(function(){
           success:function(data)
           {
               $('#mengikuti_list_profil_cari').html(data);
+          }
+      });
+  }
+
+
+  tombol_follow_profil_cari();
+
+  function tombol_follow_profil_cari()
+  {
+      var user_id = <?php echo $_GET["data"] ?>;
+      var proses = 'tombol_follow_profil_cari';
+      $.ajax({
+          url:"view_post_profil.php",
+          method:"POST",
+          data:{proses:proses, user_id:user_id},
+          success:function(data)
+          {
+              $('#tombol_follow_profil_cari').html(data);
           }
       });
   }
