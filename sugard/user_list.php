@@ -6,8 +6,10 @@
           <h3 class="box-title">Manajemen User</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body" id="user_data">
+        <div class="box-body">
+            <div class="table-responsive" id="user_data">
 
+            </div>
         </div>
         <!-- /.box-body -->
       </div>

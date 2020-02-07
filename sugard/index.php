@@ -95,7 +95,7 @@ if(!isset($_SESSION['id_admin'])) {
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="../logout.php" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -210,6 +210,7 @@ if(!isset($_SESSION['id_admin'])) {
 
 <script>
 $(document).ready(function(){
+
 
   user_data();
 

@@ -5,6 +5,26 @@ $connect = new PDO("mysql:host=localhost;dbname=smkikaka_ruangriung;charset=utf8
 
 date_default_timezone_set('Asia/Jakarta');
 
+function count_postinganAll($connect)
+{
+  $query = "
+  SELECT * FROM postingan
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  return $statement->rowCount();
+}
+
+function count_pengguna($connect)
+{
+  $query = "
+  SELECT * FROM user
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  return $statement->rowCount();
+}
+
 function get_image_post($connect, $post_id)
 {
   $query_delete = "SELECT post_gambar FROM postingan WHERE post_id = '$post_id'";

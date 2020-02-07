@@ -6,8 +6,10 @@
           <h3 class="box-title">Manajemen Postingan</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body" id="post_data">
-
+        <div class="box-body">
+          <div class="table-responsive" id="post_data">
+          
+          </div>
         </div>
         <!-- /.box-body -->
       </div>
