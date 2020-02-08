@@ -301,11 +301,11 @@ function Get_profile_image($connect, $user_id)
       $user_last_activity = fetch_user_last_activity($user_id, $connect);
       if($user_last_activity > $current_timestamp)
       {
-        $foto_profil = '<img class="user-image img-bordered-sm" src="images/profile_image/user.png" alt="User Image" style="width: 35px; height: 35px;">';
+        $foto_profil = '<img class="user-image img-bordered-sm" src="images/profile_image/user.png" alt="User Image" style="width: 30px; height: 30px;">';
       }
       else
       {
-        $foto_profil = '<img class="user-image" src="images/profile_image/user.png" alt="User Image" style="width: 35px;height: 35px;">';
+        $foto_profil = '<img class="user-image" src="images/profile_image/user.png" alt="User Image" style="width: 30px;height: 30px;">';
       }
     }
     else
@@ -315,11 +315,11 @@ function Get_profile_image($connect, $user_id)
       $user_last_activity = fetch_user_last_activity($user_id, $connect);
       if($user_last_activity > $current_timestamp)
       {
-        $foto_profil = '<img class="user-image img-bordered-sm" src="images/profile_image/'.$row["profile_image"].'" alt="User Image" style="width: 35px;height: 35px;">';
+        $foto_profil = '<img class="user-image img-bordered-sm" src="images/profile_image/'.$row["profile_image"].'" alt="User Image" style="width: 30px;height: 30px;">';
       }
       else
       {
-        $foto_profil = '<img class="user-image" src="images/profile_image/'.$row['profile_image'].'" alt="User Image" style="width: 35px;height: 35px;">';
+        $foto_profil = '<img class="user-image" src="images/profile_image/'.$row['profile_image'].'" alt="User Image" style="width: 30px;height: 30px;">';
       }
     }
     return $foto_profil;

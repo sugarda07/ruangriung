@@ -95,13 +95,13 @@ if(isset($_POST["register"]))
   <link rel="stylesheet" href="assets/plugins/ionicons/css/ionicons.min.css">
   <link rel="stylesheet" href="assets/dist/css/AdminLTE.min.css">
 </head>
-<body class="hold-transition register-page">
-<div class="register-box">
+<body class="hold-transition register-page" style="background-color: #2c2c9e;">
+<div class="register-box" style="margin-top: 60px">
   <div class="register-logo">
-    <a href=""><b>Ruang</b>RIUNG</a>
+    <a href="" style="color: aqua;"><b>Ruang</b>RIUNG</a>
   </div>
 
-  <div class="register-box-body">
+  <div class="register-box-body" style="border-radius: 9px;">
     <p class="login-box-msg"><?php echo $message; ?></p>
 
     <form method="post">

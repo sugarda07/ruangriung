@@ -116,7 +116,7 @@ foreach($result as $log)
 
           </div>
           <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-              <button type="submit" name="tombol_post" id="tombol_post" class="btn btn-info btn-block btn-flat posting_crop" style="border-top-right-radius:15px;"><i class="fa fa-paper-plane-o"></i></button>
+              <button type="submit" name="tombol_post" id="tombol_post" class="btn btn-info btn-block btn-flat posting_crop"><i class="fa fa-paper-plane-o"></i></button>
           </div>
         </form>
         </div>

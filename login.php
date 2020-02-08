@@ -75,13 +75,13 @@ if(isset($_POST['login']))
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
+<body class="hold-transition login-page" style="background-color: #2c2c9e;">
+<div class="login-box" style="margin-top: 140px">
   <div class="login-logo">
-    <a href=""><b>Ruang</b>RIUNG</a>
+    <a href="" style="color: aqua;"><b>Ruang</b>RIUNG</a>
   </div>
   <!-- /.login-logo -->
-  <div class="login-box-body">
+  <div class="login-box-body" style="border-radius: 9px;">
     <p class="login-box-msg"><?php echo $message; ?></p>
 
     <form method="post">
@@ -90,13 +90,13 @@ if(isset($_POST['login']))
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <input type="password" name="password" class="form-control" placeholder="Password" required >
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-12">
-          <button type="submit" name="login" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" name="login" class="btn btn-info btn-block btn-flat">Sign In</button>
         </div>
         <!-- /.col -->
       </div>
