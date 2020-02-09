@@ -30,7 +30,7 @@ if(isset($_POST['proses']))
 					if($row['post_gambar'] !='')
 					{				
 						$post_gambar = '
-						<div class="box-body"align="center" style="padding: unset;">
+						<div class="box-body" align="center" style="padding: unset;">
 				          <a href="../images/post/'.$row["post_gambar"].'" class="image-popup-vertical-fit" title="'.$row["post_konten"].'">
 				          <img class="img-responsive pad" src="../images/post/'.$row["post_gambar"].'" alt="Photo" style="padding: unset;">
 				          </a>
@@ -42,7 +42,23 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="../images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive" controls src="../images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -71,7 +87,7 @@ if(isset($_POST['proses']))
 						$post_gambar = '
 						<div class="box-body" align="center" style="padding: unset;">
 						<a href="../images/post/'.$row["post_gambar"].'" class="image-popup-vertical-fit" title="'.$row["post_konten"].'">
-				          <img class="img-responsive pad" src="images/post/'.$row["post_gambar"].'" alt="Photo" style="padding: unset;">
+				          <img class="img-responsive" src="../images/post/'.$row["post_gambar"].'" alt="Photo" style="padding: unset;">
 				          </a>
 				        </div>
 				        <div class="box-body" style="padding-bottom: 0px;">
@@ -81,7 +97,23 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="../images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive" controls src="../images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -95,6 +127,7 @@ if(isset($_POST['proses']))
 						</div>
 						';
 					}
+
 					$profile_image = '
 					<a href="#" class="image-popup-no-margins" title="Belum Upload Foto">
 					<img class="img-circle" src="../images/profile_image/user.png" alt="User Image"></a>

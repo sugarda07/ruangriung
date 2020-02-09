@@ -32,7 +32,37 @@ $(document).ready(function(){
               success:function(data)
               {
                 $('#opsi_postingan').modal('hide');
+                $('#uploadvideoModal').modal('hide');
                 $('#form_postingan1')[0].reset();
+                postingan_post();
+              }
+          })
+        }
+    });
+
+  $('#form_embed_video').on('submit', function(event){
+        event.preventDefault();
+
+        if($('#post_embed_video').val() == '')
+        {
+           
+        }
+        else
+        {
+          var form_data = $(this).serialize();
+          $.ajax({
+              url:"inc/proses.php",
+              method:"POST",
+              data:form_data,
+              beforeSend:function()
+              {
+                  $('#tombol_post_embed').attr('disabled', 'disabled');  
+              },
+              success:function(data)
+              {
+                $('#opsi_postingan').modal('hide');
+                $('#embed_videomodal').modal('hide');
+                $('#form_embed_video')[0].reset();
                 postingan_post();
               }
           })
@@ -152,22 +182,20 @@ $(document).ready(function(){
      })
   }
 
-
-  $(document).on('click', '.view_post_profil', function()
+  posting_profil();
+  function posting_profil()
   {
-     var user_id = $(this).data('user_id');
      var proses = 'posting_profil';
      $.ajax({
           url:'media/view_post_profil.php',
           method:"POST",
-          data:{user_id:user_id, proses:proses},
+          data:{proses:proses},
           success:function(data)
           {
             $('#view_posting_profil_list').html(data);
-            $('#view_post_profilmodal').modal('show');
           }
-     })
-  });
+     });
+  }
 
   load_notif_list();
 
@@ -256,6 +284,7 @@ $(document).ready(function(){
             success:function(data)
             {
                 postingan_post();
+                posting_profil();
                 pengikut();
                 mengikuti();
             }
@@ -294,6 +323,7 @@ $(document).ready(function(){
                 {
                     $('#comment_form'+post_id).slideUp('slow');
                     postingan_post();
+                    posting_profil();
                 }
             })
         }
@@ -309,6 +339,7 @@ $(document).ready(function(){
             success:function(data)
             {
                 postingan_post();
+                posting_profil();
                 load_total_notif();
             }
         })

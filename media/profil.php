@@ -29,7 +29,7 @@
 	                <!-- /.col -->
 	                <div class="col-xs-4 border-right">
 	                  <div class="description-block">
-	                    <h5 class="description-header"><a href="#" class="view_post_profil" data-user_id="<?php echo $log["user_id"]; ?>"><?php echo count_postingan($connect, $log["user_id"]); ?></a></h5>
+	                    <h5 class="description-header"><a href="#"><?php echo count_postingan($connect, $log["user_id"]); ?></a></h5>
 	                    <span class="description">Post</span>
 	                  </div>
 	                  <!-- /.description-block -->
@@ -56,46 +56,8 @@
 	          <!-- /.widget-user -->
 	        </div>
 
-	        <div class="col-md-8" style="padding-left: 10px; padding-right: 10px;">
-	        	<div class="gallery-section">
-	      			<div class="inner-width">
-			      		<div class="gallery">
-
-			      		<?php 
-				            $query = "
-				            SELECT * FROM postingan
-				            JOIN user ON postingan.user_id = user.user_id
-				              WHERE postingan.user_id = '".$_SESSION["user_id"]."'
-				              ORDER BY RAND()
-				            ";
-				            $statement = $connect->prepare($query);
-				            $statement->execute();
-				            $result = $statement->fetchAll();
-				            $total_row = $statement->rowCount();
-
-				            foreach($result as $row)
-				            {
-				                if($row['post_gambar'] != '')
-				                {
-				                  echo '
-  				                <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-  				                    <img class="img-responsive" alt="image" src="images/post/'.$row['post_gambar'].'">
-  				                </a>
-				                ';
-				                }
-				                if($row['post_video'] != '')
-				                {
-				                    echo ' 
-                            <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-                              <video class="img-responsive" src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
-                          </a>';
-				                }                
-				            }
-				        ?>
-
-				        </div>
-				    </div>
-		        </div>
+	        <div class="col-md-8" id="view_posting_profil_list" style="padding-left: 0px; padding-right: 0px;">
+	        	
 	        </div>
       	</div>
     </div>
@@ -262,18 +224,3 @@ if(isset($_POST['edit_profile']))
     }  
 }
 ?>
-
-<div id="view_post_profilmodal" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
-        <h4 class="modal-title" style="margin-left: 40px;"><b><?php echo $log['nama_depan']; ?></b> <small></small></h4>
-      </div>
-      <div class="modal-body" id="view_posting_profil_list" style="background: #eeebef;">
-
-      </div>
-    </div>
-  </div>
-</div>

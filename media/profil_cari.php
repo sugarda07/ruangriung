@@ -82,7 +82,7 @@ foreach($result as $row)
     <div class="content-wrapper" style="padding-top: 60px; padding-bottom: 60px;">
       <div class="container">
           <div class="row">
-            <div class="col-md-4" style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;">
+            <div class="col-md-4" style="padding-left: 0px; padding-right: 0px; padding-bottom: 10px;">
               <!-- Widget: user widget style 1 -->
               <div class="box box-widget widget-user" style="margin-bottom: 0px;">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -138,7 +138,7 @@ foreach($result as $row)
                     <!-- /.col -->
                     <div class="col-xs-4 border-right">
                       <div class="description-block">
-                        <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#view_postmodal"><?php echo count_postingan($connect, $row["user_id"]); ?></a></h5>
+                        <h5 class="description-header"><a href="#" ><?php echo count_postingan($connect, $row["user_id"]); ?></a></h5>
                         <span class="description">Post</span>
                       </div>
                       <!-- /.description-block -->
@@ -165,43 +165,8 @@ foreach($result as $row)
               <!-- /.widget-user -->
             </div>
 
-            <div class="col-md-8" style="padding-left: 10px; padding-right: 10px;">
-              <div class="gallery-section">
-                <div class="inner-width">
-                  <div class="gallery">
-
-                  <?php 
-                      $query = "
-                      SELECT * FROM postingan
-                      JOIN user ON postingan.user_id = user.user_id
-                        WHERE postingan.user_id = '".$row["user_id"]."'
-                        ORDER BY postingan.post_id DESC
-                      ";
-                      $statement = $connect->prepare($query);
-                      $statement->execute();
-                      $result = $statement->fetchAll();
-                      $total_row = $statement->rowCount();
-
-                      foreach($result as $row)
-                      {
-                          if($row['post_gambar'] != '')
-                          {
-                              echo '
-                          <a class="image" href="view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-                              <img class="img-responsive" alt="image" src="../images/post/'.$row['post_gambar'].'">
-                          </a>
-                          ';
-                          }
-                          else
-                          {
-                              echo ' ';
-                          }                
-                      }
-                  ?>
-
-                  </div>
-              </div>
-              </div>
+            <div class="col-md-8" id="view_posting" style="padding-left: 0px; padding-right: 0px;">
+              
             </div>
           </div>
       </div>
@@ -241,21 +206,6 @@ foreach($result as $row)
         <div class="box box-widget" id="mengikuti_list_profil_cari" style="margin-bottom: 0px; box-shadow: none;">
         
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="view_postmodal" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
-        <h4 class="modal-title" style="margin-left: 40px;"><b><?php echo $row['nama_depan']; ?></b> <small></small></h4>
-      </div>
-      <div class="modal-body" id="view_posting" style="background: #eeebef;">
-
       </div>
     </div>
   </div>

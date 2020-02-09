@@ -10,7 +10,7 @@ if(isset($_POST['proses']))
 		$query = "
 		SELECT * FROM postingan 
 	    INNER JOIN user ON user.user_id = postingan.user_id 
-	    WHERE user.user_id = '".$_POST["user_id"]."' 
+	    WHERE user.user_id = '".$_SESSION["user_id"]."' 
 	    GROUP BY postingan.post_id 
 	    ORDER BY postingan.post_id DESC
 		";
@@ -42,7 +42,23 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -81,7 +97,23 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -95,6 +127,7 @@ if(isset($_POST['proses']))
 						</div>
 						';
 					}
+					
 					$profile_image = '
 					<a href="#" class="image-popup-no-margins" title="Belum Upload Foto">
 					<img class="img-circle" src="images/profile_image/user.png" alt="User Image"></a>

@@ -134,7 +134,8 @@ foreach($result as $log)
       </div>
       <div class="row" style="margin: 0px; padding-top: 200px;">
         <label for="upload_posting"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-picture-o"></i> Photo </a></label>
-        <label for="fileupload_video"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px;"> <i class="fa fa-film"></i> Video </a></label>
+        <label for="fileupload_video" style="display: none;"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-film"></i> Video </a></label>
+        <a href="#" data-toggle="modal" data-target="#embed_videomodal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px;"> <i class="fa fa-youtube-square"></i> Youtube </a>
         <div class="modal-footer" style="border: 0px;">
           <form method="post" id="form_postingan1">
           <div class="row">
@@ -175,6 +176,37 @@ foreach($result as $log)
           </div>
           <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
               <button type="submit" name="tombol_post_video" id="tombol_post_video" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="embed_videomodal" class="modal fade vn-modal-slide-left" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
+        <h4 class="modal-title" style="margin-left: 40px;">Youtube Video</h4>
+      </div>
+      <div class="row" style="margin: 0px; padding-top: 300px;">
+        <div class="col-xs-12">
+      <form method="post" id="form_embed_video">
+      <label class="control-label" for="inputWarning"><i class="fa fa-youtube-square"></i>  <strike>https://youtu.be/</strike>2k-ITR0HCi0</label>
+          <textarea class="form-control" type="text" name="post_embed_video" id="post_embed_video" rows="2" placeholder="remove https://youtu.be/"  style=""></textarea>   
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
+            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_embed" id="post_konten_embed" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
+              <input type="hidden" name="proses" value="embed_video"/>
+          </div>
+          <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
+              <button type="submit" name="tombol_post_embed" id="tombol_post_embed" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
           </div>
         </form>
         </div>

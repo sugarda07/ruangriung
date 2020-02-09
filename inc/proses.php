@@ -120,6 +120,57 @@ if(isset($_POST['proses']))
 	}
 
 
+	if($_POST['proses'] == 'embed_video')
+	{
+		$data = array(
+			':user_id'			=>	$_SESSION["user_id"],
+			':post_konten'		=>	$_POST["post_konten_embed"],
+			':post_embed'		=>	$_POST["post_embed_video"],
+			':post_tgl'	=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+		);
+		$query = "
+		INSERT INTO postingan 
+		(user_id, post_konten, post_embed, post_tgl) 
+		VALUES (:user_id, :post_konten, :post_embed, :post_tgl)
+		";
+		$statement = $connect->prepare($query);
+		$statement->execute($data);
+
+		$notification_query = "
+		SELECT receiver_id FROM follow 
+		WHERE sender_id = '".$_SESSION["user_id"]."'
+		";
+		$statement = $connect->prepare($notification_query);
+		$statement->execute();
+		$notification_result = $statement->fetchAll();
+		foreach($notification_result as $notification_row)
+		{
+			$query_gambar2 = "
+			SELECT post_id FROM postingan
+			WHERE user_id = '".$_SESSION["user_id"]."'
+			";
+			$statement = $connect->prepare($query_gambar2);
+			$statement->execute();
+			$gambar2_result = $statement->fetchAll();
+			foreach($gambar2_result as $gambar2_row)
+			{
+
+			}
+
+			$post_id = Get_post_id($connect, $gambar2_row["post_id"]);
+	        $notification_text= 'membuat postingan baru';
+			$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+			$insert_query = "
+			INSERT INTO pemberitahuan 
+			(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
+			VALUES ('".$notification_row['receiver_id']."', '".$notif_sender_id."', '".$post_id."', '".$notification_text."', 'no')
+			";
+			$statement = $connect->prepare($insert_query);
+			$statement->execute();
+		}
+	}
+
+
 	if($_POST['proses'] == 'postingan_post')
 	{
 		$query = "
@@ -162,6 +213,19 @@ if(isset($_POST['proses']))
 						<div class="box-body" align="center" style="padding: unset;">
 				          <video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
 				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -213,6 +277,19 @@ if(isset($_POST['proses']))
 						<div class="box-body" align="center" style="padding: unset;">
 				          <video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
 				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -534,10 +611,7 @@ if(isset($_POST['proses']))
 		    {
 		      $output = '
 		      <i class="fa fa-heart-o" style="font-size: 20px;"></i>
-		      <span class="label label-danger" style="position: absolute;top: 9px;font-size: 8px;padding: 2px 3px;margin-left: -7px;">'.$row["total"].'</span>
-		      <script>
-		      	play_sound_message()
-		      </script>';
+		      <span class="label label-danger" style="position: absolute;top: 9px;font-size: 8px;padding: 2px 3px;margin-left: -7px;">'.$row["total"].'</span>';
 		    }
 		    else
 		    {
@@ -574,9 +648,6 @@ if(isset($_POST['proses']))
 		      $output = '
 		      <i class="fa fa-comments-o"></i>
                 <span class="label label-success">'.$row["total_chat"].'</span>
-                <script>
-    				play_sound_message()
-				</script>
 				';
 		    }
 		    else
