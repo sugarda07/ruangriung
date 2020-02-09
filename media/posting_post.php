@@ -60,8 +60,5 @@ session_start();
 		";
 		$statement = $connect->prepare($insert_query);
 		$statement->execute();
-
-
-		
 	}
 ?>

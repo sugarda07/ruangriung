@@ -3,10 +3,12 @@
       <!-- Content Header (Page header) -->
       	<div class="row">
 		    <div class="col-md-6" id="postingan_list" style="padding-left: 0px; padding-right: 0px;">
-		      <!-- Box Comment -->
 
 		    </div>
 		    <!-- /.col -->
+		    <div class="col-md-6" id="load_data_message" style="padding-left: 0px; padding-right: 0px;">
+
+		    </div>
 		    
 		</div>
 

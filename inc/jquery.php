@@ -11,6 +11,71 @@ $(document).ready(function(){
   }, 5000);
 
 
+  $('#form_postingan1').on('submit', function(event){
+        event.preventDefault();
+
+        if($('#postingan1').val() == '')
+        {
+           $('#opsi_postingan').modal('hide');
+        }
+        else
+        {
+          var form_data = $(this).serialize();
+          $.ajax({
+              url:"inc/proses.php",
+              method:"POST",
+              data:form_data,
+              beforeSend:function()
+              {
+                  $('#tombol_postingan1').attr('disabled', 'disabled');  
+              },
+              success:function(data)
+              {
+                $('#opsi_postingan').modal('hide');
+                $('#form_postingan1')[0].reset();
+                postingan_post();
+              }
+          })
+        }
+    });
+
+  $('#fileupload_video').on('change', function(){
+    $('#opsi_postingan').modal('hide');
+    $('#uploadvideoModal').modal('show');
+  });
+
+  $('#form_posting_video').on('submit', function(event){
+        event.preventDefault();
+
+        if($('#fileupload_video').val() == '')
+        {
+            
+        }
+        else
+        {
+            $.ajax({
+                url:"inc/proses.php",
+                method:"POST",
+                data:new FormData(this),
+                  contentType:false,
+                  cache:false,
+                  processData:false,
+                  dataType:"json",
+                beforeSend:function()
+                {
+                    $('#tombol_post_video').attr('disabled', 'disabled');  
+                },
+                success:function(data)
+                {
+                  $('#uploadvideoModal').modal('hide');
+                  $('#form_posting_video')[0].reset();
+                  postingan_post();
+                }
+            })
+        }
+    });
+
+
 	$posting_crop = $('#tampil_posting').croppie({
 		enableExif: true,
 		viewport: {
@@ -40,20 +105,15 @@ $(document).ready(function(){
 			});
 		}
 		reader.readAsDataURL(this.files[0]);
+    $('#opsi_postingan').modal('hide');
 		$('#uploadimageModal').modal('show');
 	});
 
 	$('.posting_crop').click(function(){
-		var konten = $('#posting').val();
-		if(konten == '')
-		{
-			return false;
-		}
-		else
-		{
+		
 			$posting_crop.croppie('result', {
 				type: 'canvas',
-				size: '80%'
+				size: '30%'
 			}).then(function(response, konten){
 				var konten = $('#posting').val();
 				$.ajax({
@@ -71,9 +131,8 @@ $(document).ready(function(){
 					}
 				})
 			})
-		}
+		
 	});
-
 
 
 

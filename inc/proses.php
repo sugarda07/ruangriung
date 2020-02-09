@@ -5,6 +5,121 @@ session_start();
 if(isset($_POST['proses']))
 {
 	$output = '';
+
+	if($_POST['proses'] == 'insert_video')
+	{
+		$file_extension = strtolower(pathinfo($_FILES["fileupload_video"]["name"], PATHINFO_EXTENSION));
+
+		$new_file_name = rand() . '.' . $file_extension;
+
+		$source_path = $_FILES["fileupload_video"]["tmp_name"];
+
+		$target_path = '../images/post/' .$new_file_name;
+
+		move_uploaded_file($source_path, $target_path);
+
+
+		$data = array(
+			':user_id'				=>	$_SESSION["user_id"],
+			':post_video'			=>	$new_file_name,
+			':post_konten_video'	=>	$_POST["post_konten_video"],
+			':post_tgl'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+		);
+		$query_video = "
+		INSERT INTO postingan 
+		(user_id, post_konten, post_video, post_tgl) 
+		VALUES (:user_id, :post_konten_video, :post_video, :post_tgl)
+		";
+		$statement = $connect->prepare($query_video);
+		$statement->execute($data);
+
+		$notification_query = "
+		SELECT receiver_id FROM follow 
+		WHERE sender_id = '".$_SESSION["user_id"]."'
+		";
+		$statement = $connect->prepare($notification_query);
+		$statement->execute();
+		$notification_result = $statement->fetchAll();
+		foreach($notification_result as $notification_row)
+		{
+			$query_gambar2 = "
+			SELECT post_id FROM postingan
+			WHERE user_id = '".$_SESSION["user_id"]."'
+			";
+			$statement = $connect->prepare($query_gambar2);
+			$statement->execute();
+			$gambar2_result = $statement->fetchAll();
+			foreach($gambar2_result as $gambar2_row)
+			{
+
+			}
+
+			$post_id = Get_post_id($connect, $gambar2_row["post_id"]);
+	        $notification_text= 'membuat postingan baru';
+			$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+			$insert_query = "
+			INSERT INTO pemberitahuan 
+			(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
+			VALUES ('".$notification_row['receiver_id']."', '".$notif_sender_id."', '".$post_id."', '".$notification_text."', 'no')
+			";
+			$statement = $connect->prepare($insert_query);
+			$statement->execute();
+		}
+
+		echo json_encode($statement);
+	}
+
+
+	if($_POST['proses'] == 'insert_postingan1')
+	{
+		$data = array(
+			':user_id'			=>	$_SESSION["user_id"],
+			':post_konten'		=>	$_POST["postingan1"],
+			':post_tgl'	=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+		);
+		$query = "
+		INSERT INTO postingan 
+		(user_id, post_konten,  post_tgl) 
+		VALUES (:user_id, :post_konten, :post_tgl)
+		";
+		$statement = $connect->prepare($query);
+		$statement->execute($data);
+
+		$notification_query = "
+		SELECT receiver_id FROM follow 
+		WHERE sender_id = '".$_SESSION["user_id"]."'
+		";
+		$statement = $connect->prepare($notification_query);
+		$statement->execute();
+		$notification_result = $statement->fetchAll();
+		foreach($notification_result as $notification_row)
+		{
+			$query_gambar2 = "
+			SELECT post_id FROM postingan
+			WHERE user_id = '".$_SESSION["user_id"]."'
+			";
+			$statement = $connect->prepare($query_gambar2);
+			$statement->execute();
+			$gambar2_result = $statement->fetchAll();
+			foreach($gambar2_result as $gambar2_row)
+			{
+
+			}
+
+			$post_id = Get_post_id($connect, $gambar2_row["post_id"]);
+	        $notification_text= 'membuat postingan baru';
+			$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+			$insert_query = "
+			INSERT INTO pemberitahuan 
+			(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
+			VALUES ('".$notification_row['receiver_id']."', '".$notif_sender_id."', '".$post_id."', '".$notification_text."', 'no')
+			";
+			$statement = $connect->prepare($insert_query);
+			$statement->execute();
+		}
+	}
+
+
 	if($_POST['proses'] == 'postingan_post')
 	{
 		$query = "
@@ -43,7 +158,10 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -91,7 +209,10 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -189,7 +310,13 @@ if(isset($_POST['proses']))
 		}
 		else
 		{
-			$output = '';
+			$output = '
+			<div class="box-body">
+				<div class="callout callout-info">
+                	<h4>Selamat Datang!</h4>
+                	<p>Gunakan sosial media dengan Bijak</p>
+              	</div>
+             </div>';
 		}
 		echo $output; 
 	}

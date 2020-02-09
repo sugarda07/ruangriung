@@ -2,7 +2,6 @@
   <nav class="navbar navbar-static-top" style="background-color: #4e48da;">
     <div class="container">
       <div class="navbar-header" style="background-color: #4e48da;">
-        <a href="#" class="navbar-brand"><b>Ruang</b>RIUNG</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->

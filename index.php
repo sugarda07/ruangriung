@@ -77,7 +77,7 @@ foreach($result as $log)
   		<tr>
   			<td style="padding-bottom: 1px;"><a href="?page=home"><button type="button" class="btn btn-block btn-flat btn-link"><label><i class="fa fa-home" style="font-size: 20px;"></i></label></button></a></td>
   			<td style="padding-bottom: 1px;"><a href="?page=all_post"><button type="button" class="btn btn-block btn-flat btn-link"><label><i class="fa fa-search" style="font-size: 20px;"></i></label></button></a></td>
-  			<td style="padding-bottom: 1px;"><a href="#"><button type="button" class="btn btn-block btn-flat btn-link"><label for="upload_posting"><i class="fa fa-camera" style="font-size: 20px;"></i></label></button></a></td>
+  			<td style="padding-bottom: 1px;"><a href="#" data-toggle="modal" data-target="#opsi_postingan"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-camera" style="font-size: 20px;"></i></button></a></td>
   			<td style="padding-bottom: 1px;" id="view_notification">
           <a href="?page=notif">
             <button type="button" class="btn btn-block btn-flat btn-link">
@@ -111,12 +111,70 @@ foreach($result as $log)
       </div>
       <div class="modal-footer">
         <div class="row">
-          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px;">          
+          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
             <textarea class="form-control" data-emojiable="true" type="text" name="posting" id="posting" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
 
           </div>
           <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-              <button type="submit" name="tombol_post" id="tombol_post" class="btn btn-info btn-block btn-flat posting_crop"><i class="fa fa-paper-plane-o"></i></button>
+              <button type="submit" name="tombol_post" id="tombol_post" class="btn btn-info posting_crop" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="opsi_postingan" class="modal fade vn-modal-slide-left" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" align="center" style="background: #000000ab;">
+      <div class="modal-header" style="border:none;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: relative; top:0px; background:transparent; opacity:0px;">
+          <span aria-hidden="true"><i class="fa fa-remove" style=""></i></span></button>
+      </div>
+      <div class="row" style="margin: 0px; padding-top: 200px;">
+        <label for="upload_posting"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-picture-o"></i> Photo </a></label>
+        <label for="fileupload_video"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px;"> <i class="fa fa-film"></i> Video </a></label>
+        <div class="modal-footer" style="border: 0px;">
+          <form method="post" id="form_postingan1">
+          <div class="row">
+            <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
+              <textarea class="form-control" data-emojiable="true" type="text" name="postingan1" id="postingan1" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
+              <input type="hidden" name="proses" value="insert_postingan1"/>
+
+            </div>
+            <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
+                <button type="submit" name="tombol_postingan1" id="tombol_postingan1" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div id="uploadvideoModal" class="modal fade vn-modal-slide-left" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
+        <h4 class="modal-title" style="margin-left: 40px;">Posting Video</h4>
+      </div>
+      <div class="modal-body" style="background-color: #000000;">
+        <form method="post" id="form_posting_video">       
+      <input type="file" name="fileupload_video" id="fileupload_video" accept=".mp4"  style="display: none;"/>        
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
+            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_video" id="post_konten_video" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
+              <input type="hidden" name="proses" value="insert_video"/>
+          </div>
+          <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
+              <button type="submit" name="tombol_post_video" id="tombol_post_video" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
           </div>
         </form>
         </div>
@@ -147,7 +205,6 @@ foreach($result as $log)
   }
 
 </style>
-
 
 
 <!-- jQuery 2.2.3 -->

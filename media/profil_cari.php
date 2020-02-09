@@ -56,7 +56,7 @@ foreach($result as $row)
         <div class="container">
           <div class="navbar-custom-menu pull-left">
             <ul class="nav navbar-nav">
-              <li><a href="../"><i class="fa fa-arrow-left"></i></a></li>
+              <li><a href="javascript: history.go(-1)"><i class="fa fa-arrow-left"></i></a></li>
                 <li class="user user-menu">
                 <a href="#" style="padding-bottom: 8px; padding-top: 8px; padding-left: 5px;">
                   <?php 

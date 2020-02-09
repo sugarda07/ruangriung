@@ -66,7 +66,7 @@
 				            SELECT * FROM postingan
 				            JOIN user ON postingan.user_id = user.user_id
 				              WHERE postingan.user_id = '".$_SESSION["user_id"]."'
-				              ORDER BY postingan.post_id DESC
+				              ORDER BY RAND()
 				            ";
 				            $statement = $connect->prepare($query);
 				            $statement->execute();
@@ -83,9 +83,12 @@
   				                </a>
 				                ';
 				                }
-				                else
+				                if($row['post_video'] != '')
 				                {
-				                    echo ' ';
+				                    echo ' 
+                            <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+                              <video class="img-responsive" src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+                          </a>';
 				                }                
 				            }
 				        ?>
