@@ -159,8 +159,6 @@ if(isset($_POST['proses']))
 			          </div>
 			          <!-- /.user-block -->
 			          <div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-			            </button>
 			            <div class="btn-group">
 		                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 		                    <i class="fa fa-ellipsis-v"></i></button><div class="dropdown-backdrop"></div>

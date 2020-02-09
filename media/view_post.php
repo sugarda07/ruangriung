@@ -161,13 +161,6 @@ if(isset($_POST['proses']))
 			          <div class="box-tools pull-right">
 			            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 			            </button>
-			            <div class="btn-group">
-		                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-		                    <i class="fa fa-ellipsis-v"></i></button><div class="dropdown-backdrop"></div>
-		                  <ul class="dropdown-menu" role="menu">
-		                    '.is_user_already_content($connect, $_SESSION["user_id"], $row["post_id"]).'	
-		                  </ul>
-		                </div>
 			          </div>
 			          <!-- /.box-tools -->
 			        </div>

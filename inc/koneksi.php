@@ -1,5 +1,6 @@
 <?php
 
+//$connect = new PDO("mysql:host=localhost;dbname=ruang_riung;charset=utf8mb4", "root", "");
 $connect = new PDO("mysql:host=localhost;dbname=smkikaka_ruangriung;charset=utf8mb4", "smkikaka_ruangriung", "123ruangriung456");
 
 date_default_timezone_set('Asia/Jakarta');
@@ -474,30 +475,33 @@ function is_user_already_content($connect, $user_id, $post_id)
  ";
  $statement = $connect->prepare($query);
 
+  
+
  $statement->execute(
   array(
    ':post_id' =>  $post_id,
    ':user_id'  =>  $user_id
   )
  );
- $total_row = $statement->rowCount();
- $tombol_tool = '';
- if($total_row > 0)
- {
-  $tombol_tool = '
-      <li><a href="#">Edit</a></li>
-      <li><a href="#">Share</a></li>
-      <li class="divider"></li>
-      <li><a href="#">Hapus</a></li>
-  ';
- }
- else
- {
+$result = $statement->fetchAll();
+foreach($result as $row)
+  {
+   $total_row = $statement->rowCount();
+   $tombol_tool = '';
+   if($total_row > 0)
+   {
     $tombol_tool = '
-      <li><a href="#">Sembunyikan</a></li>
-  ';
- }
- return $tombol_tool;
+        <li><a href="#" class="hapus_postingan" name="hapus_postingan" id="'.$row["post_id"].'">Hapus</a></li>
+    ';
+   }
+   else
+   {
+      $tombol_tool = '
+        <li><a href="#" data-widget="collapse">Sembunyikan</a></li>
+    ';
+   }
+   return $tombol_tool;
+  }
 }
 
 function tgl_ago($timestamp)  

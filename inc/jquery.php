@@ -197,6 +197,27 @@ $(document).ready(function(){
      });
   }
 
+  $(document).on('click', '.hapus_postingan', function(){
+    var post_id = $(this).attr("id");
+    var proses = 'hapus_postingan';
+    if(confirm("Are you sure you want to delete this?"))
+    {
+      $.ajax({
+        url:"inc/proses.php",
+        method:"POST",
+        data:{post_id:post_id, proses:proses},
+        success:function(data)
+        {
+          posting_profil();
+        }
+      });
+    }
+    else
+    {
+      return false; 
+    }
+  });
+
   load_notif_list();
 
   function load_notif_list()
