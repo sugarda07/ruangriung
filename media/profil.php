@@ -49,7 +49,6 @@
               <div class="box-footer no-padding">
                 <ul class="nav nav-stacked">
                   <li><a href="#"><i class="fa fa-graduation-cap"></i>&nbsp;&nbsp;<?php echo $log["sekolah"]; ?> <span class="pull-right badge bg-green"></span></a></li>
-                  <li><a href="#"><i class="fa fa-home"></i>&nbsp;&nbsp;<?php echo $log["kelas"]; ?> <span class="pull-right badge bg-green"></span></a></li>
                 </ul>
               </div>
 	          </div>

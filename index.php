@@ -192,7 +192,7 @@ foreach($result as $log)
           <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
         <h4 class="modal-title" style="margin-left: 40px;">Youtube Video</h4>
       </div>
-      <div class="row" style="margin: 0px; padding-top: 300px;">
+      <div class="row" style="margin: 0px; padding-top: 80px;">
         <div class="col-xs-12">
       <form method="post" id="form_embed_video">
       <label class="control-label" for="inputWarning"><i class="fa fa-youtube-square"></i>  <strike>https://youtu.be/</strike>2k-ITR0HCi0</label>
