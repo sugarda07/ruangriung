@@ -69,6 +69,41 @@ $(document).ready(function(){
         }
     });
 
+
+  $('#form_ebook').on('submit', function(event){
+        event.preventDefault();
+
+        if($('#post_ebook').val() == '')
+        {
+            
+        }
+        else
+        {
+            $.ajax({
+                url:"inc/proses.php",
+                method:"POST",
+                data:new FormData(this),
+                  contentType:false,
+                  cache:false,
+                  processData:false,
+                  dataType:"json",
+                beforeSend:function()
+                {
+                    $('#tombol_post_ebook').attr('disabled', 'disabled');  
+                },
+                success:function(data)
+                {
+                  $('#opsi_postingan').modal('hide');
+                  $('#form_ebook').modal('hide');
+                  $('#form_ebook')[0].reset();
+                  postingan_post();
+                }
+            })
+        }
+    });
+
+
+
   $('#fileupload_video').on('change', function(){
     $('#opsi_postingan').modal('hide');
     $('#uploadvideoModal').modal('show');
@@ -197,26 +232,39 @@ $(document).ready(function(){
      });
   }
 
-  $(document).on('click', '.hapus_postingan', function(){
-    var post_id = $(this).attr("id");
-    var proses = 'hapus_postingan';
-    if(confirm("Are you sure you want to delete this?"))
-    {
-      $.ajax({
-        url:"inc/proses.php",
-        method:"POST",
-        data:{post_id:post_id, proses:proses},
-        success:function(data)
-        {
-          posting_profil();
-        }
+
+  $(document).on('click', '.hapus_postingan', function(){ 
+        var post_id = $(this).attr("id");
+        var proses = 'hapus_postingan';
+
+      swal({
+        title: "Anda Yakin?",
+        text: "Postingan ini akan di hapus",
+        type: "warning",
+        showCancelButton: true,
+        cancleButtonText: "Batal",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Hapus",
+        closeOnConfirm: false
+      },
+      function(){
+        $.ajax({
+            url:"inc/proses.php",
+            method:"POST",
+            data:{post_id:post_id, proses:proses},
+            success: function(data){
+                swal({
+                    title : "Postingan",
+                    text: "Berhasil di Hapus",
+                    type: "success",
+                    timer: 5000
+                });
+            posting_profil();
+            }
+        });        
       });
-    }
-    else
-    {
-      return false; 
-    }
-  });
+    });
+
 
   load_notif_list();
 

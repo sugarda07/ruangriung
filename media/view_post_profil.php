@@ -64,6 +64,19 @@ if(isset($_POST['proses']))
 						</div>
 						';
 					}
+					else if($row['post_ebook'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
+							</div>
+						</div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
 					else
 					{						
 						$post_gambar = '
@@ -112,6 +125,19 @@ if(isset($_POST['proses']))
 						<div class="box-body" align="center" style="padding: unset;">
 							<div class="embed-responsive embed-responsive-16by9">
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_ebook'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">

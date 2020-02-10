@@ -122,10 +122,14 @@ if(isset($_POST['proses']))
 
 	if($_POST['proses'] == 'embed_video')
 	{
+		$url = $_POST["post_embed_video"];
+	    preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
+	    $id = $matches[1];
+
 		$data = array(
 			':user_id'			=>	$_SESSION["user_id"],
 			':post_konten'		=>	$_POST["post_konten_embed"],
-			':post_embed'		=>	$_POST["post_embed_video"],
+			':post_embed'		=>	$id,
 			':post_tgl'	=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
 		);
 		$query = "
@@ -168,6 +172,70 @@ if(isset($_POST['proses']))
 			$statement = $connect->prepare($insert_query);
 			$statement->execute();
 		}
+	}
+
+
+	if($_POST['proses'] == 'post_ebook')
+	{  
+		$file_extension = strtolower(pathinfo($_FILES["post_ebook"]["name"], PATHINFO_EXTENSION));
+
+		$new_file_name = rand() . '.' . $file_extension;
+
+		$source_path = $_FILES["post_ebook"]["tmp_name"];
+
+		$target_path = '../dokumen/' .$new_file_name;
+
+		move_uploaded_file($source_path, $target_path);
+
+
+		$data = array(
+			':user_id'				=>	$_SESSION["user_id"],
+			':post_ebook'			=>	$new_file_name,
+			':post_konten'			=>	$_POST["post_konten_ebook"],
+			':post_tgl'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+		);
+		$query_video = "
+		INSERT INTO postingan 
+		(user_id, post_konten, post_ebook, post_tgl) 
+		VALUES (:user_id, :post_konten, :post_ebook, :post_tgl)
+		";
+		$statement = $connect->prepare($query_video);
+		$statement->execute($data);
+
+		$notification_query = "
+		SELECT receiver_id FROM follow 
+		WHERE sender_id = '".$_SESSION["user_id"]."'
+		";
+		$statement = $connect->prepare($notification_query);
+		$statement->execute();
+		$notification_result = $statement->fetchAll();
+		foreach($notification_result as $notification_row)
+		{
+			$query_gambar2 = "
+			SELECT post_id FROM postingan
+			WHERE user_id = '".$_SESSION["user_id"]."'
+			";
+			$statement = $connect->prepare($query_gambar2);
+			$statement->execute();
+			$gambar2_result = $statement->fetchAll();
+			foreach($gambar2_result as $gambar2_row)
+			{
+
+			}
+
+			$post_id = Get_post_id($connect, $gambar2_row["post_id"]);
+	        $notification_text= 'membuat postingan e-Book';
+			$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+			$insert_query = "
+			INSERT INTO pemberitahuan 
+			(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
+			VALUES ('".$notification_row['receiver_id']."', '".$notif_sender_id."', '".$post_id."', '".$notification_text."', 'no')
+			";
+			$statement = $connect->prepare($insert_query);
+			$statement->execute();
+		}
+
+		echo json_encode($statement);
 	}
 
 
@@ -224,6 +292,19 @@ if(isset($_POST['proses']))
 						<div class="box-body" align="center" style="padding: unset;">
 							<div class="embed-responsive embed-responsive-16by9">
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_ebook'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
@@ -288,6 +369,19 @@ if(isset($_POST['proses']))
 						<div class="box-body" align="center" style="padding: unset;">
 							<div class="embed-responsive embed-responsive-16by9">
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_ebook'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
@@ -1033,7 +1127,7 @@ if(isset($_POST['proses']))
 					if($row['post_gambar'] !='')
 					{				
 						$post_gambar = '
-						<div class="box-body popup-gallery" style="padding: unset;">
+						<div class="box-body" align="center" style="padding: unset;">
 				          <a href="images/post/'.$row["post_gambar"].'" class="image-popup-vertical-fit" title="'.$row["post_konten"].'">
 				          <img class="img-responsive pad" src="images/post/'.$row["post_gambar"].'" alt="Photo" style="padding: unset;">
 				          </a>
@@ -1045,7 +1139,36 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_ebook'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -1059,11 +1182,20 @@ if(isset($_POST['proses']))
 						</div>
 						';
 					}
-					
-					$profile_image = '
-					<a href="images/profile_image/'.$row["profile_image"].'" class="image-popup-no-margins" title="'.$row["nama_depan"].'">
-					<img class="img-circle" src="images/profile_image/'.$row["profile_image"].'" alt="User Image"></a>
-					';
+
+					$current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
+				    $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
+				    $user_last_activity = fetch_user_last_activity($row["user_id"], $connect);
+				    if($user_last_activity > $current_timestamp)
+				    {
+				        $profile_image = '<a href="images/profile_image/'.$row["profile_image"].'" class="image-popup-no-margins" title="'.$row["nama_depan"].'">
+				        <img class="img-circle img-bordered-sm" src="images/profile_image/'.$row["profile_image"].'" alt="User Image" style="width: 35px; height: 35px;"></a>';
+				    }
+				    else
+				    {
+				        $profile_image = '<a href="images/profile_image/'.$row["profile_image"].'" class="image-popup-no-margins" title="'.$row["nama_depan"].'">
+				        <img class="img-circle" src="images/profile_image/'.$row["profile_image"].'" alt="User Image" style="width: 35px;height: 35px;"></a>';
+				    }
 
 					$profile_image2 = Get_profile_komen($connect, $_SESSION["user_id"]);
 				}
@@ -1072,7 +1204,7 @@ if(isset($_POST['proses']))
 					if($row['post_gambar'] !='')
 					{				
 						$post_gambar = '
-						<div class="box-body popup-gallery" style="padding: unset;">
+						<div class="box-body" align="center" style="padding: unset;">
 						<a href="images/post/'.$row["post_gambar"].'" class="image-popup-vertical-fit" title="'.$row["post_konten"].'">
 				          <img class="img-responsive pad" src="images/post/'.$row["post_gambar"].'" alt="Photo" style="padding: unset;">
 				          </a>
@@ -1084,7 +1216,36 @@ if(isset($_POST['proses']))
 					}
 					else if($row['post_video'] !='')
 					{
-						$post_gambar = '<video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4"></video>
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+				          <video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+				        </div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_embed'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</div>
+						</div>
+						<div class="box-body" style="padding-bottom: 0px;">
+							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+						</div>
+						';
+					}
+					else if($row['post_ebook'] !='')
+					{
+						$post_gambar = '
+						<div class="box-body" align="center" style="padding: unset;">
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
+							</div>
+						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
 							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
 						</div>
@@ -1098,10 +1259,21 @@ if(isset($_POST['proses']))
 						</div>
 						';
 					}
-					$profile_image = '
-					<a href="#" class="image-popup-no-margins" title="Belum Upload Foto">
-					<img class="img-circle" src="images/profile_image/user.png" alt="User Image"></a>
-					';
+
+					$current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
+				    $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
+				    $user_last_activity = fetch_user_last_activity($row["user_id"], $connect);
+				    if($user_last_activity > $current_timestamp)
+				    {
+				        $profile_image = '<a href="images/profile_image/user.png" class="image-popup-no-margins" title="Belum Upload Foto">
+				        <img class="img-circle img-bordered-sm" src="images/profile_image/user.png" alt="User Image" style="width: 35px; height: 35px;"></a>';
+				    }
+				    else
+				    {
+				        $profile_image = '<a href="images/profile_image/user.png" class="image-popup-no-margins" title="Belum Upload Foto">
+				        <img class="img-circle" src="images/profile_image/user.png" alt="User Image" style="width: 35px;height: 35px;"></a>';
+				    }
+				    
 					$profile_image2 = Get_profile_komen($connect, $_SESSION["user_id"]);
 				}
 
@@ -1195,7 +1367,7 @@ if(isset($_POST['proses']))
 		$image = get_image_post($connect, $_POST["post_id"]);
 		if($image != '')
 		{
-			unlink("images/post/".$image);
+			unlink("../images/post/".$image);
 		}
 		$statement = $connect->prepare(
 			"DELETE FROM postingan WHERE post_id = :post_id"

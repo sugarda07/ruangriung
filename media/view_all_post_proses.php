@@ -64,6 +64,19 @@ if(isset($_POST['proses']))
             </div>
             ';
           }
+          else if($row['post_ebook'] !='')
+          {
+            $post_gambar = '
+            <div class="box-body" align="center" style="padding: unset;">
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe src="../dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
+              </div>
+            </div>
+            <div class="box-body" style="padding-bottom: 0px;">
+              <p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+            </div>
+            ';
+          }
           else
           {           
             $post_gambar = '
@@ -112,6 +125,19 @@ if(isset($_POST['proses']))
             <div class="box-body" align="center" style="padding: unset;">
               <div class="embed-responsive embed-responsive-16by9">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/'.$row["post_embed"].'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="box-body" style="padding-bottom: 0px;">
+              <p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+            </div>
+            ';
+          }
+          else if($row['post_ebook'] !='')
+          {
+            $post_gambar = '
+            <div class="box-body" align="center" style="padding: unset;">
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe src="../dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
               </div>
             </div>
             <div class="box-body" style="padding-bottom: 0px;">
@@ -171,33 +197,28 @@ if(isset($_POST['proses']))
                   <div class="col-xs-6 text-center" style="border-right: 1px solid #f4f4f4; padding-top: 3px;">
                     '.$like_button.'
                   </div>
-                  <div class="col-xs-6 text-center" style="padding-top: 3px;">
+                 <div class="col-xs-6 text-center" style="padding-top: 3px;">
                     <button type="button" class="btn btn-block btn-sm post_comment" style="background-color: #ffffff;color: #444;border-color: #ffffff;" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"><i class="fa fa-comment-o" style="font-size: 18px;"></i>  '.count_comment($connect, $row["post_id"]).' komentar</button>
                   </div>
                 </div>
               </div>
-              <!-- /.box-body -->
-              <div class="box-footer box-comments" id="comment_form'.$row["post_id"].'" style="display:none; padding-bottom: 0px;">
-                <div class="box-comment" style="padding-bottom: 0px;" id="old_comment'.$row["post_id"].'">
-                  
-                </div>
-              </div>
-              <div class="box-footer box-comments">
-                <div class="box-comment" style="padding-bottom: 5px;">
-                  <form action="#" method="post">
-                  '.$profile_image2.'                  
-                  <div class="img-push">
-                    <div class="input-group input-group-sm">
-                        <textarea class="form-control form-control-sm" data-emojiable="true" data-emoji-input="unicode" type="text" name="comment" id="comment'.$row["post_id"].'" rows="1" placeholder="Tuliskan komentar Anda..."></textarea>
-                        <span class="input-group-btn">
-                            <button type="button" name="submit_comment" class="btn btn-primary btn-flat submit_comment">Komen</button>
-                        </span>
-                      </div>
+                  <div class="box-footer box-comments" id="comment_form'.$row["post_id"].'" style="display:none;">
+                    <div class="box-comment" style="padding-bottom: 5px;" id="old_comment'.$row["post_id"].'">
+                      
                     </div>
-                  </form>
+                      <form action="#" method="post">
+                      '.$profile_image2.'
+                      <div class="img-push">
+                        <div class="input-group input-group-sm">
+                            <textarea class="form-control form-control-sm" data-emojiable="true" data-emoji-input="unicode" type="text" name="comment" id="comment'.$row["post_id"].'" rows="1" placeholder="Tuliskan komentar Anda..."></textarea>
+                            <span class="input-group-btn">
+                                <button type="button" name="submit_comment" class="btn btn-primary btn-flat submit_comment">Komen</button>
+                            </span>
+                          </div>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-              </div>
-            </div>
         ';
       }
     }
