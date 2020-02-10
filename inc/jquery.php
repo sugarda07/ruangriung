@@ -94,7 +94,7 @@ $(document).ready(function(){
                 success:function(data)
                 {
                   $('#opsi_postingan').modal('hide');
-                  $('#form_ebook').modal('hide');
+                  $('#ebook_modal').modal('hide');
                   $('#form_ebook')[0].reset();
                   postingan_post();
                 }

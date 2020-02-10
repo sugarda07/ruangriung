@@ -17,3 +17,25 @@
       	</div>
     </div>
 </div>
+
+<script src="assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui.js"></script>
+<script>
+  $(document).ready(function(){
+      
+    $('#cari_teman').autocomplete({
+      source: "media/cari_teman.php",
+      minLength: 1,
+      select: function(event, ui)
+      {
+        $('#cari_teman').val(ui.item.value);
+      }
+    }).data('ui-autocomplete')._renderItem = function(ul, item){
+      return $("<li class='ui-autocomplete-row'></li>")
+        .data("item.autocomplete", item)
+        .append(item.label)
+        .appendTo(ul);
+    };
+
+  });
+</script>

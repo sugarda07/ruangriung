@@ -148,20 +148,21 @@
 				                {
 				                    echo '
 
-				                    <li>
-								    	<a href="dokumen/simulasidankomunikasidigital-2.pdf">
-								          <img class="contacts-list-img" src="images/profile_image/user.png" alt="User Image">
-								          <div class="contacts-list-info">
-								                <span class="contacts-list-name" style="color: #230069;">
-								                  '.$row['nama_depan'].'
-								                  <small class="contacts-list-date pull-right" style="color: #687b8e;">'.$row['post_tgl'].'</small>
-								                </span>
-								            <span class="contacts-list-msg" style="color: #818c97;">'.$row['post_konten'].'
-								            <small class="contacts-list-date pull-right"><span></span></small>
-								            </span>
-								          </div>
-								        </a>
-								      </li>
+				                    <li>								    	
+							          <img class="contacts-list-img" src="images/profile_image/user.png" alt="User Image">
+							          <div class="contacts-list-info">
+							                <span class="contacts-list-name" style="color: #230069;">
+							                  '.$row['nama_depan'].'
+							                  <small class="contacts-list-date pull-right" style="color: #687b8e;">'.$row['post_tgl'].'</small>
+							                </span>
+							                <a href="dokumen/'.$row['post_konten'].'">
+							            		<span class="contacts-list-msg" style="color: #98c2f7;">'.$row['post_konten'].'
+							            	</a>
+							            	<small class="contacts-list-date pull-right"><span></span></small>
+							            </span>
+							          </div>
+							        </a>
+							      </li>
 				                ';
 				                }				               
 				            }
@@ -200,3 +201,25 @@
     </div>
   </div>
 </div>
+<script src="assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui.js"></script>
+
+<script>
+  $(document).ready(function(){
+      
+    $('#cari_ebook').autocomplete({
+      source: "media/cari_ebook.php",
+      minLength: 1,
+      select: function(event, ui)
+      {
+        $('#cari_ebook').val(ui.item.value);
+      }
+    }).data('ui-autocomplete')._renderItem = function(ul, item){
+      return $("<li class='ui-autocomplete-row'></li>")
+        .data("item.autocomplete", item)
+        .append(item.label)
+        .appendTo(ul);
+    };
+
+  });
+</script>

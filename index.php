@@ -234,7 +234,7 @@ foreach($result as $log)
       <div class="modal-footer">
         <div class="row">
           <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
-            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_ebook" id="post_konten_ebook" rows="1" placeholder="Judul e-Book"  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
+            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_ebook" id="post_konten_ebook" rows="1" placeholder="Deskripsi e-Book"  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
               <input type="hidden" name="proses" value="post_ebook"/>
           </div>
           <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
@@ -331,25 +331,7 @@ foreach($result as $log)
   });
 </script>
 
-<script>
-  $(document).ready(function(){
-      
-    $('#cari_teman').autocomplete({
-      source: "media/cari_teman.php",
-      minLength: 1,
-      select: function(event, ui)
-      {
-        $('#cari_teman').val(ui.item.value);
-      }
-    }).data('ui-autocomplete')._renderItem = function(ul, item){
-      return $("<li class='ui-autocomplete-row'></li>")
-        .data("item.autocomplete", item)
-        .append(item.label)
-        .appendTo(ul);
-    };
 
-  });
-</script>
 
 <style>
 .modal-body {

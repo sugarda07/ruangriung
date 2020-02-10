@@ -30,6 +30,8 @@ if(!isset($_SESSION['user_id']))
   <link href="../assets/emoji-picker/lib/css/emoji.css" rel="stylesheet">
   <link href="../assets/emoji-picker/lib/css/style.css" rel="stylesheet">
   <link href="../assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
+  <link href="../assets/sweetalert2/sweetalert.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/emoji-picker/emojionearea.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -84,6 +86,7 @@ if(!isset($_SESSION['user_id']))
 </style>
 
 <!-- jQuery 2.2.3 -->
+<script src="../assets/plugins/jQuery/jquery-3.4.1.min.js"></script>
 <script src="../assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../assets/plugins/jquery-ui/jquery-ui.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -98,26 +101,28 @@ if(!isset($_SESSION['user_id']))
 <script src="../assets/dist/js/demo.js"></script>
 <script src="../assets/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
 <script src="../assets/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
-<script src="../assets/crop/croppie.js"></script>
+<script src="../assets/crop/croppie.min.js"></script>
 <script src="../assets/bootstrap/js/jquery.form.js"></script>
 <script src="../assets/emoji-picker/lib/js/config.js"></script>
 <script src="../assets/emoji-picker/lib/js/util.js"></script>
 <script src="../assets/emoji-picker/lib/js/jquery.emojiarea.js"></script>
 <script src="../assets/emoji-picker/lib/js/emoji-picker.js"></script>
+<script src="../assets/sweetalert2/sweetalert.min.js"></script>
+<script src="../assets/emoji-picker/emojionearea.min.js"></script>
 </body>
 </html>
 
 <script type="text/javascript">
   $(function () {
-      // Initializes and creates emoji set from sprite sheet
-      window.emojiPicker = new EmojiPicker({
-          emojiable_selector: "[data-emojiable=true]",
-          assetsPath: "../assets/emoji-picker/lib/img/",
-          popupButtonClasses: 'fa fa-smile-o'
-      });
-
-      window.emojiPicker.discover();
-    });
+  // Initializes and creates emoji set from sprite sheet
+  window.emojiPicker = new EmojiPicker({
+      emojiable_selector: '[data-emojiable=true]',
+      assetsPath: '../assets/emoji-picker/lib/img/',
+      popupButtonClasses: 'fa fa-smile-o',
+      display: 'block'
+  });
+  window.emojiPicker.discover();
+  });
 </script>
 
 <script>
@@ -207,6 +212,10 @@ $(document).ready(function(){
     make_chat_dialog_box(to_user_id, to_user_name, to_foto);
 
     $('#user_dialog_'+to_user_id).data('open');
+    $('#chat_message_'+to_user_id).emojioneArea({
+      pickerPosition:"top",
+      toneStyle: "bullet"
+    });
     $('html, body').animate({ scrollTop: 100000 }, 'fast');
     document.getElementById('chat_message_'+to_user_id+'').focus();
   });

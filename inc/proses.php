@@ -302,13 +302,8 @@ if(isset($_POST['proses']))
 					else if($row['post_ebook'] !='')
 					{
 						$post_gambar = '
-						<div class="box-body" align="center" style="padding: unset;">
-							<div class="embed-responsive embed-responsive-16by9">
-								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
-							</div>
-						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'">'.$row["post_konten"].'</a></p>
 						</div>
 						';
 					}
@@ -379,13 +374,8 @@ if(isset($_POST['proses']))
 					else if($row['post_ebook'] !='')
 					{
 						$post_gambar = '
-						<div class="box-body" align="center" style="padding: unset;">
-							<div class="embed-responsive embed-responsive-16by9">
-								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
-							</div>
-						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'">'.$row["post_konten"].'</a></p>
 						</div>
 						';
 					}
@@ -860,7 +850,7 @@ if(isset($_POST['proses']))
                           '.$row["nama_depan"].'
                           <small><i class="fa fa-clock-o"></i> '.tgl_ago2($data["timestamp"]).'</small>
                         </h4>
-                        <p>'.count_unseen_message($row['user_id'], $_SESSION['user_id'], $connect).' '.$status_pesan.' '.fetch_is_type_status($row['user_id'], $connect).'</p>
+                        <p>'.count_unseen_message($row['user_id'], $_SESSION['user_id'], $connect).' '.$status_pesan.' </p>
                       </a>
                     </li>
                   </ul>
@@ -1164,13 +1154,8 @@ if(isset($_POST['proses']))
 					else if($row['post_ebook'] !='')
 					{
 						$post_gambar = '
-						<div class="box-body" align="center" style="padding: unset;">
-							<div class="embed-responsive embed-responsive-16by9">
-								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
-							</div>
-						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'">'.$row["post_konten"].'</a></p>
 						</div>
 						';
 					}
@@ -1241,13 +1226,8 @@ if(isset($_POST['proses']))
 					else if($row['post_ebook'] !='')
 					{
 						$post_gambar = '
-						<div class="box-body" align="center" style="padding: unset;">
-							<div class="embed-responsive embed-responsive-16by9">
-								<iframe src="dokumen/'.$row["post_ebook"].'" width="640" height="480"></iframe>
-							</div>
-						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'">'.$row["post_konten"].'</a></p>
 						</div>
 						';
 					}
