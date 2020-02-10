@@ -153,9 +153,9 @@
 							          <div class="contacts-list-info">
 							                <span class="contacts-list-name" style="color: #230069;">
 							                  '.$row['nama_depan'].'
-							                  <small class="contacts-list-date pull-right" style="color: #687b8e;">'.$row['post_tgl'].'</small>
+							                  <small class="contacts-list-date pull-right" style="color: #687b8e;">'.tgl_indo($row['post_tgl']).'</small>
 							                </span>
-							                <a href="dokumen/'.$row['post_konten'].'">
+							                <a href="dokumen/'.$row['post_ebook'].'">
 							            		<span class="contacts-list-msg" style="color: #98c2f7;">'.$row['post_konten'].'
 							            	</a>
 							            	<small class="contacts-list-date pull-right"><span></span></small>
