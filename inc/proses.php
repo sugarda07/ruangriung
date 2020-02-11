@@ -123,7 +123,7 @@ if(isset($_POST['proses']))
 	if($_POST['proses'] == 'embed_video')
 	{
 		$url = $_POST["post_embed_video"];
-	    preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
+	    preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches);
 	    $id = $matches[1];
 
 		$data = array(

@@ -7,6 +7,7 @@ session_start();
 $query = "
 SELECT * FROM postingan JOIN user
 WHERE postingan.user_id = user.user_id
+ORDER BY postingan.post_id DESC
 ";
 
 $statement = $connect->prepare($query);
