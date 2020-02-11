@@ -153,7 +153,6 @@ $(document).ready(function(){
       height:'100%'
 		},
     showZoomer: true,
-    enableResize: true,
     enableOrientation: true,
     mouseWheelZoom: 'ctrl',
     enforceBoundary: false,

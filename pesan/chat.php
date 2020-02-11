@@ -195,7 +195,7 @@ $(document).ready(function(){
   konten += '<footer class="main-footer">';
   konten += '<div class="row">';
   konten +=      '<div class="col-xs-10" style="padding-left: 12px; padding-right: 0px;">'   ;       
-  konten +=        '<textarea rows="1" name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" placeholder="Type Message ..." class="form-control chat_message" data-emojiable="true" data-emoji-input="unicode" type="text" style="border-radius: 15px;"></textarea>';
+  konten +=        '<textarea rows="1" name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" placeholder="Type Message ..." class="form-control chat_message" type="text" style="border-radius: 15px;"></textarea>';
   konten +=      '</div>';
   konten +=      '<div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">';
   konten +=          '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-primary send_chat" style="background-color: #4e48da; border-color: #4e48da; border-radius: 50px;"><i class="fa fa-paper-plane-o">  </i></button>';
@@ -231,7 +231,8 @@ $(document).ready(function(){
         data:{to_user_id:to_user_id, chat_message:chat_message},
         success:function(data)
         {
-          $('#chat_message_'+to_user_id).val('');
+          var element = $('#chat_message_'+to_user_id).emojioneArea();
+          element[0].emojioneArea.setText('');
           $('#chat_history_'+to_user_id).html(data);
           $('html, body').animate({ scrollTop: 100000 }, 'fast');
           play_sound_send()

@@ -11,39 +11,48 @@
             <div class="tab-content">
               <div class="active tab-pane" id="foto">
                 <!-- Post -->
-                <div class="gallery-section">
-	      			<div class="inner-width">
-			      		<div class="gallery">
+                	<div class="box box-primary" style="margin-bottom: 0px;">
+			            <div class="box-header with-border">
+			              <div class="has-feedback">
+			                  <input type="search" id="cari_foto" name="cari_foto" class="form-control input-sm" placeholder="Cari Foto" aria-label="Search" autocomplete="off">
+			                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+			                </div>
+			            </div>
+			            <div class="box-body" style="margin-bottom: 0px;">
+			                <div class="gallery-section">
+				      			<div class="inner-width">
+						      		<div class="gallery">
 
-			      		<?php 
-				            $query = "
-				            SELECT * FROM postingan
-				            JOIN user ON postingan.user_id = user.user_id
-				              WHERE postingan.user_id != '".$_SESSION["user_id"]."'
-				              ORDER BY RAND()
-				            ";
-				            $statement = $connect->prepare($query);
-				            $statement->execute();
-				            $result = $statement->fetchAll();
-				            $total_row = $statement->rowCount();
+						      		<?php 
+							            $query = "
+							            SELECT * FROM postingan
+							            JOIN user ON postingan.user_id = user.user_id
+							              WHERE postingan.user_id != '".$_SESSION["user_id"]."'
+							              ORDER BY RAND()
+							            ";
+							            $statement = $connect->prepare($query);
+							            $statement->execute();
+							            $result = $statement->fetchAll();
+							            $total_row = $statement->rowCount();
 
-				            foreach($result as $row)
-				            {
-				                if($row['post_gambar'] != '')
-				                {
-				                    echo '
-				                <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-				                    <img class="img-responsive" alt="image" src="images/post/'.$row['post_gambar'].'">
-				                </a>
-				                ';
-				                }
-				                else
-				                {
-				                    echo ' ';
-				                }                
-				            }
-				        ?>
-
+							            foreach($result as $row)
+							            {
+							                if($row['post_gambar'] != '')
+							                {
+							                    echo '
+							                <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+							                    <img class="img-responsive" alt="image" src="images/post/'.$row['post_gambar'].'">
+							                </a>
+							                ';
+							                }
+							                else
+							                {
+							                    echo ' ';
+							                }                
+							            }
+							        ?>
+				        		</div>
+				    		</div>
 				        </div>
 				    </div>
 		        </div>
@@ -55,6 +64,14 @@
                 <!-- The timeline -->
                 <div class="box-body" style="padding:0px;">
                 	<!-- /.<img src="https://img.youtube.com/vi/Jk7rliZpuSs/hqdefault.jpg">-->
+                	<div class="box box-primary" style="margin-bottom: 0px;">
+			            <div class="box-header with-border">
+			              <div class="has-feedback">
+			                  <input type="search" id="cari_video" name="cari_video" class="form-control input-sm" placeholder="Cari Video" aria-label="Search" autocomplete="off">
+			                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+			                </div>
+			            </div>
+			            <div class="box-body" style="margin-bottom: 0px;">
 
 
 			      		<?php 
@@ -116,8 +133,8 @@
 				                }               
 				            }
 				        ?>
-
-
+				        </div>
+				    </div>
 		        </div>
               </div>
               <!-- /.tab-pane -->
@@ -203,6 +220,46 @@
 </div>
 <script src="assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="assets/plugins/jquery-ui/jquery-ui.js"></script>
+
+<script>
+  $(document).ready(function(){
+      
+    $('#cari_foto').autocomplete({
+      source: "media/cari_foto.php",
+      minLength: 1,
+      select: function(event, ui)
+      {
+        $('#cari_foto').val(ui.item.value);
+      }
+    }).data('ui-autocomplete')._renderItem = function(ul, item){
+      return $("<li class='ui-autocomplete-row'></li>")
+        .data("item.autocomplete", item)
+        .append(item.label)
+        .appendTo(ul);
+    };
+
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+      
+    $('#cari_video').autocomplete({
+      source: "media/cari_video.php",
+      minLength: 1,
+      select: function(event, ui)
+      {
+        $('#cari_video').val(ui.item.value);
+      }
+    }).data('ui-autocomplete')._renderItem = function(ul, item){
+      return $("<li class='ui-autocomplete-row'></li>")
+        .data("item.autocomplete", item)
+        .append(item.label)
+        .appendTo(ul);
+    };
+
+  });
+</script>
 
 <script>
   $(document).ready(function(){

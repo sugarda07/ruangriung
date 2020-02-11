@@ -10,7 +10,7 @@ if(isset($_GET["term"]))
  SELECT * FROM postingan
  JOIN user ON postingan.user_id = user.user_id
  WHERE postingan.post_konten LIKE '%".$_GET["term"]."%'
- AND postingan.post_ebook !=''
+ AND postingan.post_gambar !=''
  ORDER BY postingan.post_konten ASC
  ";
 
@@ -28,7 +28,7 @@ if(isset($_GET["term"]))
   foreach($result as $row)
   {
    $temp_array = array();
-   $temp_array['value'] = $row['post_ebook'];
+   $temp_array['value'] = $row['post_gambar'];
    if($row['profile_image'] != '')
    {
       $temp_array['label'] = '

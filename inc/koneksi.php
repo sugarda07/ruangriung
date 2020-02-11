@@ -817,7 +817,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       }
       else
       {
-        $chat_message = ''.$row['chat_konten'].'';
+        $chat_message = $row['chat_konten'];
         $user_name = 'Anda';
         if($row["status"] == '0')
         {          
@@ -830,9 +830,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
         if($row["status"] == '1')
         {          
           $status_pesan = '<small>
-          <span class="button remove_chat text-muted" id="'.$row['chat_message_id'].'"><span class="fa fa-times"></span></span>
-          &nbsp;
-          <span class="fa fa-check"></span>';
+          <span class="button remove_chat text-muted" id="'.$row['chat_message_id'].'"><span class="fa fa-times"></span></span>&nbsp;<span class="fa fa-check"></span></small>';
         }
       }
       $profile_image = Get_profile_image_chat($connect, $row['from_user_id']);
@@ -858,8 +856,6 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       {
         $chat_message = $row['chat_konten'];
       }
-      $tengah = 'pull-left';
-      $atas = 'direct-chat-msg';
       $user_name = Get_user_name2($connect, $row['from_user_id']);
       $profile_image = Get_profile_image_chat($connect, $row['from_user_id']);
       if($profile_image == '')
@@ -870,7 +866,9 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       {
         $profile_image = '<img class="direct-chat-img" src="../images/profile_image/'.$profile_image.'" alt="Message User Image">';
       }
-      $tanggal = 'pull-right';
+      $tanggal = 'pull-right';      
+      $tengah = 'pull-left';
+      $atas = 'direct-chat-msg';
     }
     $output .= '
 
