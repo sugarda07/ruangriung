@@ -98,12 +98,12 @@
 						                <li class="item" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #f4f4f4;">
 						                  <div class="product-img">
 						                    <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-					                			<video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+					                			<video class="img-responsive" src="images/post/'.$row["post_video"].'" style="padding: unset; width: 120px; height:auto;"></video>
 							                </a>
 						                  </div>
 						                  <div class="product-info" style="margin-left: 130px;">
 						                    <a href="javascript:void(0)" class="product-title">'.$row['nama_depan'].'</a>
-						                      <span class="product-description"><small>'.$row['post_tgl'].'</small></span>
+						                      <span class="product-description"><small>'.tgl_indo($row['post_tgl']).'</small></span>
 						                        <span class="product-description">
 						                          '.$row['post_konten'].'
 						                        </span>
@@ -124,7 +124,7 @@
 						                  </div>
 						                  <div class="product-info" style="margin-left: 130px;">
 						                    <a href="javascript:void(0)" class="product-title">'.$row['nama_depan'].'</a>
-						                      <span class="product-description"><small>'.$row['post_tgl'].'</small></span>
+						                      <span class="product-description"><small>'.tgl_indo($row['post_tgl']).'</small></span>
 						                        <span class="product-description">
 						                          '.$row['post_konten'].'
 						                        </span>
@@ -169,16 +169,16 @@
 				                {
 				                    echo '
 
-				                    <li>								    	
-							          <img class="contacts-list-img" src="images/profile_image/user.png" alt="User Image">
+				                    <li>
+							          <a href="media/view_posting.php?data='.$row['post_id'].'">    	
+							          <img class="contacts-list-img" src="images/profile_image/'.$row["profile_image"].'" alt="User Image" style="border-radius: 3%;">
 							          <div class="contacts-list-info">
 							                <span class="contacts-list-name" style="color: #230069;">
-							                  '.$row['nama_depan'].'
+							                  '.$row['post_konten'].'
 							                  <small class="contacts-list-date pull-right" style="color: #687b8e;">'.tgl_indo($row['post_tgl']).'</small>
 							                </span>
-							                <a href="dokumen/'.$row['post_ebook'].'">
-							            		<span class="contacts-list-msg" style="color: #98c2f7;">'.$row['post_konten'].'
-							            	</a>
+							            		<span class="contacts-list-msg" style="color: ;">'.$row['nama_depan'].'
+
 							            	<small class="contacts-list-date pull-right"><span></span></small>
 							            </span>
 							          </div>

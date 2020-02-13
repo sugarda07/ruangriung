@@ -67,8 +67,8 @@ if(isset($_POST['proses']))
 					else if($row['post_ebook'] !='')
 					{
 						$post_gambar = '
-						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'">'.$row["post_konten"].'</a></p>
+						<div class="box-body" style="padding-bottom: 0px;" align="center">
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.$row["post_konten"].'</a></p>
 						</div>
 						';
 					}
@@ -130,8 +130,8 @@ if(isset($_POST['proses']))
 					else if($row['post_ebook'] !='')
 					{
 						$post_gambar = '
-						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'">'.$row["post_konten"].'</a></p>
+						<div class="box-body" style="padding-bottom: 0px;" align="center">
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.$row["post_konten"].'</a></p>
 						</div>
 						';
 					}
@@ -359,16 +359,28 @@ if(isset($_POST['proses']))
 
       foreach($notification_result as $notification_row)
       {
-        $notification_text = 'menyukai "'.strip_tags(substr($notification_row["post_konten"], 0, 20)).'"';
-
-        $insert_query = "
-        INSERT INTO pemberitahuan 
-          (notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
-          VALUES ('".$notification_row['user_id']."', '".$_SESSION["user_id"]."', '".$_POST["post_id"]."', '".$notification_text."', 'no')
-        ";
-
-        $statement = $connect->prepare($insert_query);
-        $statement->execute();
+        if($notification_row["user_id"] == $_SESSION["user_id"])
+			{
+				$notification_text = 'menyukai "'.strip_tags(substr($notification_row["post_konten"], 0, 20)).'"';
+				$insert_query = "
+				INSERT INTO pemberitahuan 
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
+					VALUES ('".$notification_row['user_id']."', '".$_SESSION["user_id"]."', '".$_POST["post_id"]."', '".$notification_text."', 'yes')
+				";
+				$statement = $connect->prepare($insert_query);
+				$statement->execute();
+			}
+			else
+			{
+				$notification_text = 'menyukai "'.strip_tags(substr($notification_row["post_konten"], 0, 20)).'"';
+				$insert_query = "
+				INSERT INTO pemberitahuan 
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
+					VALUES ('".$notification_row['user_id']."', '".$_SESSION["user_id"]."', '".$_POST["post_id"]."', '".$notification_text."', 'no')
+				";
+				$statement = $connect->prepare($insert_query);
+				$statement->execute();
+			}
       }
 
       echo 'Like';

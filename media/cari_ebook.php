@@ -33,7 +33,7 @@ if(isset($_GET["term"]))
    {
       $temp_array['label'] = '
           <a href="media/view_posting.php?data='.$row['post_id'].'">
-              <img src="images/profile_image/'.$row["profile_image"].'" class="img-circle sm" alt="User Image" width="40">
+              <img src="images/profile_image/'.$row["profile_image"].'" alt="User Image" width="40">
               &nbsp;&nbsp;&nbsp;'.$row['post_konten'].' &nbsp;<span class="text-muted"><small> </small></span>
           </a>
           ';
@@ -42,7 +42,7 @@ if(isset($_GET["term"]))
    {
       $temp_array['label'] = '
           <a href="media/view_posting.php?data='.$row['post_id'].'">
-              <img src="images/profile_image/user.png" class="img-circle" alt="User Image" width="40">
+              <img src="images/profile_image/user.png" alt="User Image" width="40">
               &nbsp;&nbsp;&nbsp;'.$row['post_konten'].' &nbsp;<span class="text-muted"><small> </small></span>
           </a>
           ';
