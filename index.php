@@ -33,7 +33,6 @@ foreach($result as $log)
   <link href="assets/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
   <link href="assets/crop/croppie.css" rel="stylesheet">
   <link href="assets/emoji-picker/lib/css/emoji.css" rel="stylesheet">
-  <link href="assets/emoji-picker/lib/css/style.css" rel="stylesheet">
   <link href="assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
   <link href="assets/sweetalert2/sweetalert.css" rel="stylesheet">
 
@@ -324,8 +323,7 @@ foreach($result as $log)
   window.emojiPicker = new EmojiPicker({
       emojiable_selector: '[data-emojiable=true]',
       assetsPath: 'assets/emoji-picker/lib/img/',
-      popupButtonClasses: 'fa fa-smile-o',
-      display: 'block'
+      popupButtonClasses: 'fa fa-smile-o'
   });
   window.emojiPicker.discover();
   });

@@ -31,9 +31,10 @@ $(document).ready(function(){
               },
               success:function(data)
               {
+                window.location.href="index.php";
+                $('#form_postingan1')[0].reset();
                 $('#opsi_postingan').modal('hide');
                 $('#uploadvideoModal').modal('hide');
-                $('#form_postingan1')[0].reset();
                 postingan_post();
               }
           })
@@ -60,6 +61,7 @@ $(document).ready(function(){
               },
               success:function(data)
               {
+                window.location.href="index.php";
                 $('#opsi_postingan').modal('hide');
                 $('#embed_videomodal').modal('hide');
                 $('#form_embed_video')[0].reset();
@@ -93,6 +95,7 @@ $(document).ready(function(){
                 },
                 success:function(data)
                 {
+                  window.location.href="index.php";
                   $('#opsi_postingan').modal('hide');
                   $('#ebook_modal').modal('hide');
                   $('#form_ebook')[0].reset();
@@ -132,6 +135,7 @@ $(document).ready(function(){
                 },
                 success:function(data)
                 {
+                  window.location.href="index.php";
                   $('#uploadvideoModal').modal('hide');
                   $('#form_posting_video')[0].reset();
                   postingan_post();
@@ -189,6 +193,7 @@ $(document).ready(function(){
 					$('#tombol_post').attr('disabled', 'disabled');  
 					},
 					success:function(data){
+            window.location.href="index.php";
 					$('#form_posting_upload')[0].reset();
 					$('#uploadimageModal').modal('hide');
 					postingan_post();

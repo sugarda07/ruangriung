@@ -28,7 +28,6 @@ if(!isset($_SESSION['user_id']))
   <link href="../assets/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
   <link href="../assets/crop/croppie.css" rel="stylesheet">
   <link href="../assets/emoji-picker/lib/css/emoji.css" rel="stylesheet">
-  <link href="../assets/emoji-picker/lib/css/style.css" rel="stylesheet">
   <link href="../assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
   <link href="../assets/sweetalert2/sweetalert.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/emoji-picker/emojionearea.min.css">
@@ -118,8 +117,7 @@ if(!isset($_SESSION['user_id']))
   window.emojiPicker = new EmojiPicker({
       emojiable_selector: '[data-emojiable=true]',
       assetsPath: '../assets/emoji-picker/lib/img/',
-      popupButtonClasses: 'fa fa-smile-o',
-      display: 'block'
+      popupButtonClasses: 'fa fa-smile-o'
   });
   window.emojiPicker.discover();
   });
@@ -195,7 +193,7 @@ $(document).ready(function(){
   konten += '<footer class="main-footer">';
   konten += '<div class="row">';
   konten +=      '<div class="col-xs-10" style="padding-left: 12px; padding-right: 0px;">'   ;       
-  konten +=        '<textarea rows="1" name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" placeholder="Type Message ..." class="form-control chat_message" type="text" style="border-radius: 15px;"></textarea>';
+  konten +=        '<textarea rows="1" name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" placeholder="Type Message ..." class="form-control chat_message" data-emojiable="true" type="text" style="border-radius: 15px;"></textarea>';
   konten +=      '</div>';
   konten +=      '<div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">';
   konten +=          '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-primary send_chat" style="background-color: #4e48da; border-color: #4e48da; border-radius: 50px;"><i class="fa fa-paper-plane-o">  </i></button>';
@@ -304,21 +302,37 @@ $(document).ready(function(){
     })
   });
 
-  $(document).on('click', '.remove_chat', function(){
-    var chat_message_id = $(this).attr('id');
-    if(confirm("Are you sure you want to remove this chat?"))
-    {
-      $.ajax({
-        url:"remove_chat.php",
-        method:"POST",
-        data:{chat_message_id:chat_message_id},
-        success:function(data)
-        {
-          update_chat_history_data();
-        }
-      })
-    }
-  });
+
+  $(document).on('click', '.remove_chat', function(){ 
+      var chat_message_id = $(this).attr('id');
+
+      swal({
+        title: "Anda Yakin?",
+        text: "Postingan ini akan di hapus",
+        type: "warning",
+        showCancelButton: true,
+        cancleButtonText: "Batal",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Hapus",
+        closeOnConfirm: false
+      },
+      function(){
+        $.ajax({
+            url:"remove_chat.php",
+            method:"POST",
+            data:{chat_message_id:chat_message_id},
+            success: function(data){
+                swal({
+                    title : "Pesan",
+                    text: "Berhasil di Hapus",
+                    type: "success",
+                    timer: 5000
+                });
+            update_chat_history_data();
+            }
+        });        
+      });
+    });
 
 
 });

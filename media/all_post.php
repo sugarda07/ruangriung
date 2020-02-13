@@ -29,6 +29,7 @@
 							            JOIN user ON postingan.user_id = user.user_id
 							              WHERE postingan.user_id != '".$_SESSION["user_id"]."'
 							              ORDER BY RAND()
+							              LIMIT 48
 							            ";
 							            $statement = $connect->prepare($query);
 							            $statement->execute();
@@ -80,6 +81,7 @@
 				            JOIN user ON postingan.user_id = user.user_id
 				              WHERE postingan.user_id != '".$_SESSION["user_id"]."'
 				              ORDER BY RAND()
+				              LIMIT 8
 				            ";
 				            $statement = $connect->prepare($query);
 				            $statement->execute();
@@ -153,6 +155,8 @@
 				            $query = "
 				            SELECT * FROM postingan
 				            JOIN user ON postingan.user_id = user.user_id
+				            ORDER By post_id DESC
+				            LIMIT 20
 				            ";
 				            $statement = $connect->prepare($query);
 				            $statement->execute();
