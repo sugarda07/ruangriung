@@ -78,7 +78,7 @@ if(isset($_POST['login']))
 <body class="hold-transition login-page" style="background-color: #2c2c9e;">
 <div class="login-box" style="margin-top: 140px">
   <div class="login-logo">
-    <a href="" style="color: aqua;"><b>Ruang</b>RIUNG</a>
+    <a href="" style="color: aqua;"><b>Ruang</b>DIGITAL</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body" style="border-radius: 9px;">

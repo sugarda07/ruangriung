@@ -98,7 +98,7 @@ if(isset($_POST["register"]))
 <body class="hold-transition register-page" style="background-color: #2c2c9e;">
 <div class="register-box" style="margin-top: 60px">
   <div class="register-logo">
-    <a href="" style="color: aqua;"><b>Ruang</b>RIUNG</a>
+    <a href="" style="color: aqua;"><b>Ruang</b>DIGITAL</a>
   </div>
 
   <div class="register-box-body" style="border-radius: 9px;">

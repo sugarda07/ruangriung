@@ -49,7 +49,7 @@
 
                 <p>
                   <?php echo $log['nama_depan']; ?>
-                  <small><?php echo $log['tmp_lahir']; ?>  <?php echo tgl_indo($log['tgl_lahir']); ?></small>
+                  <small><?php echo $log['email']; ?></small>
                 </p>
               </li>
               <!-- Menu Body -->

@@ -46,7 +46,7 @@ foreach($result as $row)
 		$output .= '
 		<tr>
 			<td><img src="../images/profile_image/'.$row['profile_image'].'" style="float:left; margin-right:10px;" height="40" width="40"> <b>'.$row['username'].'</b><br>'.$row['email'].'</td>
-			<td><video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset; float:left; margin-right:10px;" height="40" width="40"></video> '.$row['post_konten'].'</td>
+			<td><iframe class="img-responsive" src="images/post/'.$row["post_video"].'" style="padding: unset; float:left; margin-right:10px;" height="40" width="40"></iframe> '.$row['post_konten'].'</td>
 			<td>'.$row['post_tgl'].'</td>
 			<td><button type="button" name="delete" id="'.$row["post_id"].'" class="btn btn-xs btn-danger btn-flat delete"><i class="fa fa-trash"></i></button></td>
 		</tr>

@@ -79,9 +79,7 @@
 				            $query = "
 				            SELECT * FROM postingan
 				            JOIN user ON postingan.user_id = user.user_id
-				              WHERE postingan.user_id != '".$_SESSION["user_id"]."'
-				              ORDER BY RAND()
-				              LIMIT 8
+				            ORDER BY RAND()
 				            ";
 				            $statement = $connect->prepare($query);
 				            $statement->execute();
@@ -98,10 +96,10 @@
 						                <li class="item" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #f4f4f4;">
 						                  <div class="product-img">
 						                    <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-					                			<video class="img-responsive" src="images/post/'.$row["post_video"].'" style="padding: unset; width: 120px; height:auto;"></video>
+					                			<video class="img-responsive" src="images/post/'.$row["post_video"].'" style="padding: unset; width: 99px; height:auto;"></video>
 							                </a>
 						                  </div>
-						                  <div class="product-info" style="margin-left: 130px;">
+						                  <div class="product-info" style="margin-left: 109px;">
 						                    <a href="javascript:void(0)" class="product-title">'.$row['nama_depan'].'</a>
 						                      <span class="product-description"><small>'.tgl_indo($row['post_tgl']).'</small></span>
 						                        <span class="product-description">
@@ -112,17 +110,17 @@
 						              </ul>
 				                ';
 				                }
-				                if($row['post_embed'] != '')
+				                else if($row['post_embed'] != '')
 				                {
 				                    echo '
 				                    <ul class="products-list product-list-in-box">
 						                <li class="item" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #f4f4f4;">
 						                  <div class="product-img">
 						                    <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-					                			<img src="https://img.youtube.com/vi/'.$row["post_embed"].'/hqdefault.jpg" alt="Product Image" style="width: 120px; height:auto;">
+					                			<img src="https://img.youtube.com/vi/'.$row["post_embed"].'/hqdefault.jpg" alt="Product Image" style="width: 99px; height:auto;">
 							                </a>
 						                  </div>
-						                  <div class="product-info" style="margin-left: 130px;">
+						                  <div class="product-info" style="margin-left: 109px;">
 						                    <a href="javascript:void(0)" class="product-title">'.$row['nama_depan'].'</a>
 						                      <span class="product-description"><small>'.tgl_indo($row['post_tgl']).'</small></span>
 						                        <span class="product-description">

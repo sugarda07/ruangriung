@@ -110,6 +110,7 @@ $(document).ready(function(){
   $('#fileupload_video').on('change', function(){
     $('#opsi_postingan').modal('hide');
     $('#uploadvideoModal').modal('show');
+    $('#sedang').text('Tuliskan deskipsi video anda'); 
   });
 
   $('#form_posting_video').on('submit', function(event){
@@ -132,6 +133,7 @@ $(document).ready(function(){
                 beforeSend:function()
                 {
                     $('#tombol_post_video').attr('disabled', 'disabled');  
+                    $('#sedang').text('Sedang Proses...');  
                 },
                 success:function(data)
                 {
