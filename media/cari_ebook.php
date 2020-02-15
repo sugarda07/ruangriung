@@ -9,7 +9,7 @@ if(isset($_GET["term"]))
  $query = "
  SELECT * FROM postingan
  JOIN user ON postingan.user_id = user.user_id
- WHERE postingan.post_konten LIKE '%".$_GET["term"]."%'
+ WHERE postingan.post_konten LIKE '%".str_replace(' ', '%', $_GET['term'])."%'
  AND postingan.post_ebook !=''
  ORDER BY postingan.post_konten ASC
  ";

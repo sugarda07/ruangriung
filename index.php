@@ -134,9 +134,9 @@ foreach($result as $log)
       </div>
       <div class="row" style="margin: 0px; padding-top: 120px;">
         <label for="upload_posting"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-picture-o"></i> Photo </a></label>
-        <label for="fileupload_video" style=""><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-film"></i> Video </a></label>
-        <a href="#" data-toggle="modal" data-target="#embed_videomodal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-youtube-square"></i> Youtube </a> <br>
-        <a href="#" data-toggle="modal" data-target="#ebook_modal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px; margin-top: 10px;"> <i class="fa fa-book"></i> e-Book </a>
+        <label for="fileupload_video" style="display:none;"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-film"></i> Video </a></label>
+        <a href="#" data-toggle="modal" data-target="#embed_videomodal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-youtube-square"></i> Youtube </a> 
+        <a href="#" data-toggle="modal" data-target="#ebook_modal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 0px; margin-top: 0px;"> <i class="fa fa-book"></i> e-Book </a>
         <div class="modal-footer" style="border: 0px;">
           <form method="post" id="form_postingan1">
           <div class="row">
@@ -295,6 +295,8 @@ foreach($result as $log)
 <script src="assets/emoji-picker/lib/js/emoji-picker.js"></script>
 <script src="assets/sweetalert2/sweetalert.min.js"></script>
 <?php include "inc/jquery.php"; ?>
+
+
 
 <script type="text/javascript">
     function play_sound_send() {

@@ -207,9 +207,53 @@ $(document).ready(function(){
 
 
 
-  postingan_post();
 
-  function postingan_post()
+ var limit = 9;
+ var start = 0;
+ var action = 'inactive';
+ function all_post_foto(limit, start)
+ {
+  var proses = 'all_post_foto';
+  $.ajax({
+   url:'inc/proses.php',
+   method:"POST",
+   data:{limit:limit, start:start, proses:proses},
+   cache:false,
+   success:function(data)
+   {
+    $('#all_post_foto').append(data);
+    if(data == '')
+    {
+      $('#load_data_message').html("<button type='button' class='btn btn-link btn-block'></button>");
+     action = 'active';
+    }
+    else
+    {
+      $('#load_data_message').html("<button type='button' class='btn btn-link btn-block'></button>");
+     action = "inactive";
+    }
+   }
+  });
+ }
+
+ if(action == 'inactive')
+ {
+  action = 'active';
+  all_post_foto(limit, start);
+ }
+ $(window).scroll(function(){
+  if($(window).scrollTop() + $(window).height() > $("#all_post_foto").height() && action == 'inactive')
+  {
+   action = 'active';
+   start = start + limit;
+   setTimeout(function(){
+    all_post_foto(limit, start);
+   }, 1000);
+  }
+ });
+
+postingan_post();
+ function postingan_post()
   {
      var proses = 'postingan_post';
      $.ajax({
@@ -218,10 +262,11 @@ $(document).ready(function(){
           data:{proses:proses},
           success:function(data)
           {
-              $('#postingan_list').html(data);
+            $('#postingan_list').html(data);
           }
-     })
+     });
   }
+ 
 
   posting_profil();
   function posting_profil()

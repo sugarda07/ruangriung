@@ -21,38 +21,10 @@
 			            <div class="box-body" style="margin-bottom: 0px;">
 			                <div class="gallery-section">
 				      			<div class="inner-width">
-						      		<div class="gallery">
+						      		<div class="gallery" id="all_post_foto">
 
-						      		<?php 
-							            $query = "
-							            SELECT * FROM postingan
-							            JOIN user ON postingan.user_id = user.user_id
-							              WHERE postingan.user_id != '".$_SESSION["user_id"]."'
-							              ORDER BY RAND()
-							              LIMIT 48
-							            ";
-							            $statement = $connect->prepare($query);
-							            $statement->execute();
-							            $result = $statement->fetchAll();
-							            $total_row = $statement->rowCount();
-
-							            foreach($result as $row)
-							            {
-							                if($row['post_gambar'] != '')
-							                {
-							                    echo '
-							                <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-							                    <img class="img-responsive" alt="image" src="images/post/'.$row['post_gambar'].'">
-							                </a>
-							                ';
-							                }
-							                else
-							                {
-							                    echo ' ';
-							                }                
-							            }
-							        ?>
 				        		</div>
+				        		<div id="load_data_message" style="display: none;"></div>
 				    		</div>
 				        </div>
 				    </div>
@@ -95,8 +67,8 @@
 				                    <ul class="products-list product-list-in-box">
 						                <li class="item" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #f4f4f4;">
 						                  <div class="product-img">
-						                    <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-					                			<video class="img-responsive" src="images/post/'.$row["post_video"].'" style="padding: unset; width: 99px; height:auto;"></video>
+						                    <a href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+					                			<video src="images/post/'.$row["post_video"].'" style="padding: unset; width: 99px; height:auto;"></video>
 							                </a>
 						                  </div>
 						                  <div class="product-info" style="margin-left: 109px;">
@@ -116,7 +88,7 @@
 				                    <ul class="products-list product-list-in-box">
 						                <li class="item" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #f4f4f4;">
 						                  <div class="product-img">
-						                    <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+						                    <a href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
 					                			<img src="https://img.youtube.com/vi/'.$row["post_embed"].'/hqdefault.jpg" alt="Product Image" style="width: 99px; height:auto;">
 							                </a>
 						                  </div>

@@ -70,7 +70,7 @@ if(isset($_POST['proses']))
 		}
 		else
 		{
-			echo json_encode('Ukuran file terlalu besar, lebih dari 10 Mb');
+			echo json_encode();
 		}
 	}
 
@@ -253,6 +253,7 @@ if(isset($_POST['proses']))
 		WHERE follow.receiver_id = '".$_SESSION["user_id"]."' OR postingan.user_id = '".$_SESSION["user_id"]."' 
 		GROUP BY postingan.post_id 
 		ORDER BY postingan.post_id DESC
+
 		";
 		$statement = $connect->prepare($query);
 		$statement->execute();
@@ -276,7 +277,7 @@ if(isset($_POST['proses']))
 				          </a>
 				        </div>
 				        <div class="box-body" style="padding-bottom: 0px;">
-				          <p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+				          <p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 				        </div>
 			        ';
 					}
@@ -284,10 +285,15 @@ if(isset($_POST['proses']))
 					{
 						$post_gambar = '
 						<div class="box-body" align="center" style="padding: unset;">
-				          <video class="img-responsive" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+							<a href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+								<video width="100%" height="100%" poster="" controls autoplay;>
+							  		<source src="images/post/'.$row["post_video"].'" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+				          	</a>
 				        </div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 						</div>
 						';
 					}
@@ -300,7 +306,7 @@ if(isset($_POST['proses']))
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 						</div>
 						';
 					}
@@ -308,7 +314,7 @@ if(isset($_POST['proses']))
 					{
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;" align="center">
-							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.$row["post_konten"].'</a></p>
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.strip_tags(substr($row["post_konten"], 0, 30)).'</a></p>
 						</div>
 						';
 					}
@@ -316,7 +322,7 @@ if(isset($_POST['proses']))
 					{						
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 						</div>
 						';
 					}
@@ -348,7 +354,7 @@ if(isset($_POST['proses']))
 				          </a>
 				        </div>
 				        <div class="box-body" style="padding-bottom: 0px;">
-				          <p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+				          <p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 				        </div>
 			        ';
 					}
@@ -356,10 +362,15 @@ if(isset($_POST['proses']))
 					{
 						$post_gambar = '
 						<div class="box-body" align="center" style="padding: unset;">
-				          <video class="img-responsive pad" controls src="images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
+							<a href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+								<video width="100%" height="100%" poster="" controls autoplay;>
+							  		<source src="images/post/'.$row["post_video"].'" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+				          	</a>
 				        </div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 						</div>
 						';
 					}
@@ -372,7 +383,7 @@ if(isset($_POST['proses']))
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 						</div>
 						';
 					}
@@ -380,7 +391,7 @@ if(isset($_POST['proses']))
 					{
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;" align="center">
-							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.$row["post_konten"].'</a></p>
+							<p style="margin-bottom: 0px;"><a href="dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.strip_tags(substr($row["post_konten"], 0, 30)).'</a></p>
 						</div>
 						';
 					}
@@ -388,7 +399,7 @@ if(isset($_POST['proses']))
 					{						
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags(substr($row["post_konten"], 0, 30)).'</p>
 						</div>
 						';
 					}
@@ -1391,6 +1402,38 @@ if(isset($_POST['proses']))
 		{
 			echo 'Data telah dihapus';
 		}
+	}
+
+
+	if($_POST["proses"] == "all_post_foto")
+	{
+		$query = "
+        SELECT * FROM postingan
+        JOIN user ON postingan.user_id = user.user_id
+          WHERE postingan.user_id != '".$_SESSION["user_id"]."'
+          ORDER BY Rand()
+          LIMIT ".$_POST["start"].", ".$_POST["limit"]."
+        ";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $total_row = $statement->rowCount();
+
+        foreach($result as $row)
+        {
+            if($row['post_gambar'] != '')
+            {
+                echo '
+            <a class="image" href="media/view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
+                <img class="img-responsive" alt="image" src="images/post/'.$row['post_gambar'].'">
+            </a>
+            ';
+            }
+            else
+            {
+                echo ' ';
+            }                
+        }
 	}
 
 

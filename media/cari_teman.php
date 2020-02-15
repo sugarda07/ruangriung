@@ -8,7 +8,7 @@ if(isset($_GET["term"]))
 
  $query = "
  SELECT * FROM user 
- WHERE nama_depan LIKE '%".$_GET["term"]."%'
+ WHERE nama_depan LIKE '%".str_replace(' ', '%', $_GET['term'])."%'
  AND user_id != '".$_SESSION["user_id"]."'
  ORDER BY nama_depan ASC
  ";

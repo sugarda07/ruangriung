@@ -40,7 +40,6 @@ foreach($result as $row)
   <link href="../assets/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
   <link href="../assets/crop/croppie.css" rel="stylesheet">
   <link href="../assets/emoji-picker/lib/css/emoji.css" rel="stylesheet">
-  <link href="../assets/emoji-picker/lib/css/style.css" rel="stylesheet">
   <link href="../assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
