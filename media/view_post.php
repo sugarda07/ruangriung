@@ -36,7 +36,7 @@ if(isset($_POST['proses']))
 				          </a>
 				        </div>
 				        <div class="box-body" style="padding-bottom: 0px;">
-				          <p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+				          <p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 				        </div>
 			        ';
 					}
@@ -47,7 +47,7 @@ if(isset($_POST['proses']))
 				          <video class="img-responsive" controls src="../images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
 				        </div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 						</div>
 						';
 					}
@@ -60,7 +60,7 @@ if(isset($_POST['proses']))
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 						</div>
 						';
 					}
@@ -68,7 +68,7 @@ if(isset($_POST['proses']))
 					{
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;" align="center">
-							<p style="margin-bottom: 0px;"><a href="../dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.$row["post_konten"].'</a></p>
+							<p style="margin-bottom: 0px;"><a href="../dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.strip_tags($row["post_konten"]).'</a></p>
 						</div>
 						';
 					}
@@ -76,7 +76,7 @@ if(isset($_POST['proses']))
 					{						
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 						</div>
 						';
 					}
@@ -99,7 +99,7 @@ if(isset($_POST['proses']))
 				          </a>
 				        </div>
 				        <div class="box-body" style="padding-bottom: 0px;">
-				          <p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+				          <p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 				        </div>
 			        ';
 					}
@@ -110,7 +110,7 @@ if(isset($_POST['proses']))
 				          <video class="img-responsive" controls src="../images/post/'.$row["post_video"].'" type="video/mp4" style="padding: unset;"></video>
 				        </div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 						</div>
 						';
 					}
@@ -123,7 +123,7 @@ if(isset($_POST['proses']))
 							</div>
 						</div>
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 						</div>
 						';
 					}
@@ -131,7 +131,7 @@ if(isset($_POST['proses']))
 					{
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;" align="center">
-							<p style="margin-bottom: 0px;"><a href="../dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.$row["post_konten"].'</a></p>
+							<p style="margin-bottom: 0px;"><a href="../dokumen/'.$row["post_ebook"].'"><i class="fa fa-file-text-o" style="font-size: 80px; margin-bottom: 10px;"></i><br>'.strip_tags($row["post_konten"]).'</a></p>
 						</div>
 						';
 					}
@@ -139,7 +139,7 @@ if(isset($_POST['proses']))
 					{						
 						$post_gambar = '
 						<div class="box-body" style="padding-bottom: 0px;">
-							<p style="margin-bottom: 0px;">'.$row["post_konten"].'</p>
+							<p style="margin-bottom: 0px;">'.strip_tags($row["post_konten"]).'</p>
 						</div>
 						';
 					}
@@ -293,7 +293,7 @@ if(isset($_POST['proses']))
 	                  '.$row["nama_depan"].'
 	                  <span class="text-muted pull-right">'.tgl_ago($row["timestamp"]).'</span>
 	                </span>
-	                '.$row["comment"].'
+	                '.strip_tags($row["comment"]).'
 	              </div>
 				';
 			}

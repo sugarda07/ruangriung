@@ -14,7 +14,7 @@
 	            <div class="box-footer">
 	            	<div class="col-xs-12">
 			            <div class="description-block" style="margin-top: 20px;">
-			              <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#edit_profilModal" title="Klik untuk edit data"><?php echo $log['nama_depan']; ?></a></h5>
+			              <h5 class="description-header"><a href="#" data-toggle="modal" data-target="#edit_profilModal" title="Klik untuk edit data"><?php echo strip_tags($log['nama_depan']); ?></a></h5>
 			              <span class="description"><?php echo $log['email']; ?></span>
 			            </div>
 			          </div>
