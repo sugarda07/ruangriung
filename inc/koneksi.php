@@ -817,7 +817,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       }
       else
       {
-        $chat_message = $row['chat_konten'];
+        $chat_message = strip_tags($row['chat_konten']);
         $user_name = 'Anda';
         if($row["status"] == '0')
         {          
@@ -854,7 +854,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       }
       else
       {
-        $chat_message = $row['chat_konten'];
+        $chat_message = strip_tags($row['chat_konten']);
       }
       $user_name = Get_user_name2($connect, $row['from_user_id']);
       $profile_image = Get_profile_image_chat($connect, $row['from_user_id']);
