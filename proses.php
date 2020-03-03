@@ -30,7 +30,7 @@ if(isset($_POST['proses']))
 				$konten_konten = $row["post_konten"];
 				$string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
 				$string = convertToLink($string); 
-				if($row['profile_image'] != '')
+				if($row['profile_image'] != 'user.png')
 				{
 					if($row['post_gambar'] !='')
 					{				
@@ -141,13 +141,13 @@ if(isset($_POST['proses']))
 				    if($user_last_activity > $current_timestamp)
 				    {
 				        $profile_image = '
-				        <img src="data/akun/profil/user.png" alt="user" class="img-circle" />
+				        <span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>
 				        <span class="profile-status online pull-right"></span>';
 				    }
 				    else
 				    {
 				        $profile_image = '
-				        <img src="data/akun/profil/user.png" alt="user" class="img-circle" />';
+				        <span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
 				    }
 				    
 					$profile_image2 = Get_profile_komen($connect, $_SESSION["user_id"]);
@@ -251,7 +251,7 @@ if(isset($_POST['proses']))
 			move_uploaded_file($source_path, $target_path);
 			$data_gambar = array(
 				':user_id'			=>	$_SESSION["user_id"],
-				':post_konten'		=>	$_POST["posting_konten"],
+				':post_konten'		=>	nl2br($_POST["posting_konten"]),
 				':post_gambar'		=>	$new_file_name,
 				':post_tgl'			=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
 			);
@@ -491,13 +491,13 @@ if(isset($_POST['proses']))
 		        $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
 		        $string = convertToLink($string);
 				$profile_image = '';
-				if($row['profile_image'] != '')
+				if($row['profile_image'] != 'user.png')
 				{
 					$profile_image = '<img src="data/akun/profil/'.$row["profile_image"].'" alt="user" width="50">';
 				}
 				else
 				{
-					$profile_image = '<img src="data/akun/profil/user.png" alt="user" width="50">';
+					$profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
 				}
 				$output .= '
 
@@ -577,13 +577,13 @@ if(isset($_POST['proses']))
 		        $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
 		        $string = convertToLink($string);
 			    $profile_image = '';
-			    if($row['profile_image'] != '')
+			    if($row['profile_image'] != 'user.png')
 			    {
 			        $profile_image = '<img src="data/akun/profil/'.$row["profile_image"].'" alt="user" class="img-circle">';
 			    }
 			    else
 			    {
-			        $profile_image = '<img src="data/akun/profil/user.png" alt="user" class="img-circle">';
+			        $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
 			    }
 			    if($row['notif_post_id'] != '0')
 			    {
@@ -717,7 +717,7 @@ if(isset($_POST['proses']))
 	  		foreach($result as $row)
 	    	{
 	      		$profile_image = '';
-	      		if($row['profile_image'] != '')
+	      		if($row['profile_image'] != 'user.png')
 	      		{
 	        		$current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
 	        		$current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
@@ -739,11 +739,11 @@ if(isset($_POST['proses']))
 	        		$user_last_activity = fetch_user_last_activity($row['user_id'], $connect);
 	        		if($user_last_activity > $current_timestamp)
 	        		{
-	          			$profile_image = '<img src="../data/akun/profil/user.png" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span>';
+	          			$profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span> <span class="profile-status online pull-right"></span>';
 	        		}
 	        		else
 	        		{
-	          			$profile_image = '<img src="../data/akun/profil/user.png" alt="user" class="img-circle">';
+	          			$profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
 	        		}
 	      		}
 	 
@@ -849,13 +849,13 @@ if(isset($_POST['proses']))
 			    $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
 			    $string = convertToLink($string);
 			    $profile_image = '';
-			    if($row['profile_image'] != '')
+			    if($row['profile_image'] != 'user.png')
 			    {
 			        $profile_image = '<img src="data/akun/profil/'.$row["profile_image"].'" alt="user" class="img-circle">';
 			    }
 			    else
 			    {
-			        $profile_image = '<img src="data/akun/profil/user.png" alt="user"class="img-circle">';
+			        $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
 			    }
 
 			    if($row['notif_post_id'] != '0')

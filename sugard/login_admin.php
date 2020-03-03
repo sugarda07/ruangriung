@@ -1,5 +1,5 @@
 <?php
-include('../inc/koneksi.php');
+include('../koneksi.php');
 session_start();
 $message = '';
 if(isset($_SESSION['id_admin']))

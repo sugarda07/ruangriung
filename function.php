@@ -8,6 +8,13 @@ function convertToLink($string)
     return $string;  
  }
 
+ function convertToLinkpesan($string)  
+ {    
+    $string = preg_replace("/#+([a-zA-Z0-9_]+)/", '<a href="../hashtag.php?tag=$1" style="color:blue;">$0</a>', $string); 
+    $string = preg_replace("/@+([a-zA-Z0-9_]+)/", '<a href="#" class="hover" id="$1" style="color:blue;">$0</a>', $string); 
+    return $string;  
+ }
+
 function Get_post_id($connect, $post_id)
 {
   $query = "
@@ -161,7 +168,7 @@ function Get_nama_user($connect, $user_id)
 function Get_profile_image($connect, $user_id)
 {
   $query = "
-  SELECT profile_image FROM user 
+  SELECT profile_image, nama_depan FROM user 
   WHERE user_id = '".$user_id."'
   ";  
   $statement = $connect->prepare($query);
@@ -170,19 +177,19 @@ function Get_profile_image($connect, $user_id)
   $foto_profil = '';
   foreach($result as $row)
   {
-    if($row["profile_image"] == '')
+    if($row["profile_image"] == 'user.png')
     {
       $current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
       $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
       $user_last_activity = fetch_user_last_activity($user_id, $connect);
       if($user_last_activity > $current_timestamp)
       {
-        $foto_profil = '<img src="data/akun/profil/users.png" alt="user" class="img-circle"/>
+        $foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>
         <span class="profile-status online pull-right"></span>';
       }
       else
       {
-        $foto_profil = '<img src="data/akun/profil/users.png" alt="user" class="img-circle"/>';
+        $foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
       }
     }
     else
@@ -207,7 +214,7 @@ function Get_profile_image($connect, $user_id)
 function Get_profile_image_pesan($connect, $user_id)
 {
   $query = "
-  SELECT profile_image FROM user 
+  SELECT profile_image, nama_depan FROM user 
   WHERE user_id = '".$user_id."'
   ";  
   $statement = $connect->prepare($query);
@@ -216,19 +223,19 @@ function Get_profile_image_pesan($connect, $user_id)
   $foto_profil = '';
   foreach($result as $row)
   {
-    if($row["profile_image"] == '')
+    if($row["profile_image"] == 'user.png')
     {
       $current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
       $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
       $user_last_activity = fetch_user_last_activity($user_id, $connect);
       if($user_last_activity > $current_timestamp)
       {
-        $foto_profil = '<img src="../data/akun/profil/users.png" alt="user" class="img-circle"/>
+        $foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>
         <span class="profile-status online pull-right"></span>';
       }
       else
       {
-        $foto_profil = '<img src="../data/akun/profil/users.png" alt="user" class="img-circle"/>';
+        $foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
       }
     }
     else
@@ -300,7 +307,7 @@ function count_total_post_like($connect, $post_id)
 function Get_profile_komen($connect, $user_id)
 {
 	$query = "
-	SELECT profile_image FROM user 
+	SELECT profile_image, nama_depan FROM user 
 	WHERE user_id = '".$user_id."'
 	";  
 	$statement = $connect->prepare($query);
@@ -308,9 +315,9 @@ function Get_profile_komen($connect, $user_id)
 	$result = $statement->fetchAll();
 	foreach($result as $row)
 	{
-	if($row["profile_image"] == '')
+	if($row["profile_image"] == 'user.png')
     {
-     	$foto_profil = ' <img src="images/profile_image/user.png" class="img-responsive img-circle img-sm" alt="Alt Text">';
+     	$foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
     }
     else
     {
@@ -642,6 +649,9 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
     $profile_image = '';
     $chat_message = '';
     $status_pesan = '';
+    $chat_message = $row['chat_konten'];
+    $string = strip_tags($chat_message, "<br><br/><br /><a><b><i><u><em><strong>");
+    $string = convertToLinkpesan($string);
     if($row["from_user_id"] == $from_user_id)
     {
       if($row["status"] == '2')
@@ -659,7 +669,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       }
       else
       {
-        $chat_message = '<a class="button remove_chat" id="'.$row['chat_message_id'].'">'.strip_tags($row['chat_konten']).'</a>';
+        $chat_message = '<a class="button remove_chat" id="'.$row['chat_message_id'].'">'.$string.'</a>';
         $user_name = '';
         if($row["status"] == '0')
         {          
@@ -685,7 +695,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       }
       else
       {
-        $chat_message = ''.strip_tags($row['chat_konten']).'';
+        $chat_message = ''.$string.'';
       }
       $user_name = '<h5>'.Get_user_name2($connect, $row['from_user_id']).'</h5>';
       $profile_image = Get_profile_image_chat($connect, $row['from_user_id']);

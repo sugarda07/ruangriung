@@ -177,6 +177,12 @@ if(!isset($_SESSION['user_id'])) {
 <script>
 $(document).ready(function(){
 
+  setInterval(function(){
+    update_last_activity();
+    list_chat();
+    update_chat_history_data();
+  }, 5000);
+
 	list_chat()
 
 	function list_chat()

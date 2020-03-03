@@ -1,5 +1,5 @@
 <?php
-include('../inc/koneksi.php');
+include('../koneksi.php');
 session_start();
 if(!isset($_SESSION['id_admin'])) {
   header("location:login_admin.php");

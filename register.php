@@ -15,17 +15,18 @@ if(isset($_POST["register"]))
   $email = trim($_POST["email"]);
   $check_query = "
   SELECT * FROM user 
-  WHERE email = :email
+  WHERE email = :email OR username = :username
   ";
   $statement = $connect->prepare($check_query);
   $check_data = array(
-    ':email'   =>  $email
+    ':email'   =>  $email,
+    ':username'   =>  $username
   );
   if($statement->execute($check_data))  
   {
     if($statement->rowCount() > 0)
     {
-      $message .= 'Email sudah Terdaftar atau Terpakai';
+      $message .= 'Username atau Email sudah Terdaftar';
     }
     else
     {

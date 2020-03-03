@@ -27,14 +27,14 @@ if(!isset($_SESSION['user_id'])) {
     <link href="assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
     <link href="assets/dist/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/magnific/css/style.css">
+    <link href="assets/dist/css/pages/tab-page.css" rel="stylesheet">
     <!--<link href="assets/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <link href="assets/dist/css/pages/tab-page.css" rel="stylesheet">
+    <link href="assets/dist/css/placeholder-loading.min.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/ribbon-page.css" rel="stylesheet">
+    <link href="assets/jquery-mentions-input-master/jquery.mentionsInput.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/stylish-tooltip.css" rel="stylesheet">
+    <link href="assets/node_modules/jqueryui/jquery-ui.css" rel="stylesheet" type="text/css">
 </head>
 
 
@@ -155,6 +155,7 @@ if(!isset($_SESSION['user_id'])) {
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="assets/dist/js/jquery.form.js"></script>
     <script src="assets/dist/js/jquery.min.js"></script>
+    <script src="assets/node_modules/jqueryui/jquery-ui.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="assets/node_modules/popper/popper.min.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -174,6 +175,9 @@ if(!isset($_SESSION['user_id'])) {
     <!-- Sweet-Alert  -->
     <script src="assets/node_modules/sweetalert/sweetalert.min.js"></script>
     <script src="assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
+    <script src="assets/jquery-mentions-input-master/lib/jquery.elastic.js" type="text/javascript"></script>
+    <script src="assets/jquery-mentions-input-master/underscore-min.js" type="text/javascript"></script>
+    <script src="assets/jquery-mentions-input-master/jquery.mentionsInput.js" type="text/javascript"></script>
 </body>
 
 

@@ -10,7 +10,7 @@ session_start();
 $data = array(
 	':to_user_id'		=>	$_POST['to_user_id'],
 	':from_user_id'		=>	$_SESSION['user_id'],
-	':chat_konten'		=>	$_POST['chat_message'],
+	':chat_konten'		=>	nl2br($_POST['chat_message']),
 	':status'			=>	'1'
 );
 
