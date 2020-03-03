@@ -699,9 +699,9 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       }
       $user_name = '<h5>'.Get_user_name2($connect, $row['from_user_id']).'</h5>';
       $profile_image = Get_profile_image_chat($connect, $row['from_user_id']);
-      if($profile_image == '')
+      if($profile_image == 'user.png')
       {
-        $profile_image = '<div class="chat-img"><img src="../data/akun/profil/user.png" alt="user"></div>';
+        $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
       }
       else
       {
@@ -715,7 +715,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
                 <li '.$li.' style="margin-top: 5px;">
                     <div class="chat-content" style="padding-left: 0px;">
                         '.$user_name.'
-                          <div '.$class.'> '.$chat_message.'  '.$status_pesan.'</div>                          
+                          <div '.$class.'> '.$chat_message.' &nbsp;&nbsp; '.$status_pesan.'</div>                          
                         '.$br.'
                     </div>
                     <div class="chat-time" style="margin-left: 0px; margin-bottom: 10px;">'.tgl_ago($row['timestamp']).'</div>

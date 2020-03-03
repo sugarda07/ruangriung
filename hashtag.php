@@ -69,16 +69,41 @@ if(!isset($_SESSION['user_id'])) {
                 <div class="row">
                     <!-- Column -->
                     <div class=col-12>
-                        <div class="card" style="margin-bottom: 5px;">
-                            <div class="card-body">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="search_box" id="search_box" placeholder="Cari">
-                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                        <div class="card">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs customtab" role="tablist">
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#konten" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Postingan</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#orang" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Orang</span></a> </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="konten" role="tabpanel">
+                                    <div class="card" style="margin-bottom: 5px;">
+                                        <div class="card-body" style="padding: 9px;">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="search_box" id="search_box" placeholder="Cari">
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card" id="dynamic_content">
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="orang" role="tabpanel">                                    
+                                    <div class="card" style="margin-bottom: 5px;">
+                                        <div class="card-body" style="padding: 9px;">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="cari_kontak" id="cari_kontak" placeholder="Cari">
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card" id="dynamic_kontak">
+                                        
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card" id="dynamic_content">
-
                         </div>
                     </div>
                 </div>
@@ -140,6 +165,34 @@ $(document).ready(function(){
       var query = $('#search_box').val();
       load_data(1, query);
     });
+
+
+    load_kontak(1);
+
+    function load_kontak(page, query = '')
+    {
+      $.ajax({
+        url:"cari_kontak.php",
+        method:"POST",
+        data:{page:page, query:query},
+        success:function(data)
+        {
+          $('#dynamic_kontak').html(data);
+        }
+      });
+    }
+
+    $(document).on('click', '.page-link', function(){
+      var page = $(this).data('page_number');
+      var query = $('#cari_kontak').val();
+      load_data(page, query);
+    });
+
+    $('#cari_kontak').keyup(function(){
+      var query = $('#cari_kontak').val();
+      load_kontak(1, query);
+    });
+
 
 
 });

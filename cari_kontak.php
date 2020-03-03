@@ -15,7 +15,7 @@ session_start();
 
 $total_record = get_total_row($connect);*/
 
-$limit = '5';
+$limit = '10';
 $page = 1;
 if($_POST['page'] > 1)
 {
@@ -28,18 +28,25 @@ else
 }
 
 $query = "
-SELECT * FROM postingan 
-JOIN user ON user.user_id = postingan.user_id
+SELECT * FROM user
 ";
 
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE postingan.post_konten LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" 
+  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND user_id != '.$_SESSION['user_id'].'
+  ';
+}
+else
+{
+  $query .= '
+  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  AND user_id != '.$_SESSION['user_id'].'
   ';
 }
 
-$query .= 'ORDER BY postingan.post_id ASC ';
+$query .= 'ORDER BY user_id ASC ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
@@ -53,25 +60,38 @@ $result = $statement->fetchAll();
 $total_filter_data = $statement->rowCount();
 
 $output = '
-<div class="card-body">
-  <h4 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h4>
-    <h6 class="card-subtitle">Jumlah Data - '.$total_data.'</h6>
-      <ul class="search-listing">
+<div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+  <h5 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h5>
+      <div class="message-box">
+        <div class="message-widget message-scroll">
 ';
 if($total_data > 0)
 {
   foreach($result as $row)
   {
-    $konten_konten = $row["post_konten"];
-    $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
-    $string = convertToLink($string);
-    $output .= '    
-            <li style="padding-top: 5px;padding-bottom: 5px;">
-                <h3><a href="view_posting.php?data='.$row['post_id'].'">'.$row["nama_depan"].'</a></h3>
-                <h6 class="search-links">'.tgl_ago($row["post_tgl"]).'</h6>
-                <p>'.substr($string, 0,160).'</p>
-            </li>
+    if($row['profile_image'] != 'user.png')
+    {
+        $profile_image = '<img src="data/akun/profil/'.$row["profile_image"].'" alt="user" class="img-circle">';
+    }
+    else
+    {
+        $profile_image = '<span class="round" style="width: 45px; height: 45px; line-height: 45px;">'.substr($row["nama_depan"], 0,1).'</span>';
+    }
+    if($row['user_id'] != $_SESSION["user_id"])
+    {
+    $output .= '
+
+            <a href="view_profil.php?data='.$row['user_id'].'">
+              <div class="user-img" style="margin-bottom: 0px;"> '.$profile_image.' </div>
+              <div class="mail-contnet" style="width: 80%;">
+                <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
+                <span class="mail-desc">
+                '.$row["email"].'
+                </span>                 
+              </div>
+            </a>
     ';
+    }
   }
 }
 else
@@ -85,7 +105,8 @@ else
 }
 
 $output .= '
-</ul>
+</div>
+</div>
 <nav aria-label="Page navigation example" class="m-t-20">
     <ul class="pagination">
 ';
@@ -201,7 +222,6 @@ $output .= $previous_link . $page_link . $next_link;
 $output .= '
     </ul>
 </nav>
-</div>
 ';
 
 echo $output;

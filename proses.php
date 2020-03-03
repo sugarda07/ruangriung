@@ -762,7 +762,7 @@ if(isset($_POST['proses']))
 	      		foreach($result_chat as $data)
 	      		{      			
         			$chat_konten = $data["chat_konten"];
-			        $string = strip_tags($chat_konten, "<br><br/><br /><a><b><i><u><em><strong>");
+			        $string = strip_tags($chat_konten, "<a><b><i><u><em><strong>");
 			        $string = convertToLink($string);
 	        		if($data["from_user_id"] == $row['user_id'] )
 	        		{ 
