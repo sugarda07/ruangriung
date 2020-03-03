@@ -76,7 +76,7 @@ if(isset($_POST['login']))
     <!-- page css -->
     <link href="assets/dist/css/pages/login-register-lock.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="assets/dist/css/style.min.css" rel="stylesheet">
+    <link href="assets/dist/css/style.css" rel="stylesheet">
     
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -100,7 +100,7 @@ if(isset($_POST['login']))
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/login-register.jpg); padding-top: 20%;">
+    <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/login-register.jpg);">
         <div class="login-box card">
             <div class="card-body">
                 <form method="post" class="form-horizontal form-material" id="loginform">

@@ -487,6 +487,9 @@ if(isset($_POST['proses']))
 			$result = $statement->fetchAll();
 			foreach($result as $row)
 			{
+				$konten_konten = $row["comment"];
+		        $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
+		        $string = convertToLink($string);
 				$profile_image = '';
 				if($row['profile_image'] != '')
 				{
@@ -501,7 +504,7 @@ if(isset($_POST['proses']))
 				    <div class="d-flex no-block comment-row border-top" style="padding-top: 5px; padding-bottom: 0px;">
                         <div class="p-2"><span class="round">'.$profile_image.'</span></div>
                         <div class="comment-text active w-100" style="padding-left: 15px; padding-bottom: 8px; line-height: 1;">
-                            <h5 class="font-medium" style="margin-bottom: 0px;">'.strip_tags($row["comment"]).'</h5>
+                            <h5 class="font-medium" style="margin-bottom: 0px;">'.$string.'</h5>
                             <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.$row["nama_depan"].'</p>
                             <div class="comment-footer">
                                 <span class="text-muted pull-right"><small>'.tgl_ago($row["timestamp"]).'</small></span>
@@ -534,8 +537,8 @@ if(isset($_POST['proses']))
             if($row['post_gambar'] != '')
             {
                 echo '
-            <a class="image" href="view_posting.php?data='.$row['post_id'].'" title="'.$row['nama_depan'].' - '.$row['post_konten'].'">
-                <img class="img-responsive" alt="image" src="data/posting/images/'.$row['post_gambar'].'">
+            <a class="image" href="view_posting.php?data='.$row['post_id'].'">
+                <img class="img-responsive" alt="image" width="80" height="80" src="data/posting/images/'.$row['post_gambar'].'">
             </a>
             ';
             }
@@ -570,6 +573,9 @@ if(isset($_POST['proses']))
 		  {
 		    foreach($result as $row)
 		    {
+		    	$konten_konten = $row["post_konten"];
+		        $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
+		        $string = convertToLink($string);
 			    $profile_image = '';
 			    if($row['profile_image'] != '')
 			    {
@@ -596,7 +602,7 @@ if(isset($_POST['proses']))
 						<div class="mail-contnet" style="width: 80%;">
 							<h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
 							<span class="mail-desc">
-							'.$row["notification_text"].' '.$row["post_konten"].' <span class="time">'.tgl_ago($row["notif_time"]).'</span>
+							'.$row["notification_text"].' '.$string.' <span class="time">'.tgl_ago($row["notif_time"]).'</span>
 							</span>                 
 						</div>
 					</a>
@@ -610,7 +616,7 @@ if(isset($_POST['proses']))
 						<div class="mail-contnet" style="width: 80%;">
 							<h5>'.$row["nama_depan"].' <span class="time pull-right"></span></h5>
 							<span class="mail-desc">
-							'.$row["notification_text"].' '.$row["post_konten"].' <span class="time">'.tgl_ago($row["notif_time"]).'</span>
+							'.$row["notification_text"].' '.$string.' <span class="time">'.tgl_ago($row["notif_time"]).'</span>
 							</span>                 
 						</div>
 					</a>
@@ -754,17 +760,20 @@ if(isset($_POST['proses']))
 	     		$statement->execute();
 	      		$result_chat = $statement->fetchAll();
 	      		foreach($result_chat as $data)
-	      		{
+	      		{      			
+        			$chat_konten = $data["chat_konten"];
+			        $string = strip_tags($chat_konten, "<br><br/><br /><a><b><i><u><em><strong>");
+			        $string = convertToLink($string);
 	        		if($data["from_user_id"] == $row['user_id'] )
 	        		{ 
 	          			$status_pesan = '';
 	          			if($data["status"] == '0')
 	          			{          
-	            			$status_pesan = ''.strip_tags(substr($data['chat_konten'], 0, 18)).'';
+	            			$status_pesan = ''.substr($string, 0, 18).'';
 	          			}
 	          			if($data["status"] == '1')
 	          			{          
-	            			$status_pesan = ''.strip_tags(substr($data['chat_konten'], 0, 18)).'';
+	            			$status_pesan = ''.substr($string, 0, 18).'';
 	          			}
 	          			if($data["status"] == '2')
 	          			{          
@@ -776,11 +785,11 @@ if(isset($_POST['proses']))
 	          			$status_pesan = '';
 	          			if($data["status"] == '0')
 	          			{          
-	            			$status_pesan = '<span class="mdi mdi-check-all text-primary"></span> '.strip_tags(substr($data['chat_konten'], 0, 18)).'';
+	            			$status_pesan = '<span class="mdi mdi-check-all text-primary"></span> '.substr($string, 0, 18).'';
 	          			}
 	          			if($data["status"] == '1')
 	          			{          
-	            			$status_pesan = '<span class="mdi mdi-check"></span> '.strip_tags(substr($data['chat_konten'], 0, 18)).'';
+	            			$status_pesan = '<span class="mdi mdi-check"></span> '.substr($string, 0, 18).'';
 	          			}
 	          			if($data["status"] == '2')
 	          			{          
@@ -836,6 +845,9 @@ if(isset($_POST['proses']))
 		  {
 		    foreach($result as $row)
 		    {
+		    	$konten_konten = $row["post_konten"];
+			    $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
+			    $string = convertToLink($string);
 			    $profile_image = '';
 			    if($row['profile_image'] != '')
 			    {
@@ -859,7 +871,7 @@ if(isset($_POST['proses']))
 			    	<a href="'.$link.'">
                         <div class="user-img"> '.$profile_image.'</div>
                         <div class="mail-contnet">
-                            <h5>'.$row["nama_depan"].'</h5> <span class="mail-desc">'.$row["notification_text"].' <b>'.$row["post_konten"].'</b></span> <span class="time">'.tgl_ago($row["notif_time"]).'</span> </div>
+                            <h5>'.$row["nama_depan"].'</h5> <span class="mail-desc">'.$row["notification_text"].' <b>'.$string.'</b></span> <span class="time">'.tgl_ago($row["notif_time"]).'</span> </div>
                     </a>
                     ';
 		    }

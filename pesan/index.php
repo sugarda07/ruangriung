@@ -217,7 +217,7 @@ $(document).ready(function(){
         konten +=                   Get_nama_depan(to_user_id);
         konten +=                   '</span>&nbsp;<i class="fa fa-angle-down"></i></a>';
         konten +=                       '<div class="dropdown-menu dropdown-menu-right animated flipInY">';
-        konten +=                           '<a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>';
+        konten +=                           '<a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> Profile</a>';
         konten +=                       '</div>';
         konten +=                   '</li>';
         konten +=                   '<li class="nav-item" style="padding-top: 3px;">';
