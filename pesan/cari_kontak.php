@@ -28,7 +28,7 @@ if(isset($_GET["term"]))
   {
    $temp_array = array();
    $temp_array['value'] = $row['username'];
-   if($row['profile_image'] != '')
+   if($row['profile_image'] != 'user.png')
    {
       $temp_array['label'] = '
           <a href="#" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../data/akun/profil/'.$row["profile_image"].'">
@@ -41,7 +41,7 @@ if(isset($_GET["term"]))
    {
       $temp_array['label'] = '
           <a href="#" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../data/akun/profil/'.$row["profile_image"].'">
-              <img src="../data/akun/profil/user.png" class="img-circle" alt="User Image" width="40">
+              <span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>
               &nbsp;&nbsp;&nbsp;'.$row['nama_depan'].' &nbsp;<small><span class="text-muted"> </small></span>
           </a>
           ';
