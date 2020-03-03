@@ -101,10 +101,9 @@ if(isset($_POST['login']))
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/login-register.jpg);">
-        <div class="login-box card">
+        <div class="login-box card" style="border-radius: 20px;">
             <div class="card-body">
                 <form method="post" class="form-horizontal form-material" id="loginform">
-                    <a href="javascript:void(0)" class="text-center db"><br/><img src="assets/images/Rtext.png" alt="Home" /></a>
                     <p><?php echo $message; ?></p>
                     <div class="form-group m-t-40">
                         <div class="col-xs-12">
@@ -127,7 +126,7 @@ if(isset($_POST['login']))
                     </div>
                     <div class="form-group text-center m-t-20">
                         <div class="col-xs-12">
-                            <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" name="login" type="submit">LogIn</button>
+                            <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded waves-effect waves-light" name="login" type="submit">LogIn</button>
                         </div>
                     </div>
                     <div class="row">
