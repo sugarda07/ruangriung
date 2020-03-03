@@ -2,7 +2,8 @@
 
 //remove_chat.php
 
-include('../inc/koneksi.php');
+include('../koneksi.php');
+include('../function.php');
 
 if(isset($_POST["chat_message_id"]))
 {

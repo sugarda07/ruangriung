@@ -1,406 +1,445 @@
 <?php
-include('inc/koneksi.php');
+include('koneksi.php');
+include('function.php');
 session_start();
 if(!isset($_SESSION['user_id'])) {
   header("location:login.php");
 }
 
-$query = "
-SELECT * FROM user 
-WHERE user.user_id = '".$_SESSION['user_id']."' 
-";
-$statement = $connect->prepare($query);
-$statement->execute();
-$result = $statement->fetchAll();
-foreach($result as $log)
-{
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>RuangDigital</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="assets/plugins/ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" href="assets/dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="assets/dist/css/skins/_all-skins.min.css">
-  <link rel="stylesheet" href="assets/magnific/css/style.css">
-  <link href="assets/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
-  <link href="assets/crop/croppie.css" rel="stylesheet">
-  <link href="assets/emoji-picker/lib/css/emoji.css" rel="stylesheet">
-  <link href="assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
-  <link href="assets/sweetalert2/sweetalert.css" rel="stylesheet">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/r16.png">
+    <title>RuangDIGITAL</title>
+    <!-- Page CSS -->
+    <link href="assets/dist/css/pages/contact-app-page.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/user-card.css" rel="stylesheet">
+    <link href="assets/node_modules/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
+    <link href="assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+    <!-- Custom CSS -->
+    <link href="assets/dist/css/style.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/tab-page.css" rel="stylesheet">
+    <!--<link href="assets/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="assets/dist/css/pages/tab-page.css" rel="stylesheet">
+    <link href="assets/dist/css/placeholder-loading.min.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/ribbon-page.css" rel="stylesheet">
+    <link href="assets/jquery-mentions-input-master/jquery.mentionsInput.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/stylish-tooltip.css" rel="stylesheet">
+    <link href="assets/node_modules/jqueryui/jquery-ui.css" rel="stylesheet" type="text/css">
 </head>
-<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-<body class="hold-transition skin-blue fixed layout-top-nav layout-footer-fixed">
-<div class="wrapper">
-<?php include "inc/header.php"; ?>
+        
 
-  <!-- Full Width Column -->
-  <?php
-      if(@$_GET['page'] == '') {
-          include "media/home.php";
-      } else if(@$_GET['page'] == 'home') {
-          include "media/home.php";
-      } else if(@$_GET['page'] == 'all_post') {
-          include "media/all_post.php";
-      } else if(@$_GET['page'] == 'notif') {
-          include "media/notif.php";
-      } else if(@$_GET['page'] == 'profil') {
-          include "media/profil.php";
-      } else {
-          echo '
-              <div class="error-box">
-                  <div class="error-body text-center">
-                      <h1>404</h1>
-                      <h3 class="text-uppercase">Page Not Found !</h3>
-                  </div>                            
-              </div>';
-      }
-    ?>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer" style="padding-bottom: 0px; padding-top: 0px;">
-  <div class="row">
-  	<table class="table text-center table-responsive" style="margin-bottom: 0px;">
-  		<tr>
-  			<td style="padding-bottom: 1px;"><a href="?page=home"><button type="button" class="btn btn-block btn-flat btn-link"><label><i class="fa fa-home" style="font-size: 20px;"></i></label></button></a></td>
-  			<td style="padding-bottom: 1px;"><a href="?page=all_post"><button type="button" class="btn btn-block btn-flat btn-link"><label><i class="fa fa-search" style="font-size: 20px;"></i></label></button></a></td>
-  			<td style="padding-bottom: 1px;"><a href="#" data-toggle="modal" data-target="#opsi_postingan"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-camera" style="font-size: 20px;"></i></button></a></td>
-  			<td style="padding-bottom: 1px;" id="view_notification">
-          <a href="?page=notif">
-            <button type="button" class="btn btn-block btn-flat btn-link">
-              <label id="total_notif">
-
-              </label>
-            </button>
-          </a>
-        </td>
-  			<td style="vertical-align: middle;"><a href="?page=profil"><button type="button" class="btn btn-block btn-flat btn-link"><?php echo Get_profile_mini($connect, $_SESSION["user_id"]); ?></button></a></td>
-  		</tr>
-  	</table>
-  	</div>
-    <!-- /.container -->
-  </footer>
-</div>
-<!-- ./wrapper -->
-
-<div id="uploadimageModal" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
-        <h4 class="modal-title" style="margin-left: 40px;">Posting Baru</h4>
-      </div>
-      <div class="modal-body" style="background-color: #000000;">
-        <form method="post" id="form_posting_upload">
-      <div class="" id="tampil_posting" align="center" style="position: absolute; top: -55px;"></div>        
-      <input type="file" name="upload_posting" id="upload_posting" accept=".jpg, .png, .jpeg"  style="display: none;"/>        
-      </div>
-      <div class="modal-footer">
-        <div class="row">
-          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
-            <textarea class="form-control" data-emojiable="true" type="text" name="posting" id="posting" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
-
-          </div>
-          <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-              <button type="submit" name="tombol_post" id="tombol_post" class="btn btn-info posting_crop" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
-          </div>
-        </form>
+<body class="skin-purple fixed-layout">
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">RuangDIGITAL</p>
         </div>
-      </div>
     </div>
-  </div>
-</div>
+    <div id="main-wrapper">
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"> <a class="nav-link nav-toggler d-block d-sm-none waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark" href="javascript:void(0)"><i class="icon-menu"></i></a> </li>
+                        <li class="nav-item">
 
-<div id="opsi_postingan" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content" align="center" style="background: #000000ab;">
-      <div class="modal-header" style="border:none;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: relative; top:0px; background:transparent; opacity:0px;">
-          <span aria-hidden="true"><i class="fa fa-remove" style=""></i></span></button>
-      </div>
-      <div class="row" style="margin: 0px; padding-top: 120px;">
-        <label for="upload_posting"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-picture-o"></i> Photo </a></label>
-        <label for="fileupload_video" style="display:none;"><a class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-film"></i> Video </a></label>
-        <a href="#" data-toggle="modal" data-target="#embed_videomodal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 10px;"> <i class="fa fa-youtube-square"></i> Youtube </a> 
-        <a href="#" data-toggle="modal" data-target="#ebook_modal" class="btn btn-app" style="margin-left: 0px;margin-bottom: 0px; margin-right: 0px; margin-top: 0px;"> <i class="fa fa-book"></i> e-Book </a>
-        <div class="modal-footer" style="border: 0px;">
-          <form method="post" id="form_postingan1">
-          <div class="row">
-            <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
-              <textarea class="form-control" data-emojiable="true" type="text" name="postingan1" id="postingan1" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
-              <input type="hidden" name="proses" value="insert_postingan1"/>
-
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell-outline"></i>
+                            </a>
+                            <div class="dropdown-menu mailbox dropdown-menu-right animated bounceInDown" aria-labelledby="2">
+                                <ul>
+                                    <li>
+                                        <div class="drop-title">Pemberitahuan</div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center" id="load_pemberitahuan">
+                                            
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link text-center link" href="notif.php"> <strong>Lihat Semua</strong> <i class="fa fa-angle-right"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown u-pro">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo Get_profile_image($connect, $_SESSION["user_id"]); ?> <span class="hidden-md-down"><?php echo Get_nama_user($connect, $_SESSION["user_id"]); ?> &nbsp;<i class="fa fa-angle-down"></i></span> </a>
+                            <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                                <a href="view_profil.php?data=<?php echo $_SESSION["user_id"]; ?>" class="dropdown-item"><i class="mdi mdi-settings"></i>&nbsp;  My Profil</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="logout.php" class="dropdown-item"><i class="fa fa-power-off"></i>&nbsp; Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="user-pro"> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><?php echo Get_profile_image($connect, $_SESSION["user_id"]); ?><span class="hide-menu"><?php echo Get_nama_user($connect, $_SESSION["user_id"]); ?></span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="view_profil.php?data=<?php echo $_SESSION["user_id"]; ?>"><i class="ti-user"></i>&nbsp; My Profile</a></li>
+                                <li><a href="logout.php"><i class="fa fa-power-off"></i>&nbsp; Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-small-cap">--- MENU</li>
+                        <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Home</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="hashtag.php" aria-expanded="false"><i class="ti-search"></i><span class="hide-menu">Cari</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="post_all.php" aria-expanded="false"><i class="ti-image"></i><span class="hide-menu">Postingan</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="pesan/index.php" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Pesan</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-pencil-alt"></i><span class="hide-menu">Artikel</span></a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
             </div>
-            <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-                <button type="submit" name="tombol_postingan1" id="tombol_postingan1" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <!-- Row -->
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="card" style="margin-bottom: 5px;margin-top: 5px;">
+                            <div class="card-body" style="padding: 5px;">
+                                <div class="message-box">
+                                    <div class="message-widget message-scroll">
+                                        <!-- Message -->
+                                        <a href="javascript:void(0)">
+                                            <div class="user-img"  style="margin-bottom: 0px;"><?php echo Get_profile_image($connect, $_SESSION["user_id"]); ?>                                                
+                                            </div>
+                                            <div class="mail-contnet"  style="width: 80%;">
+                                                <span class="mail-desc">
+                                                    <button class="btn btn-block btn-rounded btn-secondary" data-toggle="modal" data-target="#postingan_baru_modal">Tuliskan sesuatu disini...</butoon>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="card">
+                            <!-- Nav tabs -->
+                            <div class="card-body" style="padding: 5px;">
+                                <div class="profiletimeline" id="postingan_list">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+                <!-- Row -->
+
+
+<div id="postingan_baru_modal" class="modal modal-fullscreen" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border:none;">
+            <div class="modal-header">
+                <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
+                <h4 class="modal-title" id="myLargeModalLabel" style="padding-left: 25px;">Postingan Baru</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> </button>
             </div>
-          </div>
-        </form>
-      </div>
+            <form method="post" id="posting_form">
+                <div class="modal-body" style="background-color: #000000e6;">
+                    <p align="center" style="margin-bottom: 0px;">
+                        <div class="row el-element-overlay" style="margin-right: 0px; margin-left: 0px;">
+                            <div class="card" style="margin-bottom: 0px;">
+                                <div class="el-card-item" style="padding-bottom: 0px;">
+                                    <div class="el-card-avatar el-overlay-1" style="margin-bottom: 0px;">
+                                        <img id="image_preview" src="data/akun/profil/user.png" alt="user" />
+                                        <div class="el-overlay">
+                                            <ul class="el-info">
+                                                <input type="file" id="uploadFile" name="uploadFile" style="display: none;" />
+                                                <li><a class="btn default btn-outline" href="javascript:changeProfile()"><i class="icon-magnifier"></i></a></li>
+                                                <li><a class="btn default btn-outline" href="javascript:removeImage()"><i class="icon-trash"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <textarea class="form-control mention" type="text" rows="3" name="posting_konten" id="posting_konten" placeholder="Tulis sesuatu ..."  style="border-radius: 9px;"></textarea>
+                    <input type="hidden" name="proses" value="insert"/>
+                    <button type="submit" name="share_post" id="share_post" class="btn btn-info waves-effect waves-light">Post </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
     </div>
-  </div>
 </div>
-</div>
-
-
-<div id="uploadvideoModal" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
-        <h4 class="modal-title" style="margin-left: 40px;">Posting Video</h4>
-      </div>
-      <div class="modal-body" style="background-color: #000000;" align="center">
-        <form method="post" id="form_posting_video">
-        <label class="control-label" for="inputWarning" id="sedang" style="padding-top: 80px;">File Video tidak lebih dari 12 Mb</label>
-      <input type="file" name="fileupload_video" id="fileupload_video" accept=".mp4"  style="display: none;"/>        
-      </div>
-      <div class="modal-footer">
-        <div class="row">
-          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
-            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_video" id="post_konten_video" rows="1" placeholder="Deskripsi Video"  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
-              <input type="hidden" name="proses" value="insert_video"/>
-          </div>
-          <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-              <button type="submit" name="tombol_post_video" id="tombol_post_video" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
-          </div>
-        </form>
+            </div>
         </div>
-      </div>
+        <footer class="footer hidden-footer" style="bottom: 0; left: 0; position: fixed; right: 0; z-index: 1032; padding: 0px; margin-left: 0px;">
+            <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                <div class="col-3" style="padding: 10px">
+                    <a href="index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-home" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                </div>
+                <div class="col-3" style="padding: 10px">
+                    <a href="post_all.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-search" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                </div>
+                <div class="col-3" style="padding: 10px">
+                    <a href="hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                </div>
+                <div class="col-3" style="padding: 10px">
+                    <a href="pesan/index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                </div>
+            </div>
+        </footer>
     </div>
-  </div>
-</div>
-
-<div id="embed_videomodal" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
-        <h4 class="modal-title" style="margin-left: 40px;">Youtube Video</h4>
-      </div>
-      <div class="row" style="margin: 0px; padding-top: 80px;">
-        <div class="col-xs-12">
-      <form method="post" id="form_embed_video">
-      <label class="control-label" for="inputWarning"><i class="fa fa-youtube-square"></i>  Contoh - https://youtu.be/2k-ITR0HCi0</label>
-          <textarea class="form-control" type="text" name="post_embed_video" id="post_embed_video" rows="2" placeholder="https://youtu.be/2k-ITR0HCi0"  style=""></textarea>   
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="row">
-          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
-            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_embed" id="post_konten_embed" rows="1" placeholder="Tulis yang anda pikirkan..."  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
-              <input type="hidden" name="proses" value="embed_video"/>
-          </div>
-          <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-              <button type="submit" name="tombol_post_embed" id="tombol_post_embed" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
-          </div>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="ebook_modal" class="modal fade vn-modal-slide-left" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-arrow-left" style="margin-left: 15px;"></i></span></button>
-        <h4 class="modal-title" style="margin-left: 40px;">Buku Digital</h4>
-      </div>
-      <div class="row" style="margin: 0px; padding-top: 80px;">
-        <div class="col-xs-12">
-      <form method="post" id="form_ebook">
-          <input type="file" name="post_ebook" id="post_ebook" accept=".pdf"/>  
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="row">
-          <div class="col-xs-10" style="padding-left: 12px; padding-right: 0px; text-align: left; height: 34px;">          
-            <textarea class="form-control" data-emojiable="true" type="text" name="post_konten_ebook" id="post_konten_ebook" rows="1" placeholder="Deskripsi e-Book"  style="border-top-left-radius: 9px;border-bottom-left-radius: 9px;"></textarea>
-              <input type="hidden" name="proses" value="post_ebook"/>
-          </div>
-          <div class="col-xs-2" style="padding-left: 0px; padding-right: 12px; text-align: right;">
-              <button type="submit" name="tombol_post_ebook" id="tombol_post_ebook" class="btn btn-info" style="border-radius: 50px;"><i class="fa fa-send"></i></button>
-          </div>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  .layout-footer-fixed .wrapper .main-footer {
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    z-index: 1032;
-  }
-
-  .ui-autocomplete-row
-  {
-    padding:8px;
-    background-color: #f4f4f4;
-    border-bottom:1px solid #ccc;
-    font-weight:bold;
-  }
-  .ui-autocomplete-row:hover
-  {
-    background-color: #ddd;
-  }
-
-</style>
-
-
-<!-- jQuery 2.2.3 -->
-<script src="assets/plugins/jQuery/jquery-3.4.1.min.js"></script>
-<script src="assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="assets/plugins/jquery-ui/jquery-ui.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="assets/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="assets/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="assets/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="assets/dist/js/demo.js"></script>
-<script src="assets/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
-<script src="assets/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
-<script src="assets/crop/croppie.min.js"></script>
-<script src="assets/bootstrap/js/jquery.form.js"></script>
-<script src="assets/emoji-picker/lib/js/config.js"></script>
-<script src="assets/emoji-picker/lib/js/util.js"></script>
-<script src="assets/emoji-picker/lib/js/jquery.emojiarea.js"></script>
-<script src="assets/emoji-picker/lib/js/emoji-picker.js"></script>
-<script src="assets/sweetalert2/sweetalert.min.js"></script>
-<?php include "inc/jquery.php"; ?>
-
-
-
-<script type="text/javascript">
-    function play_sound_send() {
-        var audioElement = document.createElement('audio');
-        audioElement.setAttribute('src', 'assets/sound/send_message.m4a');
-        audioElement.setAttribute('autoplay', 'autoplay');
-        audioElement.load();
-        audioElement.play()
-    }
-</script>
-
-<script type="text/javascript">
-    function play_sound_message() {
-        var audioElement = document.createElement('audio');
-        audioElement.setAttribute('src', 'assets/sound/ptt_middle_fast.m4a');
-        audioElement.setAttribute('autoplay', 'autoplay');
-        audioElement.load();
-        audioElement.play()
-    }
-</script>
-
-
-
-<script type="text/javascript">
-  $(function () {
-  // Initializes and creates emoji set from sprite sheet
-  window.emojiPicker = new EmojiPicker({
-      emojiable_selector: '[data-emojiable=true]',
-      assetsPath: 'assets/emoji-picker/lib/img/',
-      popupButtonClasses: 'fa fa-smile-o'
-  });
-  window.emojiPicker.discover();
-  });
-</script>
-
-
-
-<style>
-.modal-body {
-    position: relative;
-    padding: 0px;
-    overflow-y: scroll;
-    height: 100%;
-}
-
-.vn-modal-slide-left .modal-footer {
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    z-index: 1032;
-    background-color: #ffffff;
-    text-align: left;
-  }
-
-.vn-modal-slide-left .modal-dialog {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    opacity: 1;
-    box-shadow: 7px 0 16px 15px rgba(0, 0, 0, 0.6);
-}
-
-.vn-modal-slide-left .modal-content {
-    position: relative;
-    height: 100%;
-    border-radius: 0;
-    border: 0;
-    background-clip: initial;
-}
-
-.vn-modal-slide-left .modal-header {
-    position: relative;
-}
-
-.vn-modal-slide-left .close {
-    float: none;
-    position: absolute;
-    left: 0rem;
-    background-color: #fff;
-    opacity: 1;
-    width: 3.4rem;
-    height: 2.4rem;
-    top: 18px;
-    border-radius: 0.5rem 0 0 0.5rem;
-}
-
-.vn-modal-slide-left .close:after {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    content: "";
-    width: 100%;
-    height: 100%;
-    box-shadow: 7px 0 16px 15px rgba(0, 0, 0, 0.6);
-}
-</style>
-
+    <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <script src="assets/dist/js/jquery.form.js"></script>
+    <script src="assets/dist/js/jquery.min.js"></script>
+    <script src="assets/node_modules/jqueryui/jquery-ui.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/node_modules/popper/popper.min.js"></script>
+    <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="assets/dist/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="assets/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="assets/dist/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="assets/dist/js/custom.min.js"></script>
+    <script src="assets/fullscreen_modal/dist/bs-modal-fullscreen.js"></script>
+    <script src="assets/node_modules/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+    <script src="assets/node_modules/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
+    <!-- Sweet-Alert  -->
+    <script src="assets/node_modules/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
+    <script src="assets/jquery-mentions-input-master/lib/jquery.elastic.js" type="text/javascript"></script>
+    <script src="assets/jquery-mentions-input-master/underscore-min.js" type="text/javascript"></script>
+    <script src="assets/jquery-mentions-input-master/jquery.mentionsInput.js" type="text/javascript"></script>
 </body>
+
+<script>
+
+    function changeProfile() {
+        $('#uploadFile').click();
+    }
+
+    $('#uploadFile').change(function () {
+        var imgPath = this.value;
+        var ext = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        if (ext == "png" || ext == "jpeg" || ext == "gif" || ext == "jpg")
+            readURL(this);
+        else
+            swal("File tidak didukung!", "silahkan pilih jenis file (png, jpeg, jpg).")
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.readAsDataURL(input.files[0]);
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            };
+        }
+    }
+
+    function removeImage() {
+        $('#image_preview').attr('src', 'data/akun/profil/user.png');
+        $('#uploadFile').val('');
+    }
+
+</script>
+
+
+<script>
+$(function () {
+    $('textarea.mention').mentionsInput({
+        onDataRequest:function (mode, query, callback) {
+            $.getJSON('get_users_json.php', function(responseData) {
+            responseData = _.filter(responseData, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+            callback.call(this, responseData);
+            });
+        }
+    });
+});
+</script>
+
+
+<script>
+$(document).ready(function () {
+    $(document).on('click', '.hover', function (e) {
+        e.preventDefault();
+            $('.hover').tooltip({
+               title: fetchData,
+               html: true,
+               placement: 'right'
+              });
+            function fetchData()
+              {
+               var fetch_data = '';
+               var element = $(this);
+               var id = element.attr("id");
+               $.ajax({
+                url:"tooltip.php",
+                method:"POST",
+                async: false,
+                data:{id:id},
+                success:function(data)
+                {
+                 fetch_data = data;
+                }
+               });   
+               return fetch_data;
+              }
+    });
+
+});
+
+ </script>
+
+<script>
+$(document).ready(function(){  
+
+    postingan_post();
+    function postingan_post()
+    {
+     var proses = 'postingan_post';
+     $.ajax({
+          url:'proses.php',
+          method:"POST",
+          data:{proses:proses},
+          success:function(data)
+          {
+            $('#postingan_list').html(data);
+          }
+     });
+    }
+
+    load_pemberitahuan();
+
+    function load_pemberitahuan()
+    {
+        var proses = 'load_pemberitahuan';
+        $.ajax({
+            url:"proses.php",
+            method:"POST",
+            data:{proses:proses},
+            success:function(data)
+            {
+                $('#load_pemberitahuan').html(data);
+            }
+        });
+    }
+
+
+    $('#posting_form').on('submit', function(event){
+        event.preventDefault();
+
+        if($('#posting_konten').val() == '')
+        {
+            $('#posting_konten').focus();
+            //swal("Form kosong!", "Tulis yang Anda pikirkan...")
+        }
+        else
+        {
+            $.ajax({
+                url:"proses.php",
+                method:"POST",
+                data:new FormData(this),
+                  contentType:false,
+                  cache:false,
+                  processData:false,
+                beforeSend:function()
+                {
+                    $('#share_post').attr('disabled', 'disabled');
+                },
+                success:function(data)
+                {
+                  $('#postingan_baru_modal').modal('hide');
+                  $('#posting_form')[0].reset();
+                  $('#posting_konten').val('');
+                  $('#uploadFile').val('');
+                  $("textarea.mention").mentionsInput('reset');
+                  removeImage();
+                  postingan_post();
+                }
+            })
+        }
+    });
+
+
+    $(document).on('click', '.like_button', function(){
+        var post_id = $(this).data('post_id');
+        var proses = 'like';
+        $.ajax({
+            url:"proses.php",
+            method:"POST",
+            data:{post_id:post_id, proses:proses},
+            success:function(data)
+            {
+                postingan_post();
+            }
+        })
+    });
+
+
+    $(document).on('click', '.post_comment', function(){
+        post_id = $(this).attr('id');
+        user_id = $(this).data('user_id');
+        var proses = 'fetch_comment';
+        $.ajax({
+            url:"proses.php",
+            method:"POST",
+            data:{post_id:post_id, user_id:user_id, proses:proses},
+            success:function(data){
+                $('#old_comment'+post_id).html(data);
+                $('#comment_form'+post_id).modal('show');
+            }
+        })      
+    });
+
+
+    $(document).on('click', '.submit_comment', function(){
+        var comment = $('#comment'+post_id).val();
+        var proses = 'submit_comment';
+        var receiver_id = user_id;
+        if(comment != '')
+        {
+            $.ajax({
+                url:"proses.php",
+                method:"POST",
+                data:{post_id:post_id,receiver_id:receiver_id,comment:comment,proses:proses},
+                success:function(data)
+                {
+                    $('#comment_form'+post_id).modal('hide');
+                    postingan_post();
+                }
+            })
+        }
+    });
+
+
+});
+</script>
 </html>
-<?php 
-} ?>

@@ -1,8 +1,8 @@
 <?php
 
 //fetch_is_type_history.php
-
-include('../inc/koneksi.php');
+include('../koneksi.php');
+include('../function.php');
 
 session_start();
 

@@ -2,7 +2,8 @@
 
 //update_is_type_status.php
 
-include('../inc/koneksi.php');
+include('../koneksi.php');
+include('../function.php');
 
 session_start();
 

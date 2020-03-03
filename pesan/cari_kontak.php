@@ -1,6 +1,6 @@
 <?php
 
-include('../inc/koneksi.php');
+include('../koneksi.php');
 session_start();
 
 if(isset($_GET["term"]))
@@ -31,8 +31,8 @@ if(isset($_GET["term"]))
    if($row['profile_image'] != '')
    {
       $temp_array['label'] = '
-          <a href="#" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../images/profile_image/'.$row["profile_image"].'">
-              <img src="../images/profile_image/'.$row["profile_image"].'" class="img-circle sm" alt="User Image" width="40">
+          <a href="#" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../data/akun/profil/'.$row["profile_image"].'">
+              <img src="../data/akun/profil/'.$row["profile_image"].'" class="img-circle sm" alt="User Image" width="40">
               &nbsp;&nbsp;&nbsp;'.$row['nama_depan'].' &nbsp;<small><span class="text-muted"> </small></span>
           </a>
           ';
@@ -40,8 +40,8 @@ if(isset($_GET["term"]))
    else
    {
       $temp_array['label'] = '
-          <a href="#" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../images/profile_image/'.$row["profile_image"].'">
-              <img src="../images/profile_image/user.png" class="img-circle" alt="User Image" width="40">
+          <a href="#" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../data/akun/profil/'.$row["profile_image"].'">
+              <img src="../data/akun/profil/user.png" class="img-circle" alt="User Image" width="40">
               &nbsp;&nbsp;&nbsp;'.$row['nama_depan'].' &nbsp;<small><span class="text-muted"> </small></span>
           </a>
           ';

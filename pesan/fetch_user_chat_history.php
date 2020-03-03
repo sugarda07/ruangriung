@@ -2,7 +2,8 @@
 
 //fetch_user_chat_history.php
 
-include('../inc/koneksi.php');
+include('../koneksi.php');
+include('../function.php');
 
 session_start();
 

@@ -1,5 +1,5 @@
 <?php
-include('inc/koneksi.php');
+include('koneksi.php');
 session_start();
 $message = '';
 if(isset($_SESSION['user_id']))
@@ -9,109 +9,184 @@ if(isset($_SESSION['user_id']))
 
 if(isset($_POST['login']))
 {
-  $query = "
-    SELECT * FROM user 
-      WHERE email = :email
-  ";
-  $statement = $connect->prepare($query);
-  $statement->execute(
-    array(
-      ':email' => $_POST["email"]
-    )
-  );  
-  $count = $statement->rowCount();
-  if($count > 0)
-  {
-    $result = $statement->fetchAll();
-    foreach($result as $row)
-    {
-      if(password_verify($_POST["password"], $row["password"]))
-      {
-        $_SESSION['user_id'] = $row['user_id'];
-        $_SESSION['email'] = $row['email'];
-        $sub_query = "
-        INSERT INTO login_details 
-          (user_id) 
-          VALUES ('".$row['user_id']."')
-        ";
-        $statement = $connect->prepare($sub_query);
-        $statement->execute();
-        $_SESSION['login_details_id'] = $connect->lastInsertId();
-        header('location:index.php');
-      }
-      else
-      {
-        $message = 'Password Salah, silahkan coba kembali';
-      }
+    if(empty($_POST["email"]) || empty($_POST["password"]))  
+    {  
+        $message = '<label>All fields are required</label>';  
     }
-  }
-  else
-  {
-    $message = 'Email Salah, silahkan coba kembali';
-  }
+    else
+    {
+        $query = "
+        SELECT * FROM user 
+        WHERE email = :email
+        ";
+        $statement = $connect->prepare($query);
+        $statement->execute(
+            array(
+              ':email' => $_POST["email"]
+            )
+        );  
+        $count = $statement->rowCount();
+        if($count > 0)
+        {
+            $result = $statement->fetchAll();
+            foreach($result as $row)
+            {
+                if(password_verify($_POST["password"], $row["password"]))
+                {
+                    $_SESSION['user_id'] = $row['user_id'];
+                    $_SESSION['email'] = $row['email'];
+                    $sub_query = "
+                    INSERT INTO login_details 
+                    (user_id) 
+                    VALUES ('".$row['user_id']."')
+                    ";
+                    $statement = $connect->prepare($sub_query);
+                    $statement->execute();
+                    $_SESSION['login_details_id'] = $connect->lastInsertId();
+                    header('location:index.php');
+                }
+                else
+                {
+                    $message = 'Password Salah, silahkan coba kembali';
+                }
+            }
+        }
+        else
+        {
+            $message = 'Email Salah, silahkan coba kembali';
+        }  
+    }
+    
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="assets/plugins/ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="assets/dist/css/AdminLTE.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/R16.png">
+    <title>RuangDIGITAL</title>
+    
+    <!-- page css -->
+    <link href="assets/dist/css/pages/login-register-lock.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="assets/dist/css/style.min.css" rel="stylesheet">
+    
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
-<body class="hold-transition login-page" style="background-color: #2c2c9e;">
-<div class="login-box" style="margin-top: 140px">
-  <div class="login-logo">
-    <a href="" style="color: aqua;"><b>Ruang</b>DIGITAL</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body" style="border-radius: 9px;">
-    <p class="login-box-msg"><?php echo $message; ?></p>
 
-    <form method="post">
-      <div class="form-group has-feedback">
-        <input type="email" name="email" class="form-control" placeholder="email" required>
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="Password" required >
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <!-- /.col -->
-        <div class="col-xs-12">
-          <button type="submit" name="login" class="btn btn-info btn-block btn-flat">Sign In</button>
+<body style="background-color: #4028d8;">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">RuangDIGITAL</p>
         </div>
-        <!-- /.col -->
-      </div>
-    </form>
-    <br>
-    <a href="register.php" class="text-center">Register a new membership</a>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/login-register.jpg); padding-top: 20%;">
+        <div class="login-box card">
+            <div class="card-body">
+                <form method="post" class="form-horizontal form-material" id="loginform">
+                    <a href="javascript:void(0)" class="text-center db"><br/><img src="assets/images/Rtext.png" alt="Home" /></a>
+                    <p><?php echo $message; ?></p>
+                    <div class="form-group m-t-40">
+                        <div class="col-xs-12">
+                            <input class="form-control" name="email" type="email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control" name="password" type="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Ingatkan</label>
+                                <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Lupa pwd?</a> 
+                            </div>     
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" name="login" type="submit">LogIn</button>
+                        </div>
+                    </div>
+                    <div class="row">
 
-  </div>
-  <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-
-<!-- jQuery 2.2.3 -->
-<script src="assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+                    </div>
+                    <div class="form-group m-b-0">
+                        <div class="col-sm-12 text-center">
+                            Buat akun baru? <a href="register.php" class="text-primary m-l-5"><b>Registrasi</b></a>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" id="recoverform" action="index.php">
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <h3>Recover Password</h3>
+                            <p class="text-muted">Enter your Email and instructions will be sent to you! </p>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="text" required="" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/node_modules/popper/popper.min.js"></script>
+    <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--Custom JavaScript -->
+    <script type="text/javascript">
+        $(function() {
+            $(".preloader").fadeOut();
+        });
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        // ============================================================== 
+        // Login and Recover Password 
+        // ============================================================== 
+        $('#to-recover').on("click", function() {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+    </script>
+    
 </body>
+
 </html>
