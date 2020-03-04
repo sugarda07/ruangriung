@@ -661,7 +661,7 @@ if(isset($_POST['proses']))
 			";
 
 			$statement = $connect->prepare($insert_query);
-			$statement->execute();
+			$statement->execute($data);
 		}
 	}
 
