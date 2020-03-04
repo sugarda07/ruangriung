@@ -108,7 +108,7 @@ if(!isset($_SESSION['user_id'])) {
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <!-- Row -->
-                <div class="row">
+                <div class="row" style="margin-bottom: 40px;">
                     <!-- Column -->
                     <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
                         <div class="card">

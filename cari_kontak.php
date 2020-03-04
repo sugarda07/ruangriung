@@ -15,7 +15,7 @@ session_start();
 
 $total_record = get_total_row($connect);*/
 
-$limit = '10';
+$limit = '5';
 $page = 1;
 if($_POST['page'] > 1)
 {

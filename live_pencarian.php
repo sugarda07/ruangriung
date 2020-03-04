@@ -39,7 +39,7 @@ if($_POST['query'] != '')
   ';
 }
 
-$query .= 'ORDER BY postingan.post_id ASC ';
+$query .= 'ORDER BY postingan.post_id DESC ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
@@ -63,7 +63,7 @@ if($total_data > 0)
   foreach($result as $row)
   {
     $konten_konten = $row["post_konten"];
-    $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
+    $string = strip_tags($konten_konten, "<a><b><i><u><em><strong>");
     $string = convertToLink($string);
     $output .= '    
             <li style="padding-top: 5px;padding-bottom: 5px;">
