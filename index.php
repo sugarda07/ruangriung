@@ -489,6 +489,12 @@ $(document).ready(function(){
       });
     }
 
+    setInterval(function(){
+    //postingan_post();
+    load_total_notif();
+    total_notif_chat();
+  }, 5000);
+
 
 });
 </script>
