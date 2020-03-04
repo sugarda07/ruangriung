@@ -255,7 +255,7 @@ if(!isset($_SESSION['user_id'])) {
                     <a href="hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
                 <div class="col-3" style="padding: 10px">
-                    <a href="pesan/index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-email" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    <a href="pesan/index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
             </div>
         </footer>
@@ -297,7 +297,7 @@ if(!isset($_SESSION['user_id'])) {
 <script>
 $(document).ready(function(){  
 
- var limit = 9;
+ var limit = 21;
  var start = 0;
  var action = 'inactive';
  function post_all_gallery(limit, start)

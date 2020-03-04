@@ -524,7 +524,7 @@ if(isset($_POST['proses']))
         SELECT * FROM postingan
         JOIN user ON postingan.user_id = user.user_id
           WHERE postingan.user_id != '".$_SESSION["user_id"]."'
-          ORDER BY Rand()
+          ORDER BY postingan.post_id DESC
           LIMIT ".$_POST["start"].", ".$_POST["limit"]."
         ";
         $statement = $connect->prepare($query);
@@ -538,14 +538,10 @@ if(isset($_POST['proses']))
             {
                 echo '
             <a class="image" href="view_posting.php?data='.$row['post_id'].'">
-                <img class="img-responsive" alt="image" width="80" height="80" src="data/posting/images/'.$row['post_gambar'].'">
+                <img class="img-responsive" alt="image" src="data/posting/images/'.$row['post_gambar'].'">
             </a>
             ';
-            }
-            else
-            {
-                echo ' ';
-            }                
+            }               
         }
 	}
 

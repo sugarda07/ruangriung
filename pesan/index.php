@@ -115,7 +115,7 @@ if(!isset($_SESSION['user_id'])) {
               <a href="../hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
             </div>
             <div class="col-3" style="padding: 10px">
-              <a href="index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-envelope" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+              <a href="index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
             </div>
           </div>
         </footer>
