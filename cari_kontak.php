@@ -15,7 +15,7 @@ session_start();
 
 $total_record = get_total_row($connect);*/
 
-$limit = '7';
+$limit = '5';
 $page = 1;
 if($_POST['page'] > 1)
 {
@@ -118,11 +118,11 @@ $page_link = '';
 
 //echo $total_links;
 
-if($total_links > 2)
+if($total_links > 4)
 {
-  if($page < 3)
+  if($page < 5)
   {
-    for($count = 1; $count <= 3; $count++)
+    for($count = 1; $count <= 5; $count++)
     {
       $page_array[] = $count;
     }
@@ -131,7 +131,7 @@ if($total_links > 2)
   }
   else
   {
-    $end_limit = $total_links - 3;
+    $end_limit = $total_links - 5;
     if($page > $end_limit)
     {
       $page_array[] = 1;
