@@ -185,7 +185,7 @@ $(document).ready(function(){
     $(document).on('click', '.page-link', function(){
       var page = $(this).data('page_number');
       var query = $('#cari_kontak').val();
-      load_data(page, query);
+      load_kontak(page, query);
     });
 
     $('#cari_kontak').keyup(function(){
