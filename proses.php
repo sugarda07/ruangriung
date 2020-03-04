@@ -647,11 +647,17 @@ if(isset($_POST['proses']))
 			$statement->execute();
 
 			$notification_text 	= 'Mulai mengikuti Anda.';
-			$notif_time			= date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')));
+			$data = array(
+	          ':notification_receiver_id' =>  $_POST["sender_id"],
+	          ':notif_sender_id'     	 =>  $_SESSION["user_id"],
+	          ':notification_text'    	=>  $notification_text,
+	          ':read_notification'    	=>  'no',
+	          ':notif_time'       		=>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+	        );
 			$insert_query = "
 			INSERT INTO pemberitahuan 
 			(notification_receiver_id, notif_sender_id, notification_text, read_notification, notif_time) 
-			VALUES ('".$_POST["sender_id"]."', '".$_SESSION["user_id"]."', '".$notification_text."', 'no', '".$notif_time."')
+			VALUES (:notification_receiver_id, :notif_sender_id, :notification_text, :read_notification, :notif_time)
 			";
 
 			$statement = $connect->prepare($insert_query);
@@ -684,15 +690,21 @@ if(isset($_POST['proses']))
 			$statement->execute();
 
 			$notification_text	= 'telah meninggalkanmu...';
-			$notif_time			= date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')));
+			$data = array(
+	          ':notification_receiver_id' =>  $_POST["sender_id"],
+	          ':notif_sender_id'     	 =>  $_SESSION["user_id"],
+	          ':notification_text'    	=>  $notification_text,
+	          ':read_notification'    	=>  'no',
+	          ':notif_time'       		=>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+	        );
 			$insert_query = "
 			INSERT INTO pemberitahuan 
 			(notification_receiver_id, notif_sender_id, notification_text, read_notification, notif_time) 
-			VALUES ('".$_POST["sender_id"]."', '".$_SESSION["user_id"]."', '".$notification_text."', 'no', '".$notif_time."')
+			VALUES (:notification_receiver_id, :notif_sender_id, :notification_text, :read_notification, :notif_time)
 			";
 			$statement = $connect->prepare($insert_query);
 
-			$statement->execute();
+			$statement->execute($data);
 		}
 	}
 
