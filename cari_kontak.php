@@ -60,7 +60,7 @@ $result = $statement->fetchAll();
 $total_filter_data = $statement->rowCount();
 
 $output = '
-<div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+<div class="card-body" style="padding: 5px;">
   <h5 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h5>
       <div class="message-box">
         <div class="message-widget message-scroll">
@@ -107,7 +107,7 @@ else
 $output .= '
 </div>
 </div>
-<nav aria-label="Page navigation example" class="m-t-20">
+<nav aria-label="Page navigation example" class="m-t-30" style="margin-top: 30px;">
     <ul class="pagination">
 ';
 

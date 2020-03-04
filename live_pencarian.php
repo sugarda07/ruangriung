@@ -53,8 +53,8 @@ $result = $statement->fetchAll();
 $total_filter_data = $statement->rowCount();
 
 $output = '
-<div class="card-body">
-  <h4 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h4>
+<div class="card-body" style="padding: 5px;">
+  <h5 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h5>
     <h6 class="card-subtitle">Jumlah Data - '.$total_data.'</h6>
       <ul class="search-listing">
 ';
@@ -86,7 +86,7 @@ else
 
 $output .= '
 </ul>
-<nav aria-label="Page navigation example" class="m-t-20">
+<nav aria-label="Page navigation example" class="m-t-20" style="margin-top: 30px;">
     <ul class="pagination">
 ';
 
