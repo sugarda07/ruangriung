@@ -236,11 +236,11 @@ $(document).ready(function(){
         konten +=           '</div>';
         konten +=       '</nav>';
         konten +=   '</header>';
-        konten +=   '<div class="page-wrapper" style="background-color: white;">';
+        konten +=   '<div class="page-wrapper" style="background-color: aquamarine;">';
         konten +=       '<div class="container-fluid" style="padding: 5px;">';
         konten +=           '<div class="row">';
         konten +=               '<div class="col-lg-12 col-xlg-9 col-md-7">';
-        konten +=                  '<div class="card" style="background-color: aqua;margin-bottom: 0px;">';
+        konten +=                  '<div class="card" style="background-color: aquamarine;margin-bottom: 0px;">';
         konten +=                       '<div class="card-body">';
         konten +=                           '<div class="chat-box">';
         konten +=                               '<ul class="chat-list chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';

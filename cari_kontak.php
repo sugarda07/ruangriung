@@ -34,7 +34,7 @@ SELECT * FROM user
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR username LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   AND user_id != '.$_SESSION['user_id'].'
   ';
 }
@@ -84,9 +84,9 @@ if($total_data > 0)
             <a href="view_profil.php?data='.$row['user_id'].'">
               <div class="user-img" style="margin-bottom: 0px;"> '.$profile_image.' </div>
               <div class="mail-contnet" style="width: 80%;">
-                <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
+                <h5>@'.$row["username"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                 <span class="mail-desc">
-                '.$row["email"].'
+                '.$row["nama_depan"].'
                 </span>                 
               </div>
             </a>

@@ -550,8 +550,8 @@ if(isset($_POST['proses']))
 	{
 		$query = "
 		SELECT * FROM pemberitahuan 
-		JOIN user ON user.user_id = pemberitahuan.notif_sender_id
-		JOIN postingan ON post_id = pemberitahuan.notif_post_id
+		INNER JOIN user ON user.user_id = pemberitahuan.notif_sender_id
+		LEFT JOIN postingan ON post_id = pemberitahuan.notif_post_id
 		WHERE notification_receiver_id = '".$_SESSION['user_id']."' 
 		ORDER BY notification_id DESC
 		";
@@ -575,7 +575,7 @@ if(isset($_POST['proses']))
 			    $profile_image = '';
 			    if($row['profile_image'] != 'user.png')
 			    {
-			        $profile_image = '<img src="data/akun/profil/'.$row["profile_image"].'" alt="user" class="img-circle">';
+			        $profile_image = '<img src="data/akun/profil/'.$row["profile_image"].'" alt="user" class="img-circle" style="width:40px; height:40px;">';
 			    }
 			    else
 			    {
@@ -834,8 +834,8 @@ if(isset($_POST['proses']))
 	{
 		$query = "
 		SELECT * FROM pemberitahuan 
-		JOIN user ON user.user_id = pemberitahuan.notif_sender_id
-		JOIN postingan ON post_id = pemberitahuan.notif_post_id
+		INNER JOIN user ON user.user_id = pemberitahuan.notif_sender_id
+		LEFT JOIN postingan ON post_id = pemberitahuan.notif_post_id
 		WHERE notification_receiver_id = '".$_SESSION['user_id']."' 
 		ORDER BY notification_id DESC
 		";
@@ -885,6 +885,96 @@ if(isset($_POST['proses']))
 		    }
 		}
 		echo $output;
+	}
+
+
+
+	if($_POST['proses'] == 'load_total_notif')
+	{
+		$query = "
+		  SELECT COUNT(notification_id) as total 
+		  FROM pemberitahuan 
+		  WHERE notification_receiver_id = '".$_SESSION["user_id"]."' 
+		  AND read_notification = 'no'
+		  ";
+
+		  $statement = $connect->prepare($query);
+
+		  $statement->execute();
+
+		  $result = $statement->fetchAll();
+		  $output ='';
+
+		  foreach($result as $row)
+		  {
+		    if($row["total"] > 0)
+		    {
+		      $output = '
+		      <i class="mdi mdi-bell-outline"></i>
+	            <div class="notify" id="total_notifikasi">
+	                <span class="heartbit"></span> <span class="point"></span>
+	            </div>';
+		    }
+		    else
+		    {
+		      $output = '
+		      <i class="mdi mdi-bell-outline"></i>';
+		    }
+		    echo $output;
+		  }
+	}
+
+
+
+	if($_POST["proses"] == "update_notification_status")
+	{
+		$query = "
+		UPDATE pemberitahuan 
+		SET read_notification = 'yes' 
+		WHERE notification_receiver_id = '".$_SESSION["user_id"]."'
+		";
+
+		$statement = $connect->prepare($query);
+
+		$statement->execute();
+	}
+
+
+	if($_POST['proses'] == 'total_notif_chat')
+	{
+		$query = "
+		  SELECT COUNT(chat_message_id) as total_chat
+		  FROM 	chat_message 
+		  WHERE from_user_id = from_user_id
+		  AND to_user_id = '".$_SESSION["user_id"]."'
+		  AND status = '1'
+		  ";
+
+		  $statement = $connect->prepare($query);
+
+		  $statement->execute();
+
+		  $result = $statement->fetchAll();
+		  $output ='';
+
+		  foreach($result as $row)
+		  {
+		    if($row["total_chat"] > 0)
+		    {
+		      $output = '
+		      <i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i>
+		       	<div class="notify" id="notifikasi_chat" style="right: 4px; top: -16px;">
+		       		<span class="heartbit"></span> <span class="point"></span>
+		       	</div>
+				';
+		    }
+		    else
+		    {
+		      $output = '
+		      <i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i>';
+		    }
+		    echo $output;
+		  }
 	}
 
 

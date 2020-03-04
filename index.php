@@ -58,7 +58,8 @@ if(!isset($_SESSION['user_id'])) {
                     </ul>
                     <ul class="navbar-nav my-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell-outline"></i>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="total_notif" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+
                             </a>
                             <div class="dropdown-menu mailbox dropdown-menu-right animated bounceInDown" aria-labelledby="2">
                                 <ul>
@@ -206,7 +207,9 @@ if(!isset($_SESSION['user_id'])) {
                     <a href="hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
                 <div class="col-3" style="padding: 10px">
-                    <a href="pesan/index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    <a href="pesan/index.php" aria-haspopup="true" aria-expanded="false"><button type="button" class="btn btn-block btn-flat btn-link" id="total_notif_chat">
+                        
+                    </button></a>
                 </div>
             </div>
         </footer>
@@ -438,6 +441,53 @@ $(document).ready(function(){
             })
         }
     });
+
+
+  load_total_notif();
+
+  function load_total_notif()
+  {
+      var proses = 'load_total_notif';
+      $.ajax({
+          url:"proses.php",
+          method:"POST",
+          data:{proses:proses},
+          success:function(data)
+          {
+              $('#total_notif').html(data);
+          }
+      });
+  }
+
+  $('#total_notif').click(function(){
+        var proses = 'update_notification_status';
+        $.ajax({
+            url:"proses.php",
+            method:"post",
+            data:{proses:proses},
+            success:function(data)
+            {
+                $('#total_notifikasi').remove();
+            }
+        })
+    });
+
+
+    total_notif_chat();
+
+    function total_notif_chat()
+    {
+      var proses = 'total_notif_chat';
+      $.ajax({
+          url:"proses.php",
+          method:"POST",
+          data:{proses:proses},
+          success:function(data)
+          {
+              $('#total_notif_chat').html(data);
+          }
+      });
+    }
 
 
 });

@@ -701,7 +701,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
       $profile_image = Get_profile_image_chat($connect, $row['from_user_id']);
       if($profile_image == 'user.png')
       {
-        $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
+        $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($user_name, 0,1).'</span>';
       }
       else
       {
