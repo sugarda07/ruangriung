@@ -489,11 +489,107 @@ $(document).ready(function(){
       });
     }
 
-    setInterval(function(){
+setInterval(function(){
     //postingan_post();
+    load_pemberitahuan();
     load_total_notif();
     total_notif_chat();
-  }, 5000);
+    checknotif();
+    checknotifchat();
+}, 10000);
+
+
+
+function checknotif() {
+    if (!Notification) {
+        $('body').append('<h4 style="color:red">*Browser does not support Web Notification</h4>');
+        return;
+    }
+    if (Notification.permission !== "granted")
+        Notification.requestPermission();
+    else {
+        $.ajax(
+        {
+            url : "json_notif.php",
+            type: "POST",
+            success: function(data, textStatus, jqXHR)
+            {
+                var data = jQuery.parseJSON(data);
+                if(data.result == true){
+                    var data_notif = data.notif;
+                    
+                    for (var i = data_notif.length - 1; i >= 0; i--) {
+                        var theurl = data_notif[i]['url'];
+                        var notifikasi = new Notification(data_notif[i]['title'], {
+                            icon: data_notif[i]['icon'],
+                            body: data_notif[i]['msg'],
+                        });
+                        notifikasi.onclick = function () {
+                            window.open(theurl); 
+                            notifikasi.close();     
+                        };
+                        setTimeout(function(){
+                            notifikasi.close();
+                        }, 5000);
+                    };
+                }else{
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+
+            }
+        }); 
+
+    }
+};
+
+
+function checknotifchat() {
+    if (!Notification) {
+        $('body').append('<h4 style="color:red">*Browser does not support Web Notification</h4>');
+        return;
+    }
+    if (Notification.permission !== "granted")
+        Notification.requestPermission();
+    else {
+        $.ajax(
+        {
+            url : "json_notif_chat.php",
+            type: "POST",
+            success: function(data, textStatus, jqXHR)
+            {
+                var data = jQuery.parseJSON(data);
+                if(data.result == true){
+                    var data_notif = data.notif;
+                    
+                    for (var i = data_notif.length - 1; i >= 0; i--) {
+                        var theurl = data_notif[i]['url'];
+                        var notifikasi = new Notification(data_notif[i]['title'], {
+                            icon: data_notif[i]['icon'],
+                            body: data_notif[i]['msg'],
+                        });
+                        notifikasi.onclick = function () {
+                            window.open(theurl); 
+                            notifikasi.close();     
+                        };
+                        setTimeout(function(){
+                            notifikasi.close();
+                        }, 5000);
+                    };
+                }else{
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+
+            }
+        }); 
+
+    }
+};
 
 
 });

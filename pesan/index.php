@@ -219,9 +219,9 @@ $(document).ready(function(){
         konten +=               '<ul class="navbar-nav mr-auto">';
         konten +=                   '<li class="nav-item"> <a class="nav-link" href="index.php"><i class="fa fa-arrow-left"></i></a> </li>';
         konten +=                   '<li class="nav-item dropdown u-pro">';
-        konten +=                       '<a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 0px;"><img src="'+to_foto+'" alt="user" style="width: 40px;"> <span class="username" id="get_nama_depan" style="color: white;">';
-        konten +=                   Get_nama_depan(to_user_id);
-        konten +=                   '</span>&nbsp;<i class="fa fa-angle-down"></i></a>';
+        konten +=                       '<a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 0px;" id="get_foto">';
+        konten +=                   Get_foto(to_user_id);
+        konten +=                   '</a>';
         konten +=                       '<div class="dropdown-menu dropdown-menu-right animated flipInY">';
         konten +=                           '<a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> Profile</a>';
         konten +=                       '</div>';
@@ -314,14 +314,15 @@ $(document).ready(function(){
     })
   }
 
-  function Get_nama_depan(to_user_id)
+
+  function Get_foto(to_user_id)
   {
     $.ajax({
-      url:"fetch_nama_depan.php",
+      url:"fetch_foto.php",
       method:"POST",
       data:{to_user_id:to_user_id},
       success:function(data){
-        $('#get_nama_depan').html(data);
+        $('#get_foto').html(data);
       }
     })
   }
@@ -391,6 +392,111 @@ $(document).ready(function(){
         });        
       });
     });
+
+
+
+
+
+
+setInterval(function(){   
+    checknotif();
+    checknotifchat();
+}, 10000);
+
+
+
+function checknotif() {
+    if (!Notification) {
+        $('body').append('<h4 style="color:red">*Browser does not support Web Notification</h4>');
+        return;
+    }
+    if (Notification.permission !== "granted")
+        Notification.requestPermission();
+    else {
+        $.ajax(
+        {
+            url : "json_notif.php",
+            type: "POST",
+            success: function(data, textStatus, jqXHR)
+            {
+                var data = jQuery.parseJSON(data);
+                if(data.result == true){
+                    var data_notif = data.notif;
+                    
+                    for (var i = data_notif.length - 1; i >= 0; i--) {
+                        var theurl = data_notif[i]['url'];
+                        var notifikasi = new Notification(data_notif[i]['title'], {
+                            icon: data_notif[i]['icon'],
+                            body: data_notif[i]['msg'],
+                        });
+                        notifikasi.onclick = function () {
+                            window.open(theurl); 
+                            notifikasi.close();     
+                        };
+                        setTimeout(function(){
+                            notifikasi.close();
+                        }, 5000);
+                    };
+                }else{
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+
+            }
+        }); 
+
+    }
+};
+
+
+function checknotifchat() {
+    if (!Notification) {
+        $('body').append('<h4 style="color:red">*Browser does not support Web Notification</h4>');
+        return;
+    }
+    if (Notification.permission !== "granted")
+        Notification.requestPermission();
+    else {
+        $.ajax(
+        {
+            url : "json_notif_chat.php",
+            type: "POST",
+            success: function(data, textStatus, jqXHR)
+            {
+                var data = jQuery.parseJSON(data);
+                if(data.result == true){
+                    var data_notif = data.notif;
+                    
+                    for (var i = data_notif.length - 1; i >= 0; i--) {
+                        var theurl = data_notif[i]['url'];
+                        var notifikasi = new Notification(data_notif[i]['title'], {
+                            icon: data_notif[i]['icon'],
+                            body: data_notif[i]['msg'],
+                        });
+                        notifikasi.onclick = function () {
+                            window.open(theurl); 
+                            notifikasi.close();     
+                        };
+                        setTimeout(function(){
+                            notifikasi.close();
+                        }, 5000);
+                    };
+                }else{
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+
+            }
+        }); 
+
+    }
+};
+
+
 
 
 

@@ -1,6 +1,106 @@
 <?php
 
 
+function listNotifchat($user_id, $connect)
+  {
+  try
+    {
+      $query = "
+      SELECT * FROM chat_message
+      JOIN user ON user.user_id = chat_message.from_user_id
+      WHERE to_user_id = :user_id
+      AND notif_chat > 0
+      ";  
+      $statement = $connect->prepare($query);
+      $statement->bindParam("user_id", $user_id);
+      $statement->execute();
+      $result[0] = true;
+      $result[1] = $statement->fetchAll(PDO::FETCH_ASSOC);
+      $result[2] = $statement->rowCount();
+      return $result;
+    }
+    catch(PDOException $ex)
+    {
+      $result[0] = false;
+      $result[1] = $ex->getMessage();
+      return $result;
+    }
+  }
+
+  function updateNotifchat($chat_message_id, $connect)
+  {
+    try
+    {
+      $query = "
+      UPDATE chat_message set notif_chat = notif_chat-1 where chat_message_id=:chat_message_id ";
+      $statement = $connect->prepare($query);
+      $statement->bindParam("chat_message_id", $chat_message_id);
+      $statement->execute();
+      $result[0] = true;
+      $result[1] = 'sukses';
+      return $result;
+    }
+    catch(PDOException $ex)
+    {
+      $result[0] = false;
+      $result[1] = $ex->getMessage();
+      return $result;
+    }
+  }
+
+
+function listNotifUser($user_id, $connect)
+  {
+  try
+    {
+      $query = "
+      SELECT * FROM pemberitahuan
+      JOIN user ON user.user_id = pemberitahuan.notif_sender_id
+      INNER JOIN postingan ON postingan.post_id = pemberitahuan.notif_post_id
+      WHERE notification_receiver_id = :user_id
+      AND notif_loop > 0
+      AND notif_update <=CURRENT_TIMESTAMP()
+      ";  
+      $statement = $connect->prepare($query);
+      $statement->bindParam("user_id", $user_id);
+      $statement->execute();
+      $result[0] = true;
+      $result[1] = $statement->fetchAll(PDO::FETCH_ASSOC);
+      $result[2] = $statement->rowCount();
+      return $result;
+    }
+    catch(PDOException $ex)
+    {
+      $result[0] = false;
+      $result[1] = $ex->getMessage();
+      return $result;
+    }
+  }
+
+  function updateNotif($notification_id, $nextime, $connect)
+  {
+    try
+    {
+      $query = "
+      UPDATE pemberitahuan set notif_update = :nextime, notif_publis = CURRENT_TIMESTAMP(), notif_loop = notif_loop-1 where notification_id=:notification_id ";
+      $statement = $connect->prepare($query);
+      $statement->bindParam("notification_id", $notification_id);
+      $statement->bindParam("nextime", $nextime);
+      $statement->execute();
+      $result[0] = true;
+      $result[1] = 'sukses';
+      return $result;
+    }
+    catch(PDOException $ex)
+    {
+      $result[0] = false;
+      $result[1] = $ex->getMessage();
+      return $result;
+    }
+  }
+
+
+
 function convertToLink($string)  
  {    
     $string = preg_replace("/#+([a-zA-Z0-9_]+)/", '<a href="hashtag.php?tag=$1">$0</a>', $string); 
@@ -570,6 +670,65 @@ function Get_nama_depan($from_user_id, $to_user_id, $connect)
   }
 }
 
+function Get_foto($from_user_id, $to_user_id, $connect)
+{
+  $query = "
+  SELECT profile_image, nama_depan FROM user 
+  WHERE user_id = '".$to_user_id."'
+  ";  
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  $result = $statement->fetchAll();
+  $foto_profil = '';
+  foreach($result as $row)
+  {
+    if($row["profile_image"] == 'user.png')
+    {
+      $current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
+      $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
+      $user_last_activity = fetch_user_last_activity($to_user_id, $connect);
+      if($user_last_activity > $current_timestamp)
+      {
+        $foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>
+        <span class="profile-status online pull-right"></span>
+        <span class="username" style="color: white;">
+          '.$row["nama_depan"].'
+        </span>&nbsp;
+        ';
+      }
+      else
+      {
+        $foto_profil = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>
+        <span class="username" style="color: white;">
+          '.$row["nama_depan"].'
+        </span>&nbsp;';
+      }
+    }
+    else
+    {
+      $current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
+      $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
+      $user_last_activity = fetch_user_last_activity($to_user_id, $connect);
+      if($user_last_activity > $current_timestamp)
+      {
+        $foto_profil = '<img src="../data/akun/profil/'.$row['profile_image'].'" alt="user" class="img-circle"/>
+        <span class="profile-status online pull-right"></span>
+        <span class="username"  style="color: white;">
+          '.$row["nama_depan"].'
+        </span>&nbsp;';
+      }
+      else
+      {
+        $foto_profil = '<img src="../data/akun/profil/'.$row['profile_image'].'" alt="user" class="img-circle"/>
+        <span class="username"  style="color: white;">
+          '.$row["nama_depan"].'
+        </span>&nbsp;';
+      }
+    }
+    return $foto_profil;
+  }
+}
+
 function count_unseen_message($from_user_id, $to_user_id, $connect)
 {
   $query = "
@@ -714,7 +873,6 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
     $output .= '
                 <li '.$li.' style="margin-top: 5px;">
                     <div class="chat-content" style="padding-left: 0px;">
-                        '.$user_name.'
                           <div '.$class.'> '.$chat_message.' &nbsp;&nbsp; '.$status_pesan.'</div>                          
                         '.$br.'
                     </div>

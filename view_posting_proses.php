@@ -261,13 +261,14 @@ if(isset($_POST['proses']))
             ':notif_post_id'      =>  $_POST["post_id"],
             ':notification_text'    =>  $notification_text,
             ':read_notification'    =>  'no',
-            ':notif_time'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+            ':notif_time'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+            ':notif_update'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
           );
 
           $insert_query = "
           INSERT INTO pemberitahuan 
-            (notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time) 
-            VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time)
+            (notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+            VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
           ";
           $statement = $connect->prepare($insert_query);
           $statement->execute($data);
@@ -308,19 +309,20 @@ if(isset($_POST['proses']))
       
         $notification_text = 'Mengomentari ';
         $data = array(
-          ':notification_receiver_id' =>  $notification_row['user_id'],
-          ':notif_sender_id'      =>  $_SESSION["user_id"],
-          ':notif_post_id'      =>  $_POST["post_id"],
-          ':notification_text'    =>  $notification_text,
-          ':read_notification'    =>  'no',
-          ':notif_time'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
-        );
+            ':notification_receiver_id' =>  $notification_row['user_id'],
+            ':notif_sender_id'      =>  $_SESSION["user_id"],
+            ':notif_post_id'      =>  $_POST["post_id"],
+            ':notification_text'    =>  $notification_text,
+            ':read_notification'    =>  'no',
+            ':notif_time'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+            ':notif_update'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+          );
 
-        $insert_query = "
-        INSERT INTO pemberitahuan 
-          (notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time) 
-          VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time)
-        ";
+          $insert_query = "
+          INSERT INTO pemberitahuan 
+            (notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+            VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
+          ";
         $statement = $connect->prepare($insert_query);
         $statement->execute($data);      
     }
@@ -873,17 +875,20 @@ if(isset($_POST['proses']))
 
       $notification_text = 'mulai mengikuti Anda.';
       $data = array(
-            ':notification_receiver_id' =>  $_POST["sender_id"],
-            ':notif_sender_id'       =>  $_SESSION["user_id"],
-            ':notification_text'      =>  $notification_text,
-            ':read_notification'      =>  'no',
-            ':notif_time'           =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+            ':notification_receiver_id' =>  $notification_row['user_id'],
+            ':notif_sender_id'      =>  $_SESSION["user_id"],
+            ':notif_post_id'      =>  $_POST["post_id"],
+            ':notification_text'    =>  $notification_text,
+            ':read_notification'    =>  'no',
+            ':notif_time'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+            ':notif_update'       =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
           );
-      $insert_query = "
-      INSERT INTO pemberitahuan 
-      (notification_receiver_id, notif_sender_id, notification_text, read_notification, notif_time) 
-      VALUES (:notification_receiver_id, :notif_sender_id, :notification_text, :read_notification, :notif_time)
-      ";
+
+          $insert_query = "
+          INSERT INTO pemberitahuan 
+            (notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+            VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
+          ";
 
       $statement = $connect->prepare($insert_query);
       $statement->execute($data);    
@@ -914,22 +919,6 @@ if(isset($_POST['proses']))
       $statement = $connect->prepare($sub_query2);
       $statement->execute();
 
-      $notification_text = 'telah meninggalkanmu...';
-      $data = array(
-            ':notification_receiver_id' =>  $_POST["sender_id"],
-            ':notif_sender_id'       =>  $_SESSION["user_id"],
-            ':notification_text'      =>  $notification_text,
-            ':read_notification'      =>  'no',
-            ':notif_time'           =>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
-          );
-      $insert_query = "
-      INSERT INTO pemberitahuan 
-      (notification_receiver_id, notif_sender_id, notification_text, read_notification, notif_time) 
-      VALUES (:notification_receiver_id, :notif_sender_id, :notification_text, :read_notification, :notif_time)
-      ";
-      $statement = $connect->prepare($insert_query);
-
-      $statement->execute($data);
     }
   }
 

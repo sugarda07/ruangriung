@@ -288,13 +288,24 @@ if(isset($_POST['proses']))
 				$post_id = Get_post_id($connect, $posting_row["post_id"]);
 		        $notification_text= 'membuat postingan baru';
 				$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+
+				$data = array(
+					':notification_receiver_id'	=>	$notification_row['receiver_id'],
+					':notif_sender_id'			=>	$notif_sender_id,
+					':notif_post_id'			=>	$post_id,
+					':notification_text'		=>	$notification_text,
+					':read_notification'		=>	'no',
+					':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+					':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+				);
+
 				$insert_query = "
 				INSERT INTO pemberitahuan 
-				(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
-				VALUES ('".$notification_row['receiver_id']."', '".$notif_sender_id."', '".$post_id."', '".$notification_text."', 'no')
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+					VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
 				";
 				$statement = $connect->prepare($insert_query);
-				$statement->execute();
+				$statement->execute($data);
 			}
 		}
 		else
@@ -337,13 +348,23 @@ if(isset($_POST['proses']))
 				$post_id = Get_post_id($connect, $posting_row["post_id"]);
 		        $notification_text= 'Membuat postingan baru';
 				$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+				$data = array(
+					':notification_receiver_id'	=>	$notification_row['receiver_id'],
+					':notif_sender_id'			=>	$notif_sender_id,
+					':notif_post_id'			=>	$post_id,
+					':notification_text'		=>	$notification_text,
+					':read_notification'		=>	'no',
+					':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+					':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+				);
+
 				$insert_query = "
 				INSERT INTO pemberitahuan 
-				(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification) 
-				VALUES ('".$notification_row['receiver_id']."', '".$notif_sender_id."', '".$post_id."', '".$notification_text."', 'no')
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+					VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
 				";
 				$statement = $connect->prepare($insert_query);
-				$statement->execute();
+				$statement->execute($data);
 			}
 		}
 	}
@@ -404,13 +425,14 @@ if(isset($_POST['proses']))
 						':notif_post_id'			=>	$_POST["post_id"],
 						':notification_text'		=>	$notification_text,
 						':read_notification'		=>	'no',
-						':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+						':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+						':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
 					);
 
 					$insert_query = "
 					INSERT INTO pemberitahuan 
-						(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time) 
-						VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time)
+						(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+						VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
 					";
 					$statement = $connect->prepare($insert_query);
 					$statement->execute($data);
@@ -456,13 +478,14 @@ if(isset($_POST['proses']))
 					':notif_post_id'			=>	$_POST["post_id"],
 					':notification_text'		=>	$notification_text,
 					':read_notification'		=>	'no',
-					':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+					':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+					':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
 				);
 
 				$insert_query = "
 				INSERT INTO pemberitahuan 
-					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time) 
-					VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time)
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+					VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
 				";
 				$statement = $connect->prepare($insert_query);
 				$statement->execute($data);
@@ -571,7 +594,6 @@ if(isset($_POST['proses']))
 		    {
 		    	$konten_konten = $row["post_konten"];
 		        $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
-		        $string = convertToLink($string);
 			    $profile_image = '';
 			    if($row['profile_image'] != 'user.png')
 			    {
@@ -648,16 +670,19 @@ if(isset($_POST['proses']))
 
 			$notification_text 	= 'Mulai mengikuti Anda.';
 			$data = array(
-	          ':notification_receiver_id' =>  $_POST["sender_id"],
-	          ':notif_sender_id'     	 =>  $_SESSION["user_id"],
-	          ':notification_text'    	=>  $notification_text,
-	          ':read_notification'    	=>  'no',
-	          ':notif_time'       		=>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
-	        );
+				':notification_receiver_id'	=>	$notification_row['user_id'],
+				':notif_sender_id'			=>	$_SESSION["user_id"],
+				':notif_post_id'			=>	$_POST["post_id"],
+				':notification_text'		=>	$notification_text,
+				':read_notification'		=>	'no',
+				':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+				':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+			);
+
 			$insert_query = "
 			INSERT INTO pemberitahuan 
-			(notification_receiver_id, notif_sender_id, notification_text, read_notification, notif_time) 
-			VALUES (:notification_receiver_id, :notif_sender_id, :notification_text, :read_notification, :notif_time)
+				(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+				VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
 			";
 
 			$statement = $connect->prepare($insert_query);
@@ -689,22 +714,6 @@ if(isset($_POST['proses']))
 			$statement = $connect->prepare($sub_query2);
 			$statement->execute();
 
-			$notification_text	= 'telah meninggalkanmu...';
-			$data = array(
-	          ':notification_receiver_id' =>  $_POST["sender_id"],
-	          ':notif_sender_id'     	 =>  $_SESSION["user_id"],
-	          ':notification_text'    	=>  $notification_text,
-	          ':read_notification'    	=>  'no',
-	          ':notif_time'       		=>  date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
-	        );
-			$insert_query = "
-			INSERT INTO pemberitahuan 
-			(notification_receiver_id, notif_sender_id, notification_text, read_notification, notif_time) 
-			VALUES (:notification_receiver_id, :notif_sender_id, :notification_text, :read_notification, :notif_time)
-			";
-			$statement = $connect->prepare($insert_query);
-
-			$statement->execute($data);
 		}
 	}
 
@@ -771,7 +780,6 @@ if(isset($_POST['proses']))
 	      		{      			
         			$chat_konten = $data["chat_konten"];
 			        $string = strip_tags($chat_konten, "<a><b><i><u><em><strong>");
-			        $string = convertToLink($string);
 	        		if($data["from_user_id"] == $row['user_id'] )
 	        		{ 
 	          			$status_pesan = '';
@@ -855,7 +863,6 @@ if(isset($_POST['proses']))
 		    {
 		    	$konten_konten = $row["post_konten"];
 			    $string = strip_tags($konten_konten, "<br><br/><br /><a><b><i><u><em><strong>");
-			    $string = convertToLink($string);
 			    $profile_image = '';
 			    if($row['profile_image'] != 'user.png')
 			    {
