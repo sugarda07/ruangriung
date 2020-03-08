@@ -11,13 +11,14 @@ $data = array(
 	':to_user_id'		=>	$_POST['to_user_id'],
 	':from_user_id'		=>	$_SESSION['user_id'],
 	':chat_konten'		=>	nl2br($_POST['chat_message']),
+	':time_chat'		=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
 	':status'			=>	'1'
 );
 
 $query = "
 INSERT INTO chat_message 
-(to_user_id, from_user_id, chat_konten, status) 
-VALUES (:to_user_id, :from_user_id, :chat_konten, :status)
+(to_user_id, from_user_id, chat_konten, time_chat, status) 
+VALUES (:to_user_id, :from_user_id, :chat_konten, :time_chat, :status)
 ";
 
 $statement = $connect->prepare($query);

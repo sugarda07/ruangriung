@@ -15,7 +15,7 @@ session_start();
 
 $total_record = get_total_row($connect);*/
 
-$limit = '5';
+$limit = '10';
 $page = 1;
 if($_POST['page'] > 1)
 {
@@ -34,7 +34,7 @@ SELECT * FROM user
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR username LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   AND user_id != '.$_SESSION['user_id'].'
   ';
 }
@@ -60,7 +60,7 @@ $result = $statement->fetchAll();
 $total_filter_data = $statement->rowCount();
 
 $output = '
-<div class="card-body" style="padding: 5px;">
+<div class="card-body">
   <h5 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h5>
       <div class="message-box">
         <div class="message-widget message-scroll">
@@ -84,9 +84,9 @@ if($total_data > 0)
             <a href="view_profil.php?data='.$row['user_id'].'">
               <div class="user-img" style="margin-bottom: 0px;"> '.$profile_image.' </div>
               <div class="mail-contnet" style="width: 80%;">
-                <h5>@'.$row["username"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
+                <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                 <span class="mail-desc">
-                '.$row["nama_depan"].'
+                '.$row["sekolah"].'
                 </span>                 
               </div>
             </a>
@@ -118,11 +118,11 @@ $page_link = '';
 
 //echo $total_links;
 
-if($total_links > 4)
+if($total_links > 9)
 {
-  if($page < 5)
+  if($page < 10)
   {
-    for($count = 1; $count <= 5; $count++)
+    for($count = 1; $count <= 10; $count++)
     {
       $page_array[] = $count;
     }
@@ -131,7 +131,7 @@ if($total_links > 4)
   }
   else
   {
-    $end_limit = $total_links - 5;
+    $end_limit = $total_links - 10;
     if($page > $end_limit)
     {
       $page_array[] = 1;

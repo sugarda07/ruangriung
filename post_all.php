@@ -73,9 +73,7 @@ if(!isset($_SESSION['user_id'])) {
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item" style="margin-left: 10px; padding-top: 3px;">
-                            <form class="app-search d-md-block d-lg-block">
-                                <input type="text" class="form-control" placeholder="Search & enter">
-                            </form>
+
                         </li>
                     </ul>
                     <!-- ============================================================== -->
@@ -114,9 +112,10 @@ if(!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#post_gallery" role="tab"><span class="hidden-sm-up"><i class="ti-gallery"></i></span> <span class="hidden-xs-down">Gallery</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#post_video" role="tab"><span class="hidden-sm-up"><i class="ti-layout-width-default"></i></span> <span class="hidden-xs-down">Video</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#post_dokumen" role="tab"><span class="hidden-sm-up"><i class="ti-receipt"></i></span> <span class="hidden-xs-down">Dokumen</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#post_gallery" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-gallery"></i></span> <span class="hidden-xs-down">Gallery</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#orang" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Orang</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#post_video" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-layout-width-default"></i></span> <span class="hidden-xs-down">Video</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#post_dokumen" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-receipt"></i></span> <span class="hidden-xs-down">Dokumen</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -130,6 +129,19 @@ if(!isset($_SESSION['user_id'])) {
                                                 <div id="load_data_message" style="display: none;"></div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="orang" role="tabpanel">                                    
+                                    <div class="card" style="margin-bottom: 5px;">
+                                        <div class="card-body" style="padding: 9px;">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="cari_kontak" id="cari_kontak" placeholder="Cari">
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card" id="dynamic_kontak">
+                                        
                                     </div>
                                 </div>
                                 <div class="tab-pane p-20" id="post_video" role="tabpanel">                                    
@@ -340,6 +352,33 @@ $(document).ready(function(){
    }, 1000);
   }
  });
+
+
+ load_kontak(1);
+
+    function load_kontak(page, query = '')
+    {
+      $.ajax({
+        url:"cari_kontak.php",
+        method:"POST",
+        data:{page:page, query:query},
+        success:function(data)
+        {
+          $('#dynamic_kontak').html(data);
+        }
+      });
+    }
+
+    $(document).on('click', '.page-link', function(){
+      var page = $(this).data('page_number');
+      var query = $('#cari_kontak').val();
+      load_kontak(page, query);
+    });
+
+    $('#cari_kontak').keyup(function(){
+      var query = $('#cari_kontak').val();
+      load_kontak(1, query);
+    });
 
 
 setInterval(function(){   

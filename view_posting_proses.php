@@ -40,7 +40,7 @@ if(isset($_POST['proses']))
                 <img src="data/posting/images/'.$row["post_gambar"].'" alt="image" class="img-responsive radius" />
               </a>
             </div>
-            <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px;"> '.$string.' </p> </div>
+            <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px; margin-top: 5px;"> '.$string.' </p> </div>
             ';
           }
           else if($row['post_video'] !='')
@@ -89,7 +89,7 @@ if(isset($_POST['proses']))
                 <img src="data/posting/images/'.$row["post_gambar"].'" alt="image" class="img-responsive radius" />
               </a>
             </div>
-            <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px;"> '.$string.' </p> </div>
+            <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px; margin-top: 5px;"> '.$string.' </p> </div>
             ';
           }
           else if($row['post_video'] !='')
@@ -133,13 +133,13 @@ if(isset($_POST['proses']))
         if(!is_user_has_already_like_content($connect, $_SESSION["user_id"], $row["post_id"]))
           {
             $like_button = '
-            <button type="button" class="btn btn-secondary like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart-o" style="font-size: 15px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart-o" style="font-size: 18px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
             ';
           }
           else
           {
             $like_button = '
-            <button type="button" class="btn btn-secondary like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart text-danger" style="font-size: 15px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart text-danger" style="font-size: 18px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
             ';
           }
 
@@ -154,8 +154,8 @@ if(isset($_POST['proses']))
                                     </div>
                                     <div class="like-comm m-t-20" style="margin-top: 10px;">
                                       '.$like_button.'
-                                      <button type="button" class="btn btn-secondary post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="ti-comments" style="font-size: 15px;"></i> '.count_comment($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
-                                      <button type="button" class="btn btn-secondary"> <i class="fa fa-retweet" style="font-size: 15px;"></i> </button>
+                                      <button type="button" class="btn btn-link post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="fa fa-comments-o" style="font-size: 18px;"></i> '.count_comment($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+                                      <button type="button" class="btn btn-link"> <i class="fa fa-retweet" style="font-size: 18px;"></i> </button>
                                       <!-- /.<p><span class="sl-date">suka</span></p>-->
                                     </div>
                                 </div>
@@ -352,13 +352,13 @@ if(isset($_POST['proses']))
         }
         else
         {
-          $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
+          $profile_image = '<span class="round" style="width: 35px; height: 35px; line-height: 35px;">'.substr($row["nama_depan"], 0,1).'</span>';
         }
         $output .= '
             <div class="d-flex no-block comment-row border-top" style="padding-top: 5px; padding-bottom: 0px;">
               <div class="p-2"><span class="round">'.$profile_image.'</span></div>
               <div class="comment-text active w-100" style="padding-left: 15px; padding-bottom: 8px; line-height: 1;">
-                  <h5 class="font-medium" style="margin-bottom: 0px;">'.strip_tags($row["comment"]).'</h5>
+                  <h5 class="font-medium" style="margin-bottom: 3px;">'.strip_tags($row["comment"]).'</h5>
                   <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.$row["nama_depan"].'</p>
                   <div class="comment-footer">
                       <span class="text-muted pull-right"><small>'.tgl_ago($row["timestamp"]).'</small></span>

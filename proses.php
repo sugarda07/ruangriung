@@ -8,6 +8,8 @@ if(isset($_POST['proses']))
 	$output = '';
 	if($_POST['proses'] == 'postingan_post')
 	{
+		$mulai = $_POST["start"];
+		$akhir = $_POST["limit"];
 		$query = "
 		SELECT * FROM postingan 
 		INNER JOIN user ON user.user_id = postingan.user_id 
@@ -15,6 +17,7 @@ if(isset($_POST['proses']))
 		WHERE follow.receiver_id = '".$_SESSION["user_id"]."' OR postingan.user_id = '".$_SESSION["user_id"]."' 
 		GROUP BY postingan.post_id 
 		ORDER BY postingan.post_id DESC
+		LIMIT ".$mulai.", ".$akhir."
 		";
 		$statement = $connect->prepare($query);
 		$statement->execute();
@@ -41,7 +44,7 @@ if(isset($_POST['proses']))
 			              </a>
 			            </div>
 			            <div class="col-md-7 col-xs-12">
-			            	<p style="margin-bottom: 5px;"> 
+			            	<p style="margin-bottom: 5px; margin-top: 5px;"> 
 			            		<a href="view_posting.php?data='.$row['post_id'].'" style=" color: black;">'.substr($string, 0,160).'</a>
 			            	</p>
 			            </div>
@@ -102,7 +105,7 @@ if(isset($_POST['proses']))
 			              </a>
 			            </div>
 			            <div class="col-md-7 col-xs-12">
-			            	<p style="margin-bottom: 5px; color: black;"> 
+			            	<p style="margin-bottom: 5px; margin-top: 5px; color: black;"> 
 			            		<a href="view_posting.php?data='.$row['post_id'].'" style=" color: black;">'.substr($string, 0,160).'</a>
 			            	</p>
 			            </div>                      
@@ -157,29 +160,29 @@ if(isset($_POST['proses']))
 				if(!is_user_has_already_like_content($connect, $_SESSION["user_id"], $row["post_id"]))
 			   	{
 			    	$like_button = '
-			    	<button type="button" class="btn btn-secondary like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart-o" style="font-size: 15px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+			    	<button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart-o" style="font-size: 18px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
 			    	';
 			   	}
 			   	else
 			   	{
 			   		$like_button = '
-			   		<button type="button" class="btn btn-secondary like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart text-danger" style="font-size: 15px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+			   		<button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart text-danger" style="font-size: 18px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
 			   		';
 			   	}
 
 				$output .= '
-                        <div class="sl-item">
+                        <div class="sl-item" style="margin-bottom: 15px;">
                             <div class="sl-left"> '.$profile_image.' </div>
                             <div class="sl-right">
-                                <div> <a href="view_posting.php?data='.$row['post_id'].'" class="link">'.$row["nama_depan"].'</a>
+                                <div> <a href="view_posting.php?data='.$row['post_id'].'" class="link">'.strip_tags($row["nama_depan"]).'</a>
                                 	<p style="margin-bottom: 5px;"><span class="sl-date">'.tgl_ago($row["post_tgl"]).'</span></p>
                                     <div class="m-t-20 row" style="margin-top: 5px;">
                                     	'.$post_gambar.'
                                     </div>
-                                    <div class="like-comm m-t-20" style="margin-top: 5px;">
+                                    <div class="like-comm m-t-20" style="margin-top: 5px; display:none;">
                                     	'.$like_button.'
-                                    	<button type="button" class="btn btn-secondary post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="ti-comments" style="font-size: 15px;"></i> '.count_comment($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
-                                    	<button type="button" class="btn btn-secondary"> <i class="fa fa-retweet" style="font-size: 15px;"></i> </button>
+                                    	<button type="button" class="btn btn-link post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="ti-comments" style="font-size: 18px;"></i> '.count_comment($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+                                    	<button type="button" class="btn btn-link"> <i class="fa fa-retweet" style="font-size: 18px;"></i> </button>
                                     	<!-- /.<p><span class="sl-date">suka</span></p>-->
                                     </div>
                                 </div>
@@ -191,7 +194,7 @@ if(isset($_POST['proses']))
         <div class="modal-content" style="position: relative; height: 100%; border-radius: 0; border: 0; background-clip: initial;">
             <div class="modal-header" style="padding-bottom: 5px;">
                 <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
-                <h4 class="modal-title" style="padding-left: 25px; line-height: 1;">'.$row["nama_depan"].' <small class="m-b-10 text-muted">'.count_comment($connect, $row["post_id"]).' komentar</small> <p style="margin-bottom: 0px;"><small class="m-b-10 text-muted">'.strip_tags(substr($row["post_konten"], 0, 40)).'</small></p></h4>
+                <h4 class="modal-title" style="padding-left: 25px; line-height: 1;">'.strip_tags($row["nama_depan"]).' <small class="m-b-10 text-muted">'.count_comment($connect, $row["post_id"]).' komentar</small> <p style="margin-bottom: 0px;"><small class="m-b-10 text-muted">'.strip_tags(substr($row["post_konten"], 0, 40)).'</small></p></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> </button>
             </div>
             
@@ -528,7 +531,7 @@ if(isset($_POST['proses']))
                         <div class="p-2"><span class="round">'.$profile_image.'</span></div>
                         <div class="comment-text active w-100" style="padding-left: 15px; padding-bottom: 8px; line-height: 1;">
                             <h5 class="font-medium" style="margin-bottom: 0px;">'.$string.'</h5>
-                            <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.$row["nama_depan"].'</p>
+                            <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.strip_tags($row["nama_depan"]).'</p>
                             <div class="comment-footer">
                                 <span class="text-muted pull-right"><small>'.tgl_ago($row["timestamp"]).'</small></span>
                             </div>
@@ -618,7 +621,7 @@ if(isset($_POST['proses']))
 			    	<a href="'.$link.'">
 						<div class="user-img" style="margin-bottom: 0px;"> '.$profile_image.' </div>
 						<div class="mail-contnet" style="width: 80%;">
-							<h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
+							<h5>'.strip_tags($row["nama_depan"]).' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
 							<span class="mail-desc">
 							'.$row["notification_text"].' '.$string.' <span class="time">'.tgl_ago($row["notif_time"]).'</span>
 							</span>                 
@@ -632,7 +635,7 @@ if(isset($_POST['proses']))
 			    	<a href="'.$link.'">
 						<div class="user-img" style="margin-bottom: 0px;"> '.$profile_image.' </div>
 						<div class="mail-contnet" style="width: 80%;">
-							<h5>'.$row["nama_depan"].' <span class="time pull-right"></span></h5>
+							<h5>'.strip_tags($row["nama_depan"]).' <span class="time pull-right"></span></h5>
 							<span class="mail-desc">
 							'.$row["notification_text"].' '.$string.' <span class="time">'.tgl_ago($row["notif_time"]).'</span>
 							</span>                 
@@ -770,7 +773,7 @@ if(isset($_POST['proses']))
 	      		AND to_user_id = '".$row['user_id']."') 
 	      		OR (from_user_id = '".$row['user_id']."' 
 	      		AND to_user_id = '".$_SESSION["user_id"]."') 
-	      		ORDER BY timestamp DESC
+	      		ORDER BY time_chat DESC
 	      		LIMIT 1
 	      		";
 	      		$statement = $connect->prepare($sub_query);
@@ -817,7 +820,7 @@ if(isset($_POST['proses']))
 	      			<a href="javascript:void(0)" class="start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'" data-foto="../data/akun/profil/'.$row['profile_image'].'" style="padding-bottom: 3px; padding-top: 10px;">
                         <div class="user-img"> '.$profile_image.' </div>
                         <div class="mail-contnet" style="width: 81%;">
-                            <h5>'.$row["nama_depan"].' <span class="time pull-right">'.tgl_ago2($data["timestamp"]).'</span></h5>
+                            <h5>'.strip_tags($row["nama_depan"]).' <span class="time pull-right">'.tgl_ago2($data["time_chat"]).'</span></h5>
                             <span class="mail-desc">
                             	'.$status_pesan.'  '.fetch_is_type_status($row['user_id'], $connect).'  <span class="time pull-right">'.count_unseen_message($row['user_id'], $_SESSION['user_id'], $connect).'</span>
                             </span>
@@ -886,7 +889,7 @@ if(isset($_POST['proses']))
 			    	<a href="'.$link.'">
                         <div class="user-img"> '.$profile_image.'</div>
                         <div class="mail-contnet">
-                            <h5>'.$row["nama_depan"].'</h5> <span class="mail-desc">'.$row["notification_text"].' <b>'.$string.'</b></span> <span class="time">'.tgl_ago($row["notif_time"]).'</span> </div>
+                            <h5>'.strip_tags($row["nama_depan"]).'</h5> <span class="mail-desc">'.$row["notification_text"].' <b>'.$string.'</b></span> <span class="time">'.tgl_ago($row["notif_time"]).'</span> </div>
                     </a>
                     ';
 		    }
@@ -982,6 +985,141 @@ if(isset($_POST['proses']))
 		    }
 		    echo $output;
 		  }
+	}
+
+
+
+	if($_POST['proses'] == 'insert_posting_gambar')
+	{
+		if($_POST['upload_posting_gambar'] != '')
+		{
+			$post_gambar = $_POST['gambar'];
+			$post_konten = nl2br($_POST["posting_gambar_konten"]);
+
+			list($type, $post_gambar) = explode(';',$post_gambar);
+			list(, $post_gambar) = explode(',',$post_gambar);
+
+			$post_gambar = base64_decode($post_gambar);
+			$image_name = date("Ymd") . '' . date("His", STRTOTIME(date('h:i:sa'))).'.jpg';
+			file_put_contents('data/posting/images/'.$image_name, $post_gambar);
+			$data = array(
+					':user_id'				=>	$_SESSION["user_id"],
+					':post_konten'			=>	$post_konten,
+					':post_gambar'			=>	$image_name,
+					':post_tgl'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+				);
+			$query_gambar = "
+			INSERT INTO postingan 
+			(post_id, user_id, post_konten, post_gambar, post_tgl) 
+			VALUES ('', :user_id, :post_konten, :post_gambar, :post_tgl)
+			";
+			$statement = $connect->prepare($query_gambar);
+			$statement->execute($data);
+
+			$notification_query = "
+			SELECT receiver_id FROM follow 
+			WHERE sender_id = '".$_SESSION["user_id"]."'
+			";
+			$statement = $connect->prepare($notification_query);
+			$statement->execute();
+			$notification_result = $statement->fetchAll();
+			foreach($notification_result as $notification_row)
+			{
+				$query_posting = "
+				SELECT post_id FROM postingan
+				WHERE user_id = '".$_SESSION["user_id"]."'
+				";
+				$statement = $connect->prepare($query_posting);
+				$statement->execute();
+				$posting_result = $statement->fetchAll();
+				foreach($posting_result as $posting_row)
+				{
+
+				}
+
+				$post_id = Get_post_id($connect, $posting_row["post_id"]);
+		        $notification_text= 'membuat postingan baru';
+				$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+
+				$data = array(
+					':notification_receiver_id'	=>	$notification_row['receiver_id'],
+					':notif_sender_id'			=>	$notif_sender_id,
+					':notif_post_id'			=>	$post_id,
+					':notification_text'		=>	$notification_text,
+					':read_notification'		=>	'no',
+					':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+					':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+				);
+
+				$insert_query = "
+				INSERT INTO pemberitahuan 
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+					VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
+				";
+				$statement = $connect->prepare($insert_query);
+				$statement->execute($data);
+			}
+		}
+		else
+		{
+			$post_konten = nl2br($_POST["posting_gambar_konten"]);
+			$data = array(
+					':user_id'				=>	$_SESSION["user_id"],
+					':post_konten'			=>	$post_konten,
+					':post_tgl'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+				);
+			$query_gambar = "
+			INSERT INTO postingan 
+			(post_id, user_id, post_konten, post_tgl) 
+			VALUES ('', :user_id, :post_konten, :post_tgl)
+			";
+			$statement = $connect->prepare($query_gambar);
+			$statement->execute($data);
+
+			$notification_query = "
+			SELECT receiver_id FROM follow 
+			WHERE sender_id = '".$_SESSION["user_id"]."'
+			";
+			$statement = $connect->prepare($notification_query);
+			$statement->execute();
+			$notification_result = $statement->fetchAll();
+			foreach($notification_result as $notification_row)
+			{
+				$query_posting = "
+				SELECT post_id FROM postingan
+				WHERE user_id = '".$_SESSION["user_id"]."'
+				";
+				$statement = $connect->prepare($query_posting);
+				$statement->execute();
+				$posting_result = $statement->fetchAll();
+				foreach($posting_result as $posting_row)
+				{
+
+				}
+
+				$post_id = Get_post_id($connect, $posting_row["post_id"]);
+		        $notification_text= 'membuat postingan baru';
+				$notif_sender_id = Get_user_id($connect, $_SESSION["user_id"]);
+
+				$data = array(
+					':notification_receiver_id'	=>	$notification_row['receiver_id'],
+					':notif_sender_id'			=>	$notif_sender_id,
+					':notif_post_id'			=>	$post_id,
+					':notification_text'		=>	$notification_text,
+					':read_notification'		=>	'no',
+					':notif_time'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa'))),
+					':notif_update'				=>	date("Y-m-d") . ' ' . date("H:i:s", STRTOTIME(date('h:i:sa')))
+				);
+
+				$insert_query = "
+				INSERT INTO pemberitahuan 
+					(notification_receiver_id, notif_sender_id, notif_post_id, notification_text, read_notification, notif_time, notif_update) 
+					VALUES (:notification_receiver_id, :notif_sender_id, :notif_post_id, :notification_text, :read_notification, :notif_time, :notif_update)
+				";
+				$statement = $connect->prepare($insert_query);
+				$statement->execute($data);
+			}
+		}
 	}
 
 

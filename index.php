@@ -35,6 +35,7 @@ if(!isset($_SESSION['user_id'])) {
     <link href="assets/jquery-mentions-input-master/jquery.mentionsInput.css" rel="stylesheet">
     <link href="assets/dist/css/pages/stylish-tooltip.css" rel="stylesheet">
     <link href="assets/node_modules/jqueryui/jquery-ui.css" rel="stylesheet" type="text/css">
+    <link href="assets/crop/croppie.css" rel="stylesheet">
 </head>
         
 
@@ -57,7 +58,7 @@ if(!isset($_SESSION['user_id'])) {
                         </li>
                     </ul>
                     <ul class="navbar-nav my-lg-0">
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" id="show_load_pemberitahuan">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="total_notif" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 
                             </a>
@@ -129,7 +130,7 @@ if(!isset($_SESSION['user_id'])) {
                                             </div>
                                             <div class="mail-contnet"  style="width: 80%;">
                                                 <span class="mail-desc">
-                                                    <button class="btn btn-block btn-rounded btn-secondary" data-toggle="modal" data-target="#postingan_baru_modal">Tuliskan sesuatu disini...</butoon>
+                                                    <button class="btn btn-block btn-rounded btn-secondary tombol_upload_posting_gambar">Tuliskan sesuatu disini...</button>
                                                 </span>
                                             </div>
                                         </a>
@@ -147,11 +148,38 @@ if(!isset($_SESSION['user_id'])) {
                                     
                                 </div>
                             </div>
+                            <div id="load_data_message" style="display: none;"></div>
                         </div>
                     </div>
                     <!-- Column -->
                 </div>
                 <!-- Row -->
+
+<div id="posting_gambar_modal" class="modal modal-fullscreen" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="border:none;">
+        <div class="modal-header">
+            <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
+            <h4 class="modal-title" style="padding-left: 25px;">Postingan Baru</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <form method="post" id="posting_gambar_form">
+            <div class="modal-body" style="background-color: rgba(4, 1, 49, 0.84);">
+                
+                <div id="tampil_posting_gambar" style="display:none;"></div>
+                <input type="file" name="upload_posting_gambar" id="upload_posting_gambar" accept=".jpg, .png"  style="display: none;"/> 
+                
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="button" style="padding-top: 0px; padding-bottom: 0px;"><label for="upload_posting_gambar" style="margin-bottom: 0px;"><i class="fa fa-camera" style="font-size:18px;"></i></label></a>
+                <textarea class="form-control mention" type="text" rows="5" name="posting_gambar_konten" id="posting_gambar_konten" placeholder="Tulis sesuatu ..."  style="border-radius: 9px;"></textarea>
+                <input type="hidden" name="proses" value="insert_posting_gambar"/>
+                <button type="submit" name="share_post_gambar" id="share_post_gambar" class="btn btn-info waves-effect waves-light crop_posting_gambar">Post </button>
+            </div>
+        </form>
+      </div>         
+    </div>
+</div>
 
 
 <div id="postingan_baru_modal" class="modal modal-fullscreen" role="dialog">
@@ -240,6 +268,7 @@ if(!isset($_SESSION['user_id'])) {
     <script src="assets/jquery-mentions-input-master/lib/jquery.elastic.js" type="text/javascript"></script>
     <script src="assets/jquery-mentions-input-master/underscore-min.js" type="text/javascript"></script>
     <script src="assets/jquery-mentions-input-master/jquery.mentionsInput.js" type="text/javascript"></script>
+    <script src="assets/crop/croppie.min.js"></script>
 </body>
 
 <script>
@@ -322,40 +351,111 @@ $(document).ready(function () {
  </script>
 
 <script>
-$(document).ready(function(){  
+$(document).ready(function(){ 
 
-    postingan_post();
-    function postingan_post()
-    {
-     var proses = 'postingan_post';
-     $.ajax({
-          url:'proses.php',
-          method:"POST",
-          data:{proses:proses},
-          success:function(data)
-          {
-            $('#postingan_list').html(data);
-          }
-     });
-    }
+    $(document).on('click', '.tombol_upload_posting_gambar', function(){
+        $('#posting_gambar_modal').modal('show');
+    });
 
-    load_pemberitahuan();
+    $crop_posting_gambar = $('#tampil_posting_gambar').croppie({
+    enableExif: true,
+    viewport: {
+        width:300,
+        height:300,
+        type:'square' //circle
+    },
+    boundary:{
+        width:'300',
+        height:'300'
+    }    
+    });
 
-    function load_pemberitahuan()
-    {
-        var proses = 'load_pemberitahuan';
+    $('#upload_posting_gambar').on('change', function(){
+    var reader = new FileReader();
+        reader.onload = function (event) {
+            $crop_posting_gambar.croppie('bind', {
+            url: event.target.result
+            }).then(function(){
+            console.log('jQuery bind complete');
+            });
+        }
+    reader.readAsDataURL(this.files[0]);
+        $('#tampil_posting_gambar').slideToggle('slow');
+    });
+
+    $('.crop_posting_gambar').click(function(event){
+    $crop_posting_gambar.croppie('result', {
+        type: 'canvas',
+        size: 'viewport'
+    }).then(function(response, posting_gambar_konten, upload_posting_gambar){
+        var posting_gambar_konten = $('#posting_gambar_konten').val();
+        var upload_posting_gambar = $('#upload_posting_gambar').val();
+        var proses = 'insert_posting_gambar';
         $.ajax({
-            url:"proses.php",
+            url:'proses.php',
+            method:'POST',
+            data:{"gambar":response, proses:proses, posting_gambar_konten:posting_gambar_konten, upload_posting_gambar:upload_posting_gambar},
+            beforeSend:function()
+            {
+            $('#share_post_gambar').attr('disabled', 'disabled');  
+            },
+            success:function(data){
+                $('#posting_gambar_modal').modal('hide');
+                $('#posting_gambar_form')[0].reset();
+                $('#posting_gambar_konten').val('');
+                $('#upload_posting_gambar').val('');
+                $("textarea.mention").mentionsInput('reset');
+                window.location.href="index.php";
+            }
+        })
+    });
+    });
+
+
+    var limit = 7;
+    var start = 0;
+    var action = 'inactive';
+    function postingan_post(limit, start)
+    {
+        var proses = 'postingan_post';
+        $.ajax({
+            url:'proses.php',
             method:"POST",
-            data:{proses:proses},
+            data:{limit:limit, start:start, proses:proses},
+            cache:false,
             success:function(data)
             {
-                $('#load_pemberitahuan').html(data);
+                $('#postingan_list').append(data);
+                if(data == '')
+                {
+                    $('#load_data_message').html("<button type='button' class='btn btn-link btn-block'></button>");
+                    action = 'active';
+                }
+                else
+                {
+                    $('#load_data_message').html("<button type='button' class='btn btn-link btn-block'></button>");
+                    action = "inactive";
+                }
             }
         });
     }
+    if(action == 'inactive')
+    {
+        action = 'active';
+        postingan_post(limit, start);
+    }
+    $(window).scroll(function(){
+        if($(window).scrollTop() + $(window).height() > $("#postingan_list").height() && action == 'inactive')
+        {
+            action = 'active';
+            start = start + limit;
+            setTimeout(function(){
+            postingan_post(limit, start);
+            }, 1000);
+        }
+    });
 
-
+    
     $('#posting_form').on('submit', function(event){
         event.preventDefault();
 
@@ -385,7 +485,7 @@ $(document).ready(function(){
                   $('#uploadFile').val('');
                   $("textarea.mention").mentionsInput('reset');
                   removeImage();
-                  postingan_post();
+                  //postingan_post();
                 }
             })
         }
@@ -401,7 +501,7 @@ $(document).ready(function(){
             data:{post_id:post_id, proses:proses},
             success:function(data)
             {
-                postingan_post();
+                //postingan_post();
             }
         })
     });
@@ -436,7 +536,7 @@ $(document).ready(function(){
                 success:function(data)
                 {
                     $('#comment_form'+post_id).modal('hide');
-                    postingan_post();
+                    //postingan_post();
                 }
             })
         }
@@ -472,6 +572,20 @@ $(document).ready(function(){
         })
     });
 
+    $('#show_load_pemberitahuan').click(function()
+    {
+        var proses = 'load_pemberitahuan';
+        $.ajax({
+            url:"proses.php",
+            method:"POST",
+            data:{proses:proses},
+            success:function(data)
+            {
+                $('#load_pemberitahuan').html(data);
+            }
+        });
+    });
+
 
     total_notif_chat();
 
@@ -491,7 +605,6 @@ $(document).ready(function(){
 
 setInterval(function(){
     //postingan_post();
-    load_pemberitahuan();
     load_total_notif();
     total_notif_chat();
     checknotif();

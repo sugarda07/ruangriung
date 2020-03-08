@@ -73,7 +73,7 @@ if(!isset($_SESSION['user_id'])) {
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#konten" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Postingan</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#orang" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Orang</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#artikel" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Orang</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -90,25 +90,29 @@ if(!isset($_SESSION['user_id'])) {
 
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="orang" role="tabpanel">                                    
-                                    <div class="card" style="margin-bottom: 5px;">
-                                        <div class="card-body" style="padding: 9px;">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="cari_kontak" id="cari_kontak" placeholder="Cari">
-                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card" id="dynamic_kontak">
-                                        
-                                    </div>
+                                <div class="tab-pane" id="artikel" role="tabpanel">
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                    
+            <footer class="footer hidden-footer" style="bottom: 0; left: 0; position: fixed; right: 0; z-index: 1032; padding: 0px; margin-left: 0px;">
+                <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                    <div class="col-3" style="padding: 10px">
+                        <a href="index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="icon-home" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    </div>
+                    <div class="col-3" style="padding: 10px">
+                        <a href="post_all.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-search" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    </div>
+                    <div class="col-3" style="padding: 10px">
+                        <a href="hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    </div>
+                    <div class="col-3" style="padding: 10px">
+                        <a href="pesan/index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    </div>
+                </div>
+            </footer>                    
             </div>
         </div>
     </div>
@@ -165,34 +169,6 @@ $(document).ready(function(){
       var query = $('#search_box').val();
       load_data(1, query);
     });
-
-
-    load_kontak(1);
-
-    function load_kontak(page, query = '')
-    {
-      $.ajax({
-        url:"cari_kontak.php",
-        method:"POST",
-        data:{page:page, query:query},
-        success:function(data)
-        {
-          $('#dynamic_kontak').html(data);
-        }
-      });
-    }
-
-    $(document).on('click', '.page-link', function(){
-      var page = $(this).data('page_number');
-      var query = $('#cari_kontak').val();
-      load_kontak(page, query);
-    });
-
-    $('#cari_kontak').keyup(function(){
-      var query = $('#cari_kontak').val();
-      load_kontak(1, query);
-    });
-
 
 
 

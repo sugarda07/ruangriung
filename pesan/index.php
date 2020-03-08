@@ -291,7 +291,7 @@ $(document).ready(function(){
             $('#chat_message_'+to_user_id).val('');
           $('#chat_history_'+to_user_id).html(data);
           $('html, body').animate({ scrollTop: 100000 }, 'fast');
-          play_sound_send()
+          play_sound_send();
           $('chat_message_'+to_user_id+'').focus();
         }
       })
@@ -475,6 +475,7 @@ function checknotifchat() {
                             icon: data_notif[i]['icon'],
                             body: data_notif[i]['msg'],
                         });
+                        play_sound_message();
                         notifikasi.onclick = function () {
                             window.open(theurl); 
                             notifikasi.close();     

@@ -15,7 +15,7 @@ session_start();
 
 $total_record = get_total_row($connect);*/
 
-$limit = '5';
+$limit = '20';
 $page = 1;
 if($_POST['page'] > 1)
 {
@@ -53,9 +53,7 @@ $result = $statement->fetchAll();
 $total_filter_data = $statement->rowCount();
 
 $output = '
-<div class="card-body" style="padding: 5px;">
-  <h5 class="card-title">Hasil pencarian "'.$_POST['query'].'"</h5>
-    <h6 class="card-subtitle">Jumlah Data - '.$total_data.'</h6>
+<div class="card-body" style="padding: 10px;">
       <ul class="search-listing">
 ';
 if($total_data > 0)
@@ -97,11 +95,11 @@ $page_link = '';
 
 //echo $total_links;
 
-if($total_links > 4)
+if($total_links > 19)
 {
-  if($page < 5)
+  if($page < 20)
   {
-    for($count = 1; $count <= 5; $count++)
+    for($count = 1; $count <= 20; $count++)
     {
       $page_array[] = $count;
     }
@@ -110,7 +108,7 @@ if($total_links > 4)
   }
   else
   {
-    $end_limit = $total_links - 5;
+    $end_limit = $total_links - 20;
     if($page > $end_limit)
     {
       $page_array[] = 1;

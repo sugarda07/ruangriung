@@ -2441,7 +2441,7 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #fb9678;
+  color: #03a9f3; /*#fb9678*/
   background-color: transparent; }
   .btn-link:hover {
     color: #f95c2e;

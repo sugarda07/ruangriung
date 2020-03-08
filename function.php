@@ -795,7 +795,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
   AND to_user_id = '".$to_user_id."') 
   OR (from_user_id = '".$to_user_id."' 
   AND to_user_id = '".$from_user_id."') 
-  ORDER BY timestamp ASC 
+  ORDER BY time_chat ASC 
   ";
 
   $statement = $connect->prepare($query);
@@ -876,7 +876,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect)
                           <div '.$class.'> '.$chat_message.' &nbsp;&nbsp; '.$status_pesan.'</div>                          
                         '.$br.'
                     </div>
-                    <div class="chat-time" style="margin-left: 0px; margin-bottom: 10px;">'.tgl_ago($row['timestamp']).'</div>
+                    <div class="chat-time" style="margin-left: 0px; margin-bottom: 10px;">'.tgl_ago($row['time_chat']).'</div>
                 </li>
 
 

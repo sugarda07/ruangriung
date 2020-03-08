@@ -86,7 +86,51 @@ if(isset($_POST['login']))
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
+<style>
+  .box
+  {
+    width:100%;
+    max-width:600px;
+    background-color:#f9f9f9;
+    border:1px solid #ccc;
+    border-radius:5px;
+    padding:16px;
+    margin:0 auto;
+  }
+  input.parsley-success,
+  select.parsley-success,
+  textarea.parsley-success {
+    color: #468847;
+    background-color: #DFF0D8;
+    border: 1px solid #D6E9C6;
+  }
+  input.parsley-error,
+  select.parsley-error,
+  textarea.parsley-error {
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border: 1px solid #EED3D7;
+  }
+  .parsley-errors-list {
+     margin: 2px 0 3px;
+     padding: 0;
+     list-style-type: none;
+     font-size: 0.9em;
+     line-height: 0.9em;
+     opacity: 0;
 
+     transition: all .3s ease-in;
+     -o-transition: all .3s ease-in;
+     -moz-transition: all .3s ease-in;
+     -webkit-transition: all .3s ease-in;
+  }
+  .parsley-errors-list.filled {
+    opacity: 1;
+  }
+  .parsley-type, .parsley-required, .parsley-equalto{
+    color:#ff0000;
+  } 
+ </style>
 <body style="background-color: #4028d8;">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -103,16 +147,16 @@ if(isset($_POST['login']))
     <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/login-register.jpg);">
         <div class="login-box card" style="border-radius: 20px;">
             <div class="card-body">
-                <form method="post" class="form-horizontal form-material" id="loginform">
+                <form method="post" class="form-horizontal form-material" id="validate_form">
                     <p><?php echo $message; ?></p>
                     <div class="form-group m-t-40">
                         <div class="col-xs-12">
-                            <input class="form-control" name="email" type="email" placeholder="Email">
+                            <input class="form-control" name="email" id="email" type="text" placeholder="Email" required data-parsley-type="email" data-parsley-trigger="focusout" data-parsley-checkemail data-parsley-checkemail-message="email sudah terdaftar">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input class="form-control" name="password" type="password" placeholder="Password">
+                            <input class="form-control" name="password" id="password" type="password" placeholder="Password" required data-parsley-length="[6, 16]" data-parsley-trigger="keyup">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -138,24 +182,6 @@ if(isset($_POST['login']))
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" id="recoverform" action="index.php">
-                    <div class="form-group ">
-                        <div class="col-xs-12">
-                            <h3>Recover Password</h3>
-                            <p class="text-muted">Enter your Email and instructions will be sent to you! </p>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-xs-12">
-                            <input class="form-control" type="text" required="" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="form-group text-center m-t-20">
-                        <div class="col-xs-12">
-                            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </section>
@@ -166,6 +192,7 @@ if(isset($_POST['login']))
     <!-- All Jquery -->
     <!-- ============================================================== -->
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <script src="assets/dist/parsley.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="assets/node_modules/popper/popper.min.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -184,6 +211,14 @@ if(isset($_POST['login']))
             $("#loginform").slideUp();
             $("#recoverform").fadeIn();
         });
+    </script>
+
+    <script>  
+      $(document).ready(function(){  
+
+      $('#validate_form').parsley();
+      
+      });  
     </script>
     
 </body>
