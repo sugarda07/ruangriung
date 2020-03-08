@@ -26,7 +26,7 @@ if(!isset($_SESSION['user_id'])) {
     <link href="assets/node_modules/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
     <link href="assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
-    <link href="assets/dist/css/style.min.css" rel="stylesheet">
+    <link href="assets/dist/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/magnific/css/style.css">
     <link href="assets/dist/css/pages/other-pages.css" rel="stylesheet">
     <link href="assets/dist/css/placeholder-loading.min.css" rel="stylesheet">

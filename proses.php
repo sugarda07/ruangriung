@@ -139,10 +139,10 @@ if(isset($_POST['proses']))
 			   	}
 
 				$output .= '
-                        <div class="sl-item" style="margin-bottom: 15px;">
+                        <div class="sl-item" style="margin-bottom: 5px;">
                             <div class="sl-left"> '.$profile_image.' </div>
                             <div class="sl-right">
-                                <div> <a href="view_posting.php?data='.$row['post_id'].'" class="link">'.strip_tags($row["nama_depan"]).'</a>
+                                <div> <a href="view_posting.php?data='.$row['post_id'].'" class="link">'.strip_tags($row["nama_depan"]).' '.strip_tags($row["nama_belakang"]).'</a>
                                 	<p style="margin-bottom: 5px;"><span class="sl-date">'.tgl_ago($row["post_tgl"]).'</span></p>
                                     <div class="m-t-20 row" style="margin-top: 5px;">
                                     	'.$post_gambar.'
@@ -162,7 +162,7 @@ if(isset($_POST['proses']))
         <div class="modal-content" style="position: relative; height: 100%; border-radius: 0; border: 0; background-clip: initial;">
             <div class="modal-header" style="padding-bottom: 5px;">
                 <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
-                <h4 class="modal-title" style="padding-left: 25px; line-height: 1;">'.strip_tags($row["nama_depan"]).' <small class="m-b-10 text-muted">'.count_comment($connect, $row["post_id"]).' komentar</small> <p style="margin-bottom: 0px;"><small class="m-b-10 text-muted">'.strip_tags(substr($row["post_konten"], 0, 40)).'</small></p></h4>
+                <h4 class="modal-title" style="padding-left: 25px; line-height: 1;">'.strip_tags($row["nama_depan"]).' '.strip_tags($row["nama_belakang"]).'  <small class="m-b-10 text-muted">'.count_comment($connect, $row["post_id"]).' komentar</small> <p style="margin-bottom: 0px;"><small class="m-b-10 text-muted">'.strip_tags(substr($row["post_konten"], 0, 40)).'</small></p></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> </button>
             </div>
             
@@ -491,7 +491,7 @@ if(isset($_POST['proses']))
                         <div class="p-2"><span class="round">'.$profile_image.'</span></div>
                         <div class="comment-text active w-100" style="padding-left: 15px; padding-bottom: 8px; line-height: 1;">
                             <h5 class="font-medium" style="margin-bottom: 0px;">'.$string.'</h5>
-                            <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.strip_tags($row["nama_depan"]).'</p>
+                            <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.strip_tags($row["nama_depan"]).' '.strip_tags($row["nama_belakang"]).'</p>
                             <div class="comment-footer">
                                 <span class="text-muted pull-right"><small>'.tgl_ago($row["timestamp"]).'</small></span>
                             </div>

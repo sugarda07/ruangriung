@@ -113,53 +113,54 @@ $statement->execute();
     </div>
 </div>
 
-
-
-<div id="pengikutModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="margin:0px; position: absolute; top: 0; bottom: 0; right: 0; width: 100%; height: 100%; margin: 0;
-    opacity: 1; box-shadow: 7px 0 16px 15px rgba(0, 0, 0, 0.6);">
-      <div class="modal-content" style="position: relative; height: 100%; border-radius: 0; border: 0; background-clip: initial;">
-        <div class="modal-header">
-            <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
-            <h4 class="modal-title" style="padding-left: 25px;">Pengikut</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        </div>
-        <div class="modal-body">
-          <div class="message-box">
-              <div class="message-widget message-scroll" id="data_pengikut">
-                
+<div id="pengikutModal" class="modal modal-fullscreen" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border:none;">
+            <div class="modal-header">
+                <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
+                <h4 class="modal-title" id="myLargeModalLabel" style="padding-left: 25px;">Pengikut</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> </button>
+            </div>
+            <div class="modal-body">
+                <div class="message-box">
+                  <div class="message-widget message-scroll" id="data_pengikut">
+                    
+                  </div>
               </div>
-          </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 5px;padding-bottom: 5px;">
+                © 2020 RuangDIGITAL by @sugarda3rd
+            </div>
         </div>
-        <div class="modal-footer" align="center" style="bottom: 0; left: 0; position: fixed; right: 0; z-index: 1032; padding: 5px; background-color: #ffffff;">
-          © 2020 RuangDIGITAL by @sugarda3rd
-        </div>
-      </div>         
+        <!-- /.modal-content -->
     </div>
 </div>
 
-<div id="mengikutiModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="margin:0px; position: absolute; top: 0; bottom: 0; right: 0; width: 100%; height: 100%; margin: 0;
-    opacity: 1; box-shadow: 7px 0 16px 15px rgba(0, 0, 0, 0.6);">
-      <div class="modal-content" style="position: relative; height: 100%; border-radius: 0; border: 0; background-clip: initial;">
-        <div class="modal-header">
-            <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
-            <h4 class="modal-title" style="padding-left: 25px;">Mengikuti</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        </div>
-        <div class="modal-body">
-          <div class="message-box">
-              <div class="message-widget message-scroll" id="data_mengikuti">
-                
+
+<div id="mengikutiModal" class="modal modal-fullscreen" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border:none;">
+            <div class="modal-header">
+                <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
+                <h4 class="modal-title" id="myLargeModalLabel" style="padding-left: 25px;">Mengikuti</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> </button>
+            </div>
+            <div class="modal-body">
+                <div class="message-box">
+                  <div class="message-widget message-scroll" id="data_mengikuti">
+                    
+                  </div>
               </div>
-          </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 5px;padding-bottom: 5px;">
+                © 2020 RuangDIGITAL by @sugarda3rd
+            </div>
         </div>
-        <div class="modal-footer" align="center" style="bottom: 0; left: 0; position: fixed; right: 0; z-index: 1032; padding: 5px; background-color: #ffffff;">
-          © 2020 RuangDIGITAL by @sugarda3rd
-        </div>
-      </div>         
+        <!-- /.modal-content -->
     </div>
 </div>
+
+
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="assets/dist/js/jquery.form.js"></script>
     <script src="assets/dist/js/jquery.min.js"></script>

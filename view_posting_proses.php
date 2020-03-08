@@ -123,7 +123,7 @@ if(isset($_POST['proses']))
                         <div class="sl-item">
                             <div class="sl-left"> '.$profile_image.' </div>
                             <div class="sl-right">
-                                <div> <a href="view_profil.php?data='.$row['user_id'].'" class="link">'.$row["nama_depan"].'</a>
+                                <div> <a href="view_profil.php?data='.$row['user_id'].'" class="link">'.$row["nama_depan"].' '.strip_tags($row["nama_belakang"]).'</a>
                                   <p style="margin-bottom: 5px;"><span class="sl-date">'.tgl_ago($row["post_tgl"]).'</span></p>
                                     <div class="m-t-20 row" style="margin-top: 5px;">
                                       '.$post_gambar.'
@@ -143,7 +143,7 @@ if(isset($_POST['proses']))
         <div class="modal-content" style="position: relative; height: 100%; border-radius: 0; border: 0; background-clip: initial;">
             <div class="modal-header" style="padding-bottom: 5px;">
                 <h4 class="modal-title"><a href="javascript:void(0)" data-dismiss="modal"><i class="fa fa-arrow-left"></i></a></h4>
-                <h4 class="modal-title" style="padding-left: 25px; line-height: 1;">'.$row["nama_depan"].' <small class="m-b-10 text-muted">'.count_comment($connect, $row["post_id"]).' komentar</small> <p style="margin-bottom: 0px;"><small class="m-b-10 text-muted">'.strip_tags(substr($row["post_konten"], 0, 40)).'</small></p></h4>
+                <h4 class="modal-title" style="padding-left: 25px; line-height: 1;">'.$row["nama_depan"].' '.strip_tags($row["nama_belakang"]).'  <small class="m-b-10 text-muted">'.count_comment($connect, $row["post_id"]).' komentar</small> <p style="margin-bottom: 0px;"><small class="m-b-10 text-muted">'.strip_tags(substr($row["post_konten"], 0, 40)).'</small></p></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> </button>
             </div>
             
@@ -167,13 +167,7 @@ if(isset($_POST['proses']))
     }
     else
     {
-      $output = '
-      <div class="box-body">
-        <div class="callout callout-info">
-                  <h4>Selamat Datang!</h4>
-                  <p>Gunakan sosial media dengan Bijak</p>
-                </div>
-             </div>';
+      $output = '';
     }
     echo $output; 
   }
@@ -335,7 +329,7 @@ if(isset($_POST['proses']))
               <div class="p-2"><span class="round">'.$profile_image.'</span></div>
               <div class="comment-text active w-100" style="padding-left: 15px; padding-bottom: 8px; line-height: 1;">
                   <h5 class="font-medium" style="margin-bottom: 3px;">'.strip_tags($row["comment"]).'</h5>
-                  <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.$row["nama_depan"].'</p>
+                  <p class="m-b-10 text-muted" style="margin-bottom: 2px;">'.$row["nama_depan"].' '.strip_tags($row["nama_belakang"]).'</p>
                   <div class="comment-footer">
                       <span class="text-muted pull-right"><small>'.tgl_ago($row["timestamp"]).'</small></span>
                   </div>
@@ -376,7 +370,7 @@ if(isset($_POST['proses']))
             $output .= '
             <div class="card-body">
                 <center class="m-t-30"> '.$fotoprofil.'
-                    <h4 class="card-title m-t-10">'.$row['nama_depan'].'</h4>
+                    <h4 class="card-title m-t-10">'.$row['nama_depan'].' '.strip_tags($row["nama_belakang"]).'</h4>
                     <h6 class="card-subtitle">'.$row['sekolah'].'</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4">
@@ -660,7 +654,7 @@ if(isset($_POST['proses']))
           $output .= '
           <div class="card-body">
                 <center class="m-t-30"> '.$fotoprofil.'
-                    <h4 class="card-title m-t-10">'.$row['nama_depan'].'</h4>
+                    <h4 class="card-title m-t-10">'.$row['nama_depan'].' '.strip_tags($row["nama_belakang"]).'</h4>
                     <h6 class="card-subtitle">'.$row['sekolah'].'</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4">
@@ -937,22 +931,6 @@ if(isset($_POST['proses']))
                   </div>
                 ';
           }
-          else if($row['post_video'] !='')
-          {
-            $post_gambar = '
-            <div class="col-md-5 col-xs-12">
-              <video width="100%" height="100%" poster="" controls autoplay;>
-                  <source src="data/posting/video/'.$row["post_video"].'" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div class="col-md-7 col-xs-12">
-                    <p style="margin-bottom: 5px; color: black;"> 
-                      <a href="view_posting.php?data='.$row['post_id'].'" style=" color: black;">'.substr($string, 0,160).'</a>
-                    </p>
-                  </div>
-            ';
-          }
           else
           {           
             $post_gambar = '
@@ -997,22 +975,6 @@ if(isset($_POST['proses']))
                     </p>
                   </div>                      
               ';
-          }
-          else if($row['post_video'] !='')
-          {
-            $post_gambar = '>
-            <div class="col-md-5 col-xs-12">
-              <video width="100%" height="100%" poster="" controls autoplay;>
-                  <source src="data/posting/video/'.$row["post_video"].'" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div class="col-md-7 col-xs-12">
-                    <p style="margin-bottom: 5px; color: black;"> 
-                      <a href="view_posting.php?data='.$row['post_id'].'" style=" color: black;">'.substr($string, 0,160).'</a>
-                    </p>
-                  </div>
-            ';
           }
           else
           {           
@@ -1061,7 +1023,7 @@ if(isset($_POST['proses']))
                         <div class="sl-item">
                             <div class="sl-left"> '.$profile_image.' </div>
                             <div class="sl-right">
-                                <div> <a href="view_posting.php?data='.$row['post_id'].'" class="link">'.$row["nama_depan"].'</a>
+                                <div> <a href="view_posting.php?data='.$row['post_id'].'" class="link">'.$row["nama_depan"].' '.strip_tags($row["nama_belakang"]).'</a>
                                   <p style="margin-bottom: 5px;"><span class="sl-date">'.tgl_ago($row["post_tgl"]).'</span></p>
                                     <div class="m-t-20 row" style="margin-top: 5px;">
                                       '.$post_gambar.'

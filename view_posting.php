@@ -32,7 +32,7 @@ $statement->execute();
     <link href="assets/dist/css/pages/user-card.css" rel="stylesheet">
     <link href="assets/node_modules/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
     <link href="assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
-    <link href="assets/dist/css/style.min.css" rel="stylesheet">
+    <link href="assets/dist/css/style.css" rel="stylesheet">
 </head>
 
 
