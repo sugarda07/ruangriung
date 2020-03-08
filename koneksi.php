@@ -1,12 +1,12 @@
 <?php
 
 $DB_host = "localhost";
-$DB_user = "root";
-//$DB_user = "smkikaka_ruangriung";
-$DB_pass = "";
-//$DB_pass = "123ruangriung456";
-$DB_name = "ruangdigital";
-//$DB_name = "smkikaka_ruangriung"; 
+//$DB_user = "root";
+$DB_user = "smkikaka_ruangriung";
+//$DB_pass = "";
+$DB_pass = "123ruangriung456";
+//$DB_name = "ruangdigital";
+$DB_name = "smkikaka_ruangriung"; 
 $message = "";
 
 	try  
