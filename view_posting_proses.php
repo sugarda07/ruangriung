@@ -1067,15 +1067,7 @@ if(isset($_POST['proses']))
     }
     else
     {
-      $output = '
-      <div class="sl-item">
-          <div class="sl-left"> <img src="data/akun/profil/rdigital.png" alt="user" class="img-circle"> </div>
-          <div class="sl-right">
-              <div><a href="javascript:void(0)" class="link">Selamat Datang di RuangDIGITAL</a> <span class="sl-date"></span>
-                  <p class="m-t-10" style="margin-top: 0px; margin-bottom: 0px;"> Gunakan sosial media dengan Bijak </p>
-              </div>
-          </div>
-      </div>';
+      $output = '';
     }
     echo $output; 
   }
@@ -1165,7 +1157,7 @@ if(isset($_POST['proses']))
           }
           else
           {
-            $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
+            $profile_image = '<span class="round" style="width: 45px; height: 45px; line-height: 45px;">'.substr($row["nama_depan"], 0,1).'</span>';
           }
           $tombol = '';
           if($row["user_id"] != $_SESSION["user_id"])
@@ -1220,7 +1212,7 @@ if(isset($_POST['proses']))
           }
           else
           {
-            $profile_image = '<span class="round" style="width: 40px; height: 40px; line-height: 40px;">'.substr($row["nama_depan"], 0,1).'</span>';
+            $profile_image = '<span class="round" style="width: 45px; height: 45px; line-height: 45px;">'.substr($row["nama_depan"], 0,1).'</span>';
           }
           $tombol = '';
           if($row["user_id"] != $_SESSION["user_id"])

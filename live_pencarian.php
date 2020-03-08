@@ -65,7 +65,7 @@ if($total_data > 0)
     $string = convertToLink($string);
     $output .= '    
             <li style="padding-top: 5px;padding-bottom: 5px;">
-                <h3><a href="view_posting.php?data='.$row['post_id'].'">'.$row["nama_depan"].'</a></h3>
+                <h3><a href="view_posting.php?data='.$row['post_id'].'">'.$row["nama_depan"].' '.$row["nama_belakang"].'</a></h3>
                 <h6 class="search-links">'.tgl_ago($row["post_tgl"]).'</h6>
                 <p style="margin-bottom: 5px;">'.substr($string, 0,160).'</p>
             </li>

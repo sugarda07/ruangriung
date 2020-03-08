@@ -103,15 +103,15 @@ function listNotifUser($user_id, $connect)
 
 function convertToLink($string)  
  {    
-    $string = preg_replace("/#+([a-zA-Z0-9_]+)/", '<a href="hashtag.php?tag=$1">$0</a>', $string); 
-    $string = preg_replace("/@+([a-zA-Z0-9_]+)/", '<a href="#" class="hover" id="$1">$0</a>', $string); 
+    $string = preg_replace("/#+([a-zA-Z0-9_]+)/", '<a href="javascript:void(0)">$0</a>', $string); 
+    $string = preg_replace("/@+([a-zA-Z0-9_]+)/", '<a href="javascript:void(0)" class="hover" id="$1">$0</a>', $string); 
     return $string;  
  }
 
  function convertToLinkpesan($string)  
  {    
-    $string = preg_replace("/#+([a-zA-Z0-9_]+)/", '<a href="../hashtag.php?tag=$1" style="color:blue;">$0</a>', $string); 
-    $string = preg_replace("/@+([a-zA-Z0-9_]+)/", '<a href="#" class="hover" id="$1" style="color:blue;">$0</a>', $string); 
+    $string = preg_replace("/#+([a-zA-Z0-9_]+)/", '<a href="javascript:void(0)" style="color:blue;">$0</a>', $string); 
+    $string = preg_replace("/@+([a-zA-Z0-9_]+)/", '<a href="javascript:void(0)" class="hover" id="$1" style="color:blue;">$0</a>', $string); 
     return $string;  
  }
 
