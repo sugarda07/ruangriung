@@ -232,7 +232,7 @@ if(!isset($_SESSION['user_id'])) {
                     <a href="post_all.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-search" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
                 <div class="col-3" style="padding: 10px">
-                    <a href="hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    <a href="pencarian_posting.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
                 <div class="col-3" style="padding: 10px">
                     <a href="pesan/index.php" aria-haspopup="true" aria-expanded="false"><button type="button" class="btn btn-block btn-flat btn-link" id="total_notif_chat">
@@ -412,7 +412,7 @@ $(document).ready(function(){
     });
 
 
-    var limit = 7;
+    var limit = 5;
     var start = 0;
     var action = 'inactive';
     function postingan_post(limit, start)

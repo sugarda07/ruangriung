@@ -73,7 +73,7 @@ if(!isset($_SESSION['user_id'])) {
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-collapse">
                     <ul class="navbar-nav mr-auto">
-                    	<li class="nav-item"> <a class="nav-link" href="../index.php"><i class="fa fa-arrow-left"></i></a> </li>
+                    	<li class="nav-item"> <a class="nav-link" href="javascript: history.go(-1)"><i class="fa fa-arrow-left"></i></a> </li>
                         <li class="nav-item" style="padding-top: 3px;">
                             <form class="app-search d-md-block d-lg-block">
                                 <input type="text" id="cari_kontak" name="cari_kontak" class="form-control" placeholder="cari kontak" aria-label="Search" autocomplete="off">
@@ -112,7 +112,7 @@ if(!isset($_SESSION['user_id'])) {
               <a href="../post_all.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-search" style="font-size: 20px; color: #03a9f3;"></i></button></a>
             </div>
             <div class="col-3" style="padding: 10px">
-              <a href="../hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+              <a href="../pencarian_posting.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
             </div>
             <div class="col-3" style="padding: 10px">
               <a href="index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>

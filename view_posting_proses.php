@@ -43,18 +43,6 @@ if(isset($_POST['proses']))
             <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px; margin-top: 5px;"> '.$string.' </p> </div>
             ';
           }
-          else if($row['post_video'] !='')
-          {
-            $post_gambar = '                        
-            <div class="col-md-5 col-xs-12">
-              <video width="100%" height="100%" poster="" controls autoplay;>
-                  <source src="data/posting/video/'.$row["post_video"].'" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px;"> '.$string.' </p> </div>
-            ';
-          }
           else
           {           
             $post_gambar = '
@@ -90,18 +78,6 @@ if(isset($_POST['proses']))
               </a>
             </div>
             <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px; margin-top: 5px;"> '.$string.' </p> </div>
-            ';
-          }
-          else if($row['post_video'] !='')
-          {
-            $post_gambar = '
-                        <div class="col-md-7 col-xs-12"> <p style="margin-bottom: 5px;"> '.$string.' </p> </div>
-            <div class="col-md-5 col-xs-12">
-              <video width="100%" height="100%" poster="" controls autoplay;>
-                  <source src="data/posting/video/'.$row["post_video"].'" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            </div>
             ';
           }
           else
@@ -427,9 +403,7 @@ if(isset($_POST['proses']))
                 <hr>
             </div>
             <div class="card-body" style="padding-top: 0px; padding-bottom: 10px;">
-                <div class="map-box">
-                    <iframe src="https://www.google.com/maps/embed?pb=!4v1582792613807!6m8!1m7!1sc4hHF8FUk1fkXk66yXnmWA!2m2!1d-7.221356313908178!2d107.8944891971741!3f147.42389426195246!4f-9.050435694713968!5f0.7820865974627469" width="100%" height="150" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
-                </div>
+            
             </div>
             ';
         }

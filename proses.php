@@ -49,23 +49,7 @@ if(isset($_POST['proses']))
 			            	</p>
 			            </div>
 			        	';
-					}
-					else if($row['post_video'] !='')
-					{
-						$post_gambar = '
-						<div class="col-md-5 col-xs-12">
-							<video width="100%" height="100%" poster="" controls autoplay;>
-						  		<source src="data/posting/video/'.$row["post_video"].'" type="video/mp4">
-								Your browser does not support the video tag.
-							</video>
-						</div>
-						<div class="col-md-7 col-xs-12">
-			            	<p style="margin-bottom: 5px; color: black;"> 
-			            		<a href="view_posting.php?data='.$row['post_id'].'" style=" color: black;">'.substr($string, 0,160).'</a>
-			            	</p>
-			            </div>
-						';
-					}
+					}					
 					else
 					{						
 						$post_gambar = '
@@ -110,22 +94,6 @@ if(isset($_POST['proses']))
 			            	</p>
 			            </div>                      
 			        ';
-					}
-					else if($row['post_video'] !='')
-					{
-						$post_gambar = '>
-						<div class="col-md-5 col-xs-12">
-							<video width="100%" height="100%" poster="" controls autoplay;>
-						  		<source src="data/posting/video/'.$row["post_video"].'" type="video/mp4">
-								Your browser does not support the video tag.
-							</video>
-						</div>
-						<div class="col-md-7 col-xs-12">
-			            	<p style="margin-bottom: 5px; color: black;"> 
-			            		<a href="view_posting.php?data='.$row['post_id'].'" style=" color: black;">'.substr($string, 0,160).'</a>
-			            	</p>
-			            </div>
-						';
 					}
 					else
 					{						
@@ -218,15 +186,7 @@ if(isset($_POST['proses']))
 		}
 		else
 		{
-			$output = '
-            <div class="sl-item">
-                <div class="sl-left"> <img src="data/akun/profil/rdigital.png" alt="user" class="img-circle"> </div>
-                <div class="sl-right">
-                    <div><a href="javascript:void(0)" class="link">Selamat Datang di RuangDIGITAL</a> <span class="sl-date"></span>
-                        <p class="m-t-10" style="margin-top: 0px; margin-bottom: 0px;"> Gunakan sosial media dengan Bijak </p>
-                    </div>
-                </div>
-            </div>';
+			$output = '';
 		}
 		echo $output; 
 	}

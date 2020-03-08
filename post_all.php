@@ -69,7 +69,7 @@ if(!isset($_SESSION['user_id'])) {
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"> <a class="nav-link" href="index.php"><i class="fa fa-arrow-left"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="javascript: history.go(-1)"><i class="fa fa-arrow-left"></i></a> </li>
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item" style="margin-left: 10px; padding-top: 3px;">
@@ -114,8 +114,6 @@ if(!isset($_SESSION['user_id'])) {
                             <ul class="nav nav-tabs customtab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#post_gallery" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-gallery"></i></span> <span class="hidden-xs-down">Gallery</span></a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#orang" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Orang</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#post_video" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-layout-width-default"></i></span> <span class="hidden-xs-down">Video</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#post_dokumen" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-receipt"></i></span> <span class="hidden-xs-down">Dokumen</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -144,91 +142,7 @@ if(!isset($_SESSION['user_id'])) {
                                         
                                     </div>
                                 </div>
-                                <div class="tab-pane p-20" id="post_video" role="tabpanel">                                    
-                                    <div class="card-body" style="padding: 9px;">
-                                        <?php 
-                                        $query = "
-                                        SELECT * FROM postingan
-                                        JOIN user ON postingan.user_id = user.user_id
-                                        ORDER BY RAND()
-                                        ";
-                                        $statement = $connect->prepare($query);
-                                        $statement->execute();
-                                        $result = $statement->fetchAll();
-                                        $total_row = $statement->rowCount();
 
-                                        foreach($result as $row)
-                                        {
-                                            if($row['post_video'] != '')
-                                            {
-                                                echo '
-
-
-                                                <div class="row m-b-20">
-                                                    <div class="col-4">
-                                                        <video src="data/posting/video/'.$row["post_video"].'" class="img-fluid" alt="alb"></video>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <h5 class="card-title m-b-5">'.strip_tags(substr($row["post_konten"], 0, 25)).'</h5>
-                                                        <span class="text-muted">'.$row['nama_depan'].'  |  '.tgl_indo($row['post_tgl']).' </span>
-                                                    </div>
-                                                </div>
-                                                ';
-                                            }
-                                            else if($row['post_embed'] != '')
-                                            {
-                                                echo '
-
-                                                <div class="row m-b-20">
-                                                    <div class="col-4">
-                                                        <img src="https://img.youtube.com/vi/'.$row["post_embed"].'/hqdefault.jpg" alt="Product Image" style="width: 99px; height:auto;">
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <h5 class="card-title m-b-5">'.strip_tags(substr($row["post_konten"], 0, 25)).'</h5><span class="text-muted">'.$row['nama_depan'].'  |  '.tgl_indo($row['post_tgl']).'</span></div>
-                                                </div>
-                                            ';
-                                            }               
-                                        }
-                                    ?>
-                                    </div>
-                                </div>
-                                <div class="tab-pane p-20" id="post_dokumen" role="tabpanel">
-                                    <div class="card-body" style="padding: 9px;">
-                                        <?php 
-                                        $query = "
-                                        SELECT * FROM postingan
-                                        JOIN user ON postingan.user_id = user.user_id
-                                        ORDER By post_id DESC
-                                        ";
-                                        $statement = $connect->prepare($query);
-                                        $statement->execute();
-                                        $result = $statement->fetchAll();
-                                        $total_row = $statement->rowCount();
-
-                                        foreach($result as $row)
-                                        {
-                                            if($row['post_ebook'] != '')
-                                            {
-                                                echo '
-
-
-                                                <div class="row m-b-20">
-                                                    <div class="col-4">
-                                                        <a href="javascript:void()">
-                                                            <img src="data/akun/profil/'.$row["profile_image"].'" class="img-fluid" alt="alb" />
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <h5 class="card-title m-b-5">'.strip_tags(substr($row["post_konten"], 0, 25)).'</h5>
-                                                        <span class="text-muted">'.$row['nama_depan'].'  |  '.tgl_indo($row['post_tgl']).' </span>
-                                                    </div>
-                                                </div>
-                                                ';
-                                            }            
-                                        }
-                                    ?>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -264,7 +178,7 @@ if(!isset($_SESSION['user_id'])) {
                     <a href="post_all.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-search" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
                 <div class="col-3" style="padding: 10px">
-                    <a href="hashtag.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+                    <a href="pencarian_posting.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
                 </div>
                 <div class="col-3" style="padding: 10px">
                     <a href="pesan/index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
