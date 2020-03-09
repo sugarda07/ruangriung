@@ -72,19 +72,12 @@ if(!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#nilai" role="tab"><span class="hidden-sm-up"><i class="fa fa-star"></i></span> <span class="hidden-xs-down">Nilai</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#materi" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Materi</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#materi" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Materi</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#nilai" role="tab"><span class="hidden-sm-up"><i class="fa fa-star"></i></span> <span class="hidden-xs-down">Nilai</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="nilai" role="tabpanel">
-                                    <div class="card">
-                                        <div class="card-body" id="data_penilaian">
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="materi" role="tabpanel">
+                                <div class="tab-pane active" id="materi" role="tabpanel">
                                     <div class="card" style="margin-bottom: 5px;">
                                         <div class="card-body" style="padding: 9px;">
                                             <div class="input-group">
@@ -94,7 +87,16 @@ if(!isset($_SESSION['user_id'])) {
                                         </div>
                                     </div>
                                     <div class="card">
+                                        <div class="card-body" id="data_materi" style="padding: 9px;">
 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="nilai" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body" id="data_penilaian">
+                                            
+                                        </div>
                                     </div>
                                 </div>
 
@@ -143,6 +145,7 @@ if(!isset($_SESSION['user_id'])) {
     <!-- Sweet-Alert  -->
     <script src="assets/node_modules/sweetalert/sweetalert.min.js"></script>
     <script src="assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
+    <script src="assets/node_modules/datatables/jquery.dataTables.min.js"></script>
 </body>
 
 
@@ -301,6 +304,22 @@ $(document).ready(function(){
  });
  
 
+
+    load_data_materi();
+
+    function load_data_materi()
+    {
+      var proses = 'load_data_materi';
+      $.ajax({
+          url:"proses.php",
+          method:"POST",
+          data:{proses:proses},
+          success:function(data)
+          {
+              $('#data_materi').html(data);
+          }
+      });
+    }
 
 });
 </script>

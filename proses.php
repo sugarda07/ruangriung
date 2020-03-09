@@ -1112,6 +1112,50 @@ if(isset($_POST['proses']))
 
 
 
+	if($_POST['proses'] == 'load_data_materi')
+	{
+		$query = "
+		  SELECT * FROM materi
+		  INNER JOIN kelas ON kelas.kelas_id = materi.materi_kelas_id
+		  INNER JOIN user ON user.kelas = kelas.kelas_id
+		  WHERE user.user_id = '".$_SESSION['user_id']."' AND user.kelas=kelas.kelas_id
+		  ORDER BY materi.materi_id DESC
+		  ";
+
+		  $statement = $connect->prepare($query);
+
+		  $statement->execute();
+
+		  $result = $statement->fetchAll();
+		  $output ='';
+
+		  foreach($result as $row)
+		  {
+		    $output	.= '
+                <div id="accordion1" role="tablist" aria-multiselectable="true">
+                    <div class="card m-b-0">
+                        <div class="card-header" role="tab" id="headingOne1" style="padding-left: 10px;padding-right: 10px;">
+                            <h5 class="mb-0">
+                            <a class="link collapsed" data-toggle="collapse" data-parent="#accordion1" href="#'.$row['materi_id'].'" aria-expanded="false" aria-controls="collapseOne">
+                            	'.$row['materi_nama'].' <small class="text-muted">'.tgl_ago($row["materi_tgl"]).'</small>
+                            </a>
+                          </h5>
+                        </div>
+                        <div id="'.$row['materi_id'].'" class="collapse" role="tabpanel" aria-labelledby="headingOne1" style="">
+                            <div class="card-body">                            	
+                                '.$row['materi_data'].'
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ';
+		}		
+		echo $output;
+	}
+
+
+
+
 
 }
 ?>

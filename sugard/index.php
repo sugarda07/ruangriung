@@ -106,6 +106,7 @@ if(!isset($_SESSION['id_admin'])) {
                         <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Home</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="?admin=kelas" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Kelas</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="?admin=user_list" aria-expanded="false"><i class="ti-search"></i><span class="hide-menu">Manajemen User</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="?admin=materi_list" aria-expanded="false"><i class="ti-image"></i><span class="hide-menu">Materi</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="?admin=post_list" aria-expanded="false"><i class="ti-image"></i><span class="hide-menu">Postingan</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="?admin=vote_list" aria-expanded="false"><i class="ti-image"></i><span class="hide-menu">Voting</span></a></li>
                     </ul>
@@ -124,6 +125,8 @@ if(!isset($_SESSION['id_admin'])) {
                 include "kelas.php";
             } else if(@$_GET['admin'] == 'user_list') {
                 include "user_list.php";
+            } else if(@$_GET['admin'] == 'materi_list') {
+                include "materi_list.php";
             } else if(@$_GET['admin'] == 'post_list') {
                 include "post_list.php";
             } else if(@$_GET['admin'] == 'vote_list') {
@@ -267,6 +270,19 @@ if(!isset($_SESSION['id_admin'])) {
          });
 
 
+
+         materi_data();
+
+          function materi_data()
+          {
+            $.ajax({
+              url:"materi_data.php",
+              method:"POST",
+              success:function(data){
+                $('#data_materi').html(data);
+              }
+            })
+          }
 
 
         kelas_data();

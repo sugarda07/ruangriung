@@ -6,7 +6,7 @@ include('../function.php');
 session_start();
 
 $query = "
-SELECT * FROM user INNER JOIN kelas ON kelas.kelas_id=user.kelas INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
+SELECT * FROM user
 ";
 
 $statement = $connect->prepare($query);
@@ -43,12 +43,21 @@ foreach($result as $row)
 	{
 		$status = '<span class="label label-danger">Offline</span>';
 	}
+		$sekolah_nama = '';
+	 if($row['kelas'] == '')
+        {
+          $sekolah_nama = '<em style="color: #d1d6da;">Nama Sekolah belum diatur</em>';
+        }
+        else
+        {
+          $sekolah_nama = ''.get_sekolah($connect, $row["user_id"]).'';
+        }
 	$output .= '
 	<tr>
 		<td>'.$row['nama_depan'].'</td>
 		<td>'.$row['email'].'</td>
 		<td>'.$row['password'].'</td>
-		<td>'.$row['sekolah_nama'].'</td>
+		<td>'.$sekolah_nama.'</td>
 		<td>'.$status.'</td>
 		<td>Aksi</td>
 	</tr>

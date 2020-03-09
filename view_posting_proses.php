@@ -543,7 +543,13 @@ if(isset($_POST['proses']))
                     <input type="text" name="no_hp" id="no_hp" value="'.strip_tags($row["no_hp"]).'" class="form-control" placeholder="Nomor Handphone">
                   </div>
                   <div class="form-group" style="margin-bottom: 15px;">
-                    <textarea name="alamat" id="alamat" row="5" class="form-control" placeholder="Copy lokasi dari Google Map">'.strip_tags($row["alamat"]).'</textarea>
+                      <select class="form-control" name="kelas" id="kelas"> 
+                        <option label="-- Pilih Sekolah, Jurusan, Kelas --"></option>
+                          '.get_kelas($connect).'
+                      </select>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 15px;">
+                    <textarea name="alamat" id="alamat" row="5" class="form-control" placeholder="Alamat Copy lokasi dari Google Map">'.strip_tags($row["alamat"]).'</textarea>
                   </div>
                   <br><br><br>           
               <div class="modal-footer" style="bottom: 0; left: 0; position: fixed; right: 0; z-index: 1032; background-color: #ffffff; text-align: left;">

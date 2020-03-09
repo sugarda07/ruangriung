@@ -1,7 +1,7 @@
 <?php
 
 include('../koneksi.php');
-
+include('../function.php');
 session_start();
 
 $query = "
@@ -21,12 +21,12 @@ $output = '
 <table id="post_datatabel" class="table table-bordered table-striped">
 	<thead>
 		<tr>
-			<th width="">PostId</td>
-			<th width="">Username</td>
-			<th width="">Konten</td>
-			<th width="">Vote</td>
-			<th width="">Vote</td>
-			<th width="">Tanggal</td>
+			<th width="5%">PostId</td>
+			<th width="25%">Username</td>
+			<th width="15%">Konten</td>
+			<th width="20%">Vote</td>
+			<th width="20%">Vote</td>
+			<th width="15%">Tanggal</td>
 		</tr>
 	</thead> 
 ';
@@ -55,11 +55,11 @@ foreach($result as $row)
 	$output .= '
 	<tr>
 		<td>'.$row['post_id'].'</td>
-		<td><img src="../data/akun/profil/'.$row['profile_image'].'" style="float:left; margin-right:10px;" height="40" width="40"> <b>'.$row['username'].'</b><br>'.$row['email'].'</td>
-		<td><img src="../data/posting/images/'.$row['post_gambar'].'" style="float:left; margin-right:10px;" height="40" width="40"></td>
+		<td><img src="../data/akun/profil/'.$row['profile_image'].'" style="float:left; margin-right:10px;" height="40" width="40"> <b>'.$row['username'].'</b><br><small>'.$row['email'].'</small></td>
+		<td><img src="../data/posting/images/'.$row['post_gambar'].'" style="float:left; margin-right:10px;" height="50" width="50"></td>
 		<td><ul class="list-inline" data-rating="'.$rating.'" title="Average Rating - '.$rating.'"> '.$bintang.' </ul></td>
-		<td>Votes record: '.$ratingall.' ('.$rata2.') </td>
-		<td>'.$row['post_tgl'].'</td>
+		<td><small>Votes record: '.$ratingall.' ('.$rata2.') </small></td>
+		<td><small>'.tgl_indo($row['post_tgl']).'</small></td>
 	</tr>
 	';	
 }

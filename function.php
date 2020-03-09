@@ -37,7 +37,7 @@ function get_jumlah_siswa_kelas($connect, $kelas_id)
 function get_kelas($connect)
 {
   $query = "
-  SELECT kelas_id, kelas_nama, sekolah_nama, jurusan_kode FROM kelas
+  SELECT kelas_id, kelas_nama, sekolah_kode, jurusan_kode FROM kelas
   INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
   LEFT JOIN jurusan ON jurusan.jurusan_id=kelas.jurusan_id
   ";
@@ -47,7 +47,7 @@ function get_kelas($connect)
   $output = '';
   foreach($result as $row)
   {
-  $output .= '<option value="'.$row['kelas_id'].'">'.$row['sekolah_nama'].' || '.$row['jurusan_kode'].' || '.$row['kelas_nama'].'</option>';
+  $output .= '<option value="'.$row['kelas_id'].'">'.$row['sekolah_kode'].' - '.$row['jurusan_kode'].' - '.$row['kelas_nama'].'</option>';
   }
   return $output;
 }
