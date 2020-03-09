@@ -59,7 +59,7 @@ $statement->execute();
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-collapse">
                     <ul class="navbar-nav mr-auto">
-                    	<li class="nav-item"> <a class="nav-link" href="index.php"><i class="fa fa-arrow-left"></i></a> </li>
+                    	<li class="nav-item"> <a class="nav-link" href="javascript: history.go(-1)"><i class="fa fa-arrow-left"></i></a> </li>
 
                     </ul>
                     <ul class="navbar-nav my-lg-0" id="pengaturan">

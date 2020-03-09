@@ -34,7 +34,7 @@ SELECT * FROM user
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR sekolah LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   AND user_id != '.$_SESSION['user_id'].'
   ';
 }
@@ -77,6 +77,16 @@ if($total_data > 0)
     {
         $profile_image = '<span class="round" style="width: 45px; height: 45px; line-height: 45px;">'.substr($row["nama_depan"], 0,1).'</span>';
     }
+    $kelas = '';
+    if($row['kelas'] == '')
+    {
+      $kelas = '<em style="color: #d1d6da;">Nama Sekolah belum diatur</em>';
+    }
+    else
+    {
+      $kelas = ''.get_sekolah($connect, $row["user_id"]).'';
+    }
+
     if($row['user_id'] != $_SESSION["user_id"])
     {
     $output .= '
@@ -84,9 +94,9 @@ if($total_data > 0)
             <a href="view_profil.php?data='.$row['user_id'].'">
               <div class="user-img" style="margin-bottom: 0px;"> '.$profile_image.' </div>
               <div class="mail-contnet" style="width: 80%;">
-                <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
+                <h5>'.$row["nama_depan"].' '.$row["nama_belakang"].'<span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                 <span class="mail-desc">
-                '.$row["sekolah"].'
+                '.$kelas.'
                 </span>                 
               </div>
             </a>

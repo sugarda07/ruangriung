@@ -138,6 +138,26 @@ if(isset($_POST['proses']))
 			   		';
 			   	}
 
+			   	$tampil_like = '';
+				if(count_total_post_like($connect, $row["post_id"]) == '0')
+				{
+					$tampil_like = '';
+				}
+				else
+				{
+					$tampil_like = ''.count_total_post_like($connect, $row["post_id"]).' suka';
+				}
+
+					$tampil_komen = '';
+				if(count_comment($connect, $row["post_id"]) == '0')
+				{
+					$tampil_komen = '';
+				}
+				else
+				{
+					$tampil_komen = ''.count_comment($connect, $row["post_id"]).' komentar';
+				}
+
 				$output .= '
                         <div class="sl-item" style="margin-bottom: 5px;">
                             <div class="sl-left"> '.$profile_image.' </div>
@@ -147,11 +167,19 @@ if(isset($_POST['proses']))
                                     <div class="m-t-20 row" style="margin-top: 5px;">
                                     	'.$post_gambar.'
                                     </div>
-                                    <div class="like-comm m-t-20" style="margin-top: 5px; display:none;">
-                                    	'.$like_button.'
-                                    	<button type="button" class="btn btn-link post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="ti-comments" style="font-size: 18px;"></i> '.count_comment($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
-                                    	<button type="button" class="btn btn-link"> <i class="fa fa-retweet" style="font-size: 18px;"></i> </button>
-                                    	<!-- /.<p><span class="sl-date">suka</span></p>-->
+                                    <div class="like-comm m-t-20" style="margin-top: 5px;">
+                                    	<div class="row text-center justify-content-md-center" style="display:none;">
+	                                        <div class="col-4">
+	                                        	'.$like_button.'
+	                                        </div>
+	                                        <div class="col-4">
+	                                        	<button type="button" class="btn btn-link post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="fa fa-comments-o" style="font-size: 18px;"></i> '.count_comment($connect, $row["post_id"]).'</button>
+	                                        </div>
+	                                        <div class="col-4">
+	                                        	<button type="button" class="btn btn-link"> <i class="fa fa-retweet" style="font-size: 18px;"></i> </button>
+	                                        </div>
+                                      	</div>
+                                    	<p><span class="sl-date"><a href="view_posting.php?data='.$row['post_id'].'" class="link">'.$tampil_like.'  &nbsp;'.$tampil_komen.'</a></span></p>
                                     </div>
                                 </div>
                             </div>

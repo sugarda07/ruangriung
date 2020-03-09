@@ -109,14 +109,34 @@ if(isset($_POST['proses']))
         if(!is_user_has_already_like_content($connect, $_SESSION["user_id"], $row["post_id"]))
           {
             $like_button = '
-            <button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart-o" style="font-size: 18px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart-o" style="font-size: 18px;"></i> </button>
             ';
           }
           else
           {
             $like_button = '
-            <button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart text-danger" style="font-size: 18px;"></i> '.count_total_post_like($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-link like_button" data-post_id="'.$row["post_id"].'"><i class="fa fa-heart text-danger" style="font-size: 18px;"></i> </button>
             ';
+          }
+
+          $tampil_like = '';
+          if(count_total_post_like($connect, $row["post_id"]) == '0')
+          {
+            $tampil_like = '';
+          }
+          else
+          {
+            $tampil_like = ''.count_total_post_like($connect, $row["post_id"]).' suka';
+          }
+
+          $tampil_komen = '';
+          if(count_comment($connect, $row["post_id"]) == '0')
+          {
+            $tampil_komen = '';
+          }
+          else
+          {
+            $tampil_komen = ''.count_comment($connect, $row["post_id"]).' komentar';
           }
 
         $output .= '
@@ -129,10 +149,18 @@ if(isset($_POST['proses']))
                                       '.$post_gambar.'
                                     </div>
                                     <div class="like-comm m-t-20" style="margin-top: 10px;">
-                                      '.$like_button.'
-                                      <button type="button" class="btn btn-link post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="fa fa-comments-o" style="font-size: 18px;"></i> '.count_comment($connect, $row["post_id"]).'</button>&nbsp;&nbsp;
-                                      <button type="button" class="btn btn-link"> <i class="fa fa-retweet" style="font-size: 18px;"></i> </button>
-                                      <!-- /.<p><span class="sl-date">suka</span></p>-->
+                                      <div class="row text-center justify-content-md-center">
+                                        <div class="col-4">
+                                          '.$like_button.'
+                                        </div>
+                                        <div class="col-4">
+                                          <button type="button" class="btn btn-link post_comment" id="'.$row["post_id"].'" data-user_id="'.$row["user_id"].'"> <i class="fa fa-comments-o" style="font-size: 18px;"></i> '.count_comment($connect, $row["post_id"]).'</button>
+                                        </div>
+                                        <div class="col-4">
+                                          <button type="button" class="btn btn-link"> <i class="fa fa-retweet" style="font-size: 18px;"></i> </button>
+                                        </div>
+                                      </div>
+                                      <p><span class="sl-date">'.$tampil_like.'&nbsp;&nbsp;'.$tampil_komen.'</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -347,9 +375,7 @@ if(isset($_POST['proses']))
   {
     $query_profil = "
     SELECT * FROM user 
-    INNER JOIN kelas ON kelas.kelas_id=user.kelas
-    INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
-    WHERE user.user_id = '".$_POST["user_id"]."' OR username = '".$_POST["user_id"]."'
+    WHERE user.user_id = '".$_POST["user_id"]."'
     ";
 
     $statement = $connect->prepare($query_profil);
@@ -358,6 +384,15 @@ if(isset($_POST['proses']))
     $output ='';
     foreach($result as $row)
     {
+      if($row['kelas'] == '')
+        {
+          $sekolah_nama = '<em style="color: #d1d6da;">Nama Sekolah belum diatur</em>';
+        }
+        else
+        {
+          $sekolah_nama = ''.get_sekolah($connect, $row["user_id"]).'';
+        }
+
         if($row['user_id'] != $_SESSION['user_id'])
         {
           $fotoprofil = '';
@@ -369,11 +404,12 @@ if(isset($_POST['proses']))
           {
             $fotoprofil = '<img src="data/akun/profil/user.png" class="img-circle" width="200">';
           }
+
             $output .= '
             <div class="card-body">
                 <center class="m-t-30"> '.$fotoprofil.'
-                    <h4 class="card-title m-t-10">'.$row['nama_depan'].' '.strip_tags($row["nama_belakang"]).'</h4>
-                    <h6 class="card-subtitle">'.$row['kelas'].'</h6>
+                    <h4 class="card-title m-t-10">'.strip_tags($row['nama_depan']).' '.strip_tags($row["nama_belakang"]).'</h4>
+                    <h6 class="card-subtitle">'.$sekolah_nama.'</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4">
                           <font class="font-medium">'.count_pengikut($connect, $row["user_id"]).'</font>
@@ -439,225 +475,12 @@ if(isset($_POST['proses']))
                       <option value="P">Perempuan</option>
                       '; 
           }
-          $sekolah = '';
-      if($row['sekolah'] == 'SMK AL-HIKMAH TAROGONG KALER')
-      { 
-        $sekolah = '
-                  <option label="Pilih Sekolah"></option>
-                  <option selected>SMK AL-HIKMAH TAROGONG KALER</option>
-                  <option>SMK ASSHIDDIQIYAH GARUT</option>
-                  <option>SMK IKA KARTIKA GARUT</option>
-                  '; 
-      }
-      else if($row['sekolah'] == 'SMK ASSHIDDIQIYAH GARUT')
-      { 
-        $sekolah = '
-                  <option label="Pilih Sekolah"></option>
-                  <option>SMK AL-HIKMAH TAROGONG KALER</option>
-                  <option selected>SMK ASSHIDDIQIYAH GARUT</option>
-                  <option>SMK IKA KARTIKA GARUT</option>
-                  '; 
-      }
-      else if($row['sekolah'] == 'SMK IKA KARTIKA GARUT')
-      {
-        $sekolah = '
-                  <option label="Pilih Sekolah"></option>
-                  <option>SMK AL-HIKMAH TAROGONG KALER</option>
-                  <option>SMK ASSHIDDIQIYAH GARUT</option>
-                  <option selected>SMK IKA KARTIKA GARUT</option>
-                  '; 
-      }
-      else
-      {
-        $sekolah = '
-                  <option label="Pilih Sekolah"></option>
-                  <option>SMK AL-HIKMAH TAROGONG KALER</option>
-                  <option>SMK ASSHIDDIQIYAH GARUT</option>
-                  <option>SMK IKA KARTIKA GARUT</option>
-                  '; 
-      }
-      $kelas = '';
-      if($row['kelas'] == '10 BDP-1')
-      { 
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option selected>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '10 BDP-2')
-      { 
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option selected>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '10 TKJ')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option selected>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '10 OTKP')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option selected>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '11 BDP')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option selected>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '11 OTKP')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option selected>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '11 TKJ')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option selected>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '12 BDP')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option selected>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '12 OTKP')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option selected>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
-      else if($row['kelas'] == '12 TKJ')
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option selected>12 TKJ</option>
-                  '; 
-      }
-      else
-      {
-        $kelas = '
-                  <option label="Pilih Kelas"></option>
-                  <option>10 BDP-1</option>
-                  <option>10 BDP-2</option>
-                  <option>10 OTKP</option>
-                  <option>10 TKJ</option>
-                  <option>11 BDP</option>
-                  <option>11 OTKP</option>
-                  <option>11 TKJ</option>
-                  <option>12 BDP</option>
-                  <option>12 OTKP</option>
-                  <option>12 TKJ</option>
-                  '; 
-      }
+         
           $output .= '
           <div class="card-body">
                 <center class="m-t-30"> '.$fotoprofil.'
                     <h4 class="card-title m-t-10">'.$row['nama_depan'].' '.strip_tags($row["nama_belakang"]).'</h4>
-                    <h6 class="card-subtitle">'.$row['sekolah_nama'].'</h6>
+                    <h6 class="card-subtitle">'.$sekolah_nama.'</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4">
                           <font class="font-medium">'.count_pengikut($connect, $row["user_id"]).'</font>
@@ -1079,14 +902,13 @@ if(isset($_POST['proses']))
       ':tmp_lahir'      =>  $_POST["tmp_lahir"],
       ':tgl_lahir'      =>  $_POST["tgl_lahir"],
       ':no_hp'          =>  $_POST["no_hp"],
-      ':sekolah'        =>  $_POST["sekolah"],
       ':kelas'          =>  $_POST["kelas"],
       ':alamat'         =>  $_POST["alamat"],
       ':user_id'        =>  $_SESSION["user_id"]
     );
 
   $query = '
-  UPDATE user SET nama_depan = :nama_depan, nama_belakang = :nama_belakang, jenis_kelamin = :jenis_kelamin, tmp_lahir = :tmp_lahir, tgl_lahir = :tgl_lahir, no_hp = :no_hp, sekolah = :sekolah, alamat = :alamat, kelas = :kelas WHERE user_id = :user_id
+  UPDATE user SET nama_depan = :nama_depan, nama_belakang = :nama_belakang, jenis_kelamin = :jenis_kelamin, tmp_lahir = :tmp_lahir, tgl_lahir = :tgl_lahir, no_hp = :no_hp, alamat = :alamat, kelas = :kelas WHERE user_id = :user_id
   ';
    
     $statement = $connect->prepare($query);
@@ -1164,7 +986,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                   <span class="mail-desc">
-                    '.$row["sekolah"].'
+                    '.get_sekolah($connect, $row["user_id"]).'
                   </span>                 
               </div>
           </a>';
@@ -1177,7 +999,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right"> </span></h5>
                   <span class="mail-desc">
-                    '.$row["sekolah"].'
+                    '.get_sekolah($connect, $row["user_id"]).'
                   </span>                 
               </div>
           </a>';
@@ -1219,7 +1041,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                   <span class="mail-desc">
-                    '.$row["sekolah"].'
+                    '.get_sekolah($connect, $row["user_id"]).'
                   </span>                 
               </div>
           </a>';
@@ -1232,7 +1054,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right"> </span></h5>
                   <span class="mail-desc">
-                    '.$row["sekolah"].'
+                    '.get_sekolah($connect, $row["user_id"]).'
                   </span>                 
               </div>
           </a>';

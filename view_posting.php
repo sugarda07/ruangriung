@@ -36,7 +36,7 @@ $statement->execute();
 </head>
 
 
-<body class="skin-purple fixed-layout single-column card-no-border fix-sidebar">
+<body class="skin-purple fixed-layout">
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
@@ -48,7 +48,7 @@ $statement->execute();
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-collapse">
                     <ul class="navbar-nav mr-auto">
-                    	<li class="nav-item"> <a class="nav-link" href="index.php"><i class="fa fa-arrow-left"></i></a> </li>
+                    	<li class="nav-item"> <a class="nav-link" href="javascript: history.go(-1)"><i class="fa fa-arrow-left"></i></a> </li>
 
                     </ul>
                     <ul class="navbar-nav my-lg-0">
@@ -60,7 +60,7 @@ $statement->execute();
         <div class="page-wrapper" style="background-color: white;">
             <div class="container-fluid" style="padding: 5px;">
                 <div class="row">
-                    <div class="col-lg-12 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
+                    <div class="col-lg-6 col-xlg-9 col-md-7">
                     	<div class="card">
 	                        <div class="card-body" style="padding: 9px;">
                               <div class="profiletimeline" id="view_posting">

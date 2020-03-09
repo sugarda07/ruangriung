@@ -1,6 +1,24 @@
 <?php
 
 
+function get_sekolah($connect, $user_id)
+{
+  $query = "
+  SELECT * FROM user 
+  INNER JOIN kelas ON kelas.kelas_id=user.kelas
+  INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
+  WHERE user.user_id = '".$user_id."'
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  $result = $statement->fetchAll();
+  foreach($result as $row)
+  {
+    return $row["sekolah_nama"];
+  }
+}
+
+
 function get_jumlah_siswa_kelas($connect, $kelas_id)
 {
   $query = "
@@ -258,6 +276,7 @@ function Get_user_id($connect, $user_id)
   return $row["user_id"];
   }
 }
+
 
 function make_follow_button($connect, $sender_id, $receiver_id)
 {
