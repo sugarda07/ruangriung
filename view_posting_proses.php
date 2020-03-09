@@ -935,8 +935,7 @@ if(isset($_POST['proses']))
         <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.Get_profile_image($connect, $_SESSION["user_id"]).' <span class="hidden-md-down"> '.Get_nama_user($connect, $_SESSION["user_id"]).' &nbsp;<i class="fa fa-angle-down"></i></span> </a>
         <div class="dropdown-menu dropdown-menu-right animated flipInY">
             <a href="javascript:void(0)" class="dropdown-item" style="padding-top: 0px; padding-bottom: 0px;"><i class="ti-user"></i><label for="upload_fotoprofil">&nbsp; Ganti Foto Profil </label></a>
-            <a href="javascript:void(0)" class="dropdown-item"><i class="ti-image"></i>&nbsp; Ganti Background</a>
-            <a href="javascript:void(0)" class="dropdown-item tombol_sekolahModal"><i class="mdi mdi-projector-screen"></i>&nbsp; Sekolah</a>
+            <a href="javascript:void(0)" class="dropdown-item tombol_sekolahModal"><i class="fa fa-institution"></i>&nbsp; Sekolah</a>
             <a href="javascript:void(0)" class="dropdown-item akunModal"><i class="mdi mdi-account-key"></i>&nbsp; Pengaturan Akun</a>
             <div class="dropdown-divider"></div>
             <a href="logout.php" class="dropdown-item"><i class="fa fa-power-off"></i>&nbsp; Logout</a>
