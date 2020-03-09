@@ -1,11 +1,12 @@
 <?php
 
-include('../inc/koneksi.php');
+include('../koneksi.php');
+include('../function.php');
 
 session_start();
 
 $query = "
-SELECT * FROM user  
+SELECT * FROM user INNER JOIN kelas ON kelas.kelas_id=user.kelas INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
 ";
 
 $statement = $connect->prepare($query);
@@ -18,8 +19,9 @@ $output = '
 <table id="user_datatabel" class="table table-bordered table-striped">
 	<thead>
 		<tr>
-			<th width="">Username</td>
-			<th width="">email</td>
+			<th width="">Nama</td>
+			<th width="">Email</td>
+			<th width="">Password</td>
 			<th width="">Sekolah</td>
 			<th width="">Status</td>
 			<th width="">Action</td>
@@ -43,9 +45,10 @@ foreach($result as $row)
 	}
 	$output .= '
 	<tr>
-		<td>'.$row['username'].'</td>
+		<td>'.$row['nama_depan'].'</td>
 		<td>'.$row['email'].'</td>
-		<td>'.$row['sekolah'].'</td>
+		<td>'.$row['password'].'</td>
+		<td>'.$row['sekolah_nama'].'</td>
 		<td>'.$status.'</td>
 		<td>Aksi</td>
 	</tr>

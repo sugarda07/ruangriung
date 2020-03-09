@@ -34,7 +34,7 @@ SELECT * FROM user
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR email LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
+  WHERE nama_depan LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" OR sekolah LIKE "%'.str_replace(' ', '%', $_POST['query']).'%"
   AND user_id != '.$_SESSION['user_id'].'
   ';
 }

@@ -156,7 +156,7 @@ if(isset($_POST['login']))
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input class="form-control" name="password" id="password" type="password" placeholder="Password" required data-parsley-length="[6, 16]" data-parsley-trigger="keyup">
+                            <input class="form-control" name="password" id="password" type="password" placeholder="Password" required data-parsley-length="[4, 16]" data-parsley-trigger="keyup">
                         </div>
                     </div>
                     <div class="form-group row">

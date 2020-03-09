@@ -347,6 +347,8 @@ if(isset($_POST['proses']))
   {
     $query_profil = "
     SELECT * FROM user 
+    INNER JOIN kelas ON kelas.kelas_id=user.kelas
+    INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
     WHERE user.user_id = '".$_POST["user_id"]."' OR username = '".$_POST["user_id"]."'
     ";
 
@@ -371,7 +373,7 @@ if(isset($_POST['proses']))
             <div class="card-body">
                 <center class="m-t-30"> '.$fotoprofil.'
                     <h4 class="card-title m-t-10">'.$row['nama_depan'].' '.strip_tags($row["nama_belakang"]).'</h4>
-                    <h6 class="card-subtitle">'.$row['sekolah'].'</h6>
+                    <h6 class="card-subtitle">'.$row['kelas'].'</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4">
                           <font class="font-medium">'.count_pengikut($connect, $row["user_id"]).'</font>
@@ -655,7 +657,7 @@ if(isset($_POST['proses']))
           <div class="card-body">
                 <center class="m-t-30"> '.$fotoprofil.'
                     <h4 class="card-title m-t-10">'.$row['nama_depan'].' '.strip_tags($row["nama_belakang"]).'</h4>
-                    <h6 class="card-subtitle">'.$row['sekolah'].'</h6>
+                    <h6 class="card-subtitle">'.$row['sekolah_nama'].'</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4">
                           <font class="font-medium">'.count_pengikut($connect, $row["user_id"]).'</font>
@@ -743,14 +745,9 @@ if(isset($_POST['proses']))
           <div class="modal-body">
             <div class="form-group" style="margin-bottom: 15px;">
             <label style="margin-bottom: 0px;">Nama Sekolah</label>
-                <select class="form-control" name="sekolah" id="sekolah" value="'.strip_tags($row["sekolah"]).'">                    
-                    '.$sekolah.'
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom: 15px;">
-            <label style="margin-bottom: 0px;">Nama Kelas</label>
-                <select class="form-control" name="kelas" id="kelas" value="'.strip_tags($row["kelas"]).'">                    
-                    '.$kelas.'
+                <select class="form-control" name="kelas" id="kelas"> 
+                  <option label="Pilih Kelas">--Pilih Kelas--</option>
+                    '.get_kelas($connect).'
                 </select>
             </div>
           </div>        
@@ -1126,12 +1123,11 @@ if(isset($_POST['proses']))
   if($_POST['proses'] == 'proses_data_sekolah')
   {
     $data = array(
-      ':sekolah'        =>  $_POST["sekolah"],
       ':kelas'          =>  $_POST["kelas"],
       ':user_id'        =>  $_SESSION["user_id"]
     );
     $query = '
-    UPDATE user SET sekolah = :sekolah, kelas = :kelas WHERE user_id = :user_id
+    UPDATE user SET kelas = :kelas WHERE user_id = :user_id
     ';     
     $statement = $connect->prepare($query);
     $statement->execute($data);
@@ -1168,7 +1164,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                   <span class="mail-desc">
-                    '.$row["follower_number"].' Pengikut
+                    '.$row["sekolah"].'
                   </span>                 
               </div>
           </a>';
@@ -1181,7 +1177,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right"> </span></h5>
                   <span class="mail-desc">
-                    '.$row["follower_number"].' Pengikut
+                    '.$row["sekolah"].'
                   </span>                 
               </div>
           </a>';
@@ -1223,7 +1219,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right">'.make_follow_button_list($connect, $row["user_id"], $_SESSION["user_id"]).'</span></h5>
                   <span class="mail-desc">
-                    '.$row["follower_number"].' Pengikut
+                    '.$row["sekolah"].'
                   </span>                 
               </div>
           </a>';
@@ -1236,7 +1232,7 @@ if(isset($_POST['proses']))
               <div class="mail-contnet" style="width: 80%;">
                   <h5>'.$row["nama_depan"].' <span class="time pull-right"> </span></h5>
                   <span class="mail-desc">
-                    '.$row["follower_number"].' Pengikut
+                    '.$row["sekolah"].'
                   </span>                 
               </div>
           </a>';

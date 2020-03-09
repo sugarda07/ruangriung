@@ -63,7 +63,7 @@ if(!isset($_SESSION['user_id'])) {
                 </div>
             </nav>
         </header>
-        <div class="page-wrapper">
+        <div class="page-wrapper" style="background-color: white;">
             <div class="container-fluid" style="padding: 5px;">
                 <!-- Row -->
                 <div class="row">
@@ -72,20 +72,28 @@ if(!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#konten" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Postingan</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#nilai" role="tab"><span class="hidden-sm-up"><i class="fa fa-star"></i></span> <span class="hidden-xs-down">Nilai</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#materi" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Materi</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="konten" role="tabpanel">
+                                <div class="tab-pane active" id="nilai" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body" id="data_penilaian">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="materi" role="tabpanel">
                                     <div class="card" style="margin-bottom: 5px;">
                                         <div class="card-body" style="padding: 9px;">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="search_box" id="search_box" placeholder="Cari">
+                                                <input type="text" class="form-control" name="cari_materi" id="cari_materi" placeholder="Cari">
                                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card" id="dynamic_content">
+                                    <div class="card">
 
                                     </div>
                                 </div>
@@ -140,34 +148,6 @@ if(!isset($_SESSION['user_id'])) {
 
 <script>
 $(document).ready(function(){  
-
-    load_data(1);
-
-    function load_data(page, query = '')
-    {
-      $.ajax({
-        url:"live_pencarian.php",
-        method:"POST",
-        data:{page:page, query:query},
-        success:function(data)
-        {
-          $('#dynamic_content').html(data);
-        }
-      });
-    }
-
-    $(document).on('click', '.page-link', function(){
-      var page = $(this).data('page_number');
-      var query = $('#search_box').val();
-      load_data(page, query);
-    });
-
-    $('#search_box').keyup(function(){
-      var query = $('#search_box').val();
-      load_data(1, query);
-    });
-
-
 
 
     setInterval(function(){   
@@ -268,6 +248,58 @@ function checknotifchat() {
     }
 };
 
+
+
+});
+</script>
+
+<script>
+$(document).ready(function(){
+ 
+ data_penilaian();
+ 
+ function data_penilaian()
+ {
+  $.ajax({
+   url:"rating.php",
+   method:"POST",
+   success:function(data)
+   {
+    $('#data_penilaian').html(data);
+   }
+  });
+ }
+ 
+ $(document).on('mouseenter', '.rating', function(){
+  var index = $(this).data("index");
+  var post_id = $(this).data('post_id');
+  remove_background(post_id);
+  for(var count = 1; count<=index; count++)
+  {
+   $('#'+post_id+'-'+count).css('color', '#ffcc00');
+  }
+ });
+ 
+ function remove_background(post_id)
+ {
+  for(var count = 1; count <= 5; count++)
+  {
+   $('#'+post_id+'-'+count).css('color', '#ccc');
+  }
+ }
+ 
+ $(document).on('mouseleave', '.rating', function(){
+  var index = $(this).data("index");
+  var post_id = $(this).data('post_id');
+  var rating = $(this).data("rating");
+  remove_background(post_id);
+  //alert(rating);
+  for(var count = 1; count<=rating; count++)
+  {
+   $('#'+post_id+'-'+count).css('color', '#ffcc00');
+  }
+ });
+ 
 
 
 });

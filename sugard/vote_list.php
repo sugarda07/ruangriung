@@ -19,7 +19,7 @@
           <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Data Pengguna</h4>
-                    <div class="table-responsive m-t-40" id="user_data">
+                    <div class="table-responsive m-t-40" id="vote_data">
 
                     </div>
                 </div>

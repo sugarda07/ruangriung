@@ -114,6 +114,7 @@ if(!isset($_SESSION['user_id'])) {
                             <ul class="nav nav-tabs customtab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#post_gallery" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-gallery"></i></span> <span class="hidden-xs-down">Gallery</span></a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#orang" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Orang</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#konten" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Postingan</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -142,7 +143,19 @@ if(!isset($_SESSION['user_id'])) {
                                         
                                     </div>
                                 </div>
+                                <div class="tab-pane" id="konten" role="tabpanel">
+                                    <div class="card" style="margin-bottom: 5px;">
+                                        <div class="card-body" style="padding: 9px;">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="search_box" id="search_box" placeholder="Cari">
+                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card" id="dynamic_content">
 
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -292,6 +305,33 @@ $(document).ready(function(){
     $('#cari_kontak').keyup(function(){
       var query = $('#cari_kontak').val();
       load_kontak(1, query);
+    });
+
+
+    load_data(1);
+
+    function load_data(page, query = '')
+    {
+      $.ajax({
+        url:"live_pencarian.php",
+        method:"POST",
+        data:{page:page, query:query},
+        success:function(data)
+        {
+          $('#dynamic_content').html(data);
+        }
+      });
+    }
+
+    $(document).on('click', '.page-link', function(){
+      var page = $(this).data('page_number');
+      var query = $('#search_box').val();
+      load_data(page, query);
+    });
+
+    $('#search_box').keyup(function(){
+      var query = $('#search_box').val();
+      load_data(1, query);
     });
 
 

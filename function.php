@@ -1,6 +1,61 @@
 <?php
 
 
+function get_jumlah_siswa_kelas($connect, $kelas_id)
+{
+  $query = "
+  SELECT * FROM user
+  INNER JOIN kelas ON kelas.kelas_id=user.kelas
+  INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
+  INNER JOIN jurusan ON jurusan.jurusan_id=kelas.jurusan_id
+  WHERE user.kelas = '".$kelas_id."'
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  return $statement->rowCount();
+}
+
+
+function get_kelas($connect)
+{
+  $query = "
+  SELECT kelas_id, kelas_nama, sekolah_nama, jurusan_kode FROM kelas
+  INNER JOIN sekolah ON sekolah.sekolah_id=kelas.sekolah_id
+  LEFT JOIN jurusan ON jurusan.jurusan_id=kelas.jurusan_id
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  $result = $statement->fetchAll();
+  $output = '';
+  foreach($result as $row)
+  {
+  $output .= '<option value="'.$row['kelas_id'].'">'.$row['sekolah_nama'].' || '.$row['jurusan_kode'].' || '.$row['kelas_nama'].'</option>';
+  }
+  return $output;
+}
+
+
+function count_postinganAll($connect)
+{
+  $query = "
+  SELECT * FROM postingan
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  return $statement->rowCount();
+}
+
+function count_pengguna($connect)
+{
+  $query = "
+  SELECT * FROM user
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
+  return $statement->rowCount();
+}
+
+
 function listNotifchat($user_id, $connect)
   {
   try
