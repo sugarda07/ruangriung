@@ -1137,7 +1137,7 @@ if(isset($_POST['proses']))
                         <div class="card-header" role="tab" id="headingOne1" style="padding-left: 10px;padding-right: 10px;">
                             <h5 class="mb-0">
                             <a class="link collapsed" data-toggle="collapse" data-parent="#accordion1" href="#'.$row['materi_id'].'" aria-expanded="false" aria-controls="collapseOne">
-                            	'.$row['materi_nama'].' <small class="text-muted">'.tgl_ago($row["materi_tgl"]).'</small>
+                            	'.$row['materi_nama'].' <small class="text-muted">'.tgl_indo($row["materi_tgl"]).'</small>
                             </a>
                           </h5>
                         </div>

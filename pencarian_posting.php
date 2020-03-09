@@ -72,7 +72,7 @@ if(!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#materi" role="tab"><span class="hidden-sm-up"><i class="ti-tag"></i></span> <span class="hidden-xs-down">Materi</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#materi" role="tab"><span class="hidden-sm-up"><i class="fa fa-graduation-cap"></i></span> <span class="hidden-xs-down">Materi</span></a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#nilai" role="tab"><span class="hidden-sm-up"><i class="fa fa-star"></i></span> <span class="hidden-xs-down">Nilai</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
