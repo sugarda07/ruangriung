@@ -135,7 +135,7 @@ if(!isset($_SESSION['user_id'])) {
                 <div class="row">
                     <!-- Column -->
                     <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
-                        <div class="card" style="margin-bottom: 50px;margin-top: 5px;">
+                        <div class="card" style="margin-bottom: 65px;margin-top: 5px;">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#post_gallery" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-gallery"></i></span> <span class="hidden-xs-down">Gallery</span></a> </li>
@@ -145,7 +145,7 @@ if(!isset($_SESSION['user_id'])) {
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane active" id="post_gallery" role="tabpanel">
-                                    <div class="p-20" style="padding: 9px;">
+                                    <div class="p-20" style="padding: 0px;">
                                         <div class="gallery-section">
                                             <div class="inner-width">
                                                 <div class="gallery" id="post_all_gallery">
