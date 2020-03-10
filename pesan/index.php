@@ -112,7 +112,7 @@ if(!isset($_SESSION['user_id'])) {
         <div class="page-wrapper" style="background-color: white;">
             <div class="container-fluid" style="padding: 5px;">
                 <div class="row">
-                    <div class="col-lg-12 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
+                    <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
                     	<div class="card">
 	                        <div class="card-body" style="padding: 9px;">
 	                            <div class="message-box">

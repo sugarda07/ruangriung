@@ -28,6 +28,8 @@ if(!isset($_SESSION['user_id'])) {
     <!-- Custom CSS -->
     <link href="assets/dist/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/magnific/css/style.css">
+    <link href="assets/dist/css/pages/other-pages.css" rel="stylesheet">
+    <link href="assets/dist/css/placeholder-loading.min.css" rel="stylesheet">
     <!--<link href="assets/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

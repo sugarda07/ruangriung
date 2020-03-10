@@ -91,7 +91,7 @@ if(!isset($_SESSION['user_id'])) {
                 <!-- Row -->
                 <div class="row">
                     <!-- Column -->
-                    <div class=col-12>
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
                         <div class="card">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
