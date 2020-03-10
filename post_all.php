@@ -38,7 +38,7 @@ if(!isset($_SESSION['user_id'])) {
 </head>
 
 
-<body class="skin-purple fixed-layout single-column card-no-border fix-sidebar">
+<body class="skin-purple fixed-layout">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -69,6 +69,7 @@ if(!isset($_SESSION['user_id'])) {
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav mr-auto">
+
                         <li class="nav-item"> <a class="nav-link" href="javascript: history.go(-1)"><i class="fa fa-arrow-left"></i></a> </li>
                         <!-- Search -->
                         <!-- ============================================================== -->
@@ -85,6 +86,29 @@ if(!isset($_SESSION['user_id'])) {
                 </div>
             </nav>
         </header>
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="user-pro"> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><?php echo Get_profile_image($connect, $_SESSION["user_id"]); ?><span class="hide-menu"><?php echo Get_nama_user($connect, $_SESSION["user_id"]); ?></span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="view_profil.php?data=<?php echo $_SESSION["user_id"]; ?>"><i class="ti-user"></i>&nbsp; My Profile</a></li>
+                                <li><a href="logout.php"><i class="fa fa-power-off"></i>&nbsp; Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-small-cap">--- MENU</li>
+                        <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Home</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="post_all.php" aria-expanded="false"><i class="ti-search"></i><span class="hide-menu">Cari</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="pencarian_posting.php" aria-expanded="false"><i class="ti-pencil-alt"></i><span class="hide-menu">Materi</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="pesan/index.php" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Pesan</span></a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -95,7 +119,7 @@ if(!isset($_SESSION['user_id'])) {
             <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
-            <div class="container-fluid" style="padding: 5px;">
+            <div class="container-fluid">
                 <!-- ============================================================== -->
                 <!-- Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->
@@ -106,10 +130,10 @@ if(!isset($_SESSION['user_id'])) {
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <!-- Row -->
-                <div class="row" style="margin-bottom: 40px;">
+                <div class="row">
                     <!-- Column -->
                     <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
-                        <div class="card">
+                        <div class="card" style="margin-bottom: 5px;margin-top: 5px;">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#post_gallery" role="tab" style="padding-left: 15px; padding-right: 15px;"><span class="hidden-sm-up"><i class="ti-gallery"></i></span> <span class="hidden-xs-down">Gallery</span></a> </li>

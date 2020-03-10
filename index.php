@@ -105,9 +105,8 @@ if(!isset($_SESSION['user_id'])) {
                         <li class="nav-small-cap">--- MENU</li>
                         <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Home</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="post_all.php" aria-expanded="false"><i class="ti-search"></i><span class="hide-menu">Cari</span></a></li>
-                        <li> <a class="waves-effect waves-dark" href="pencarian_posting.php" aria-expanded="false"><i class="ti-image"></i><span class="hide-menu">Postingan</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="pencarian_posting.php" aria-expanded="false"><i class="ti-pencil-alt"></i><span class="hide-menu">Materi</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="pesan/index.php" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Pesan</span></a></li>
-                        <li> <a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-pencil-alt"></i><span class="hide-menu">Artikel</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

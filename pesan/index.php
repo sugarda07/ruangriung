@@ -51,7 +51,7 @@ if(!isset($_SESSION['user_id'])) {
       }
     </style>
 
-<body class="skin-purple fixed-layout single-column card-no-border fix-sidebar">
+<body class="skin-purple fixed-layout">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -86,6 +86,29 @@ if(!isset($_SESSION['user_id'])) {
                 </div>
             </nav>
         </header>
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="user-pro"> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><?php echo Get_profile_image_pesan($connect, $_SESSION["user_id"]); ?><span class="hide-menu"><?php echo Get_nama_user($connect, $_SESSION["user_id"]); ?></span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="../view_profil.php?data=<?php echo $_SESSION["user_id"]; ?>"><i class="ti-user"></i>&nbsp; My Profile</a></li>
+                                <li><a href="../logout.php"><i class="fa fa-power-off"></i>&nbsp; Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-small-cap">--- MENU</li>
+                        <li> <a class="waves-effect waves-dark" href="../index.php" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Home</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="../post_all.php" aria-expanded="false"><i class="ti-search"></i><span class="hide-menu">Cari</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="../pencarian_posting.php" aria-expanded="false"><i class="ti-pencil-alt"></i><span class="hide-menu">Materi</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Pesan</span></a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
         <div class="page-wrapper" style="background-color: white;">
             <div class="container-fluid" style="padding: 5px;">
                 <div class="row">

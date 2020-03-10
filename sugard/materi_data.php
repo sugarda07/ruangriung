@@ -37,7 +37,7 @@ foreach($result as $row)
 	<tr>
 		<td>'.$row['materi_id'].'</td>
 		<td>'.$row['materi_nama'].'</td>
-		<td>'.$row['materi_data'].'</td>
+		<td>'.substr($row['materi_data'], 0, 160).'</td>
 		<td>'.$row['kelas_nama'].' '.$row['sekolah_nama'].'</td>
 		<td>'.tgl_indo($row['materi_tgl']).'</td>
 		<td>Aksi</td>
