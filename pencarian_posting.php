@@ -30,6 +30,7 @@ if(!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="assets/magnific/css/style.css">
     <link href="assets/dist/css/pages/other-pages.css" rel="stylesheet">
     <link href="assets/dist/css/placeholder-loading.min.css" rel="stylesheet">
+    <link href="assets/dist/css/pages/ui-bootstrap-page.css" rel="stylesheet">
     <!--<link href="assets/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -95,22 +96,14 @@ if(!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#materi" role="tab"><span class="hidden-sm-up"><i class="fa fa-graduation-cap"></i></span> <span class="hidden-xs-down">Materi</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#mapel" role="tab"><span class="hidden-sm-up"><i class="fa fa-graduation-cap"></i></span> <span class="hidden-xs-down">Mapel</span></a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#nilai" role="tab"><span class="hidden-sm-up"><i class="fa fa-star"></i></span> <span class="hidden-xs-down">Nilai</span></a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="materi" role="tabpanel">
-                                    <div class="card" style="margin-bottom: 5px;">
-                                        <div class="card-body" style="padding: 9px;">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="cari_materi" id="cari_materi" placeholder="Cari">
-                                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="tab-pane active" id="mapel" role="tabpanel">
                                     <div class="card">
-                                        <div class="card-body" id="data_materi" style="padding: 9px;">
+                                        <div class="card-body" id="data_mapel" style="padding: 9px;">
 
                                         </div>
                                     </div>
@@ -328,21 +321,35 @@ $(document).ready(function(){
  
 
 
-    load_data_materi();
+    load_data_mapel();
 
-    function load_data_materi()
+    function load_data_mapel()
     {
-      var proses = 'load_data_materi';
+      var proses = 'load_data_mapel';
       $.ajax({
           url:"proses.php",
           method:"POST",
           data:{proses:proses},
           success:function(data)
           {
-              $('#data_materi').html(data);
+              $('#data_mapel').html(data);
           }
       });
     }
+
+    $(document).on('click', '.tombol_view_materi', function(){
+        var mapel_id = $(this).data('mapel_id');
+        var proses = 'tampil_materi';
+        $.ajax({
+            url:"proses.php",
+            method:"POST",
+            data:{proses:proses, mapel_id:mapel_id},
+            success:function(data){
+                $('#view_list_materi'+mapel_id).html(data);
+            }
+        })
+        
+    });
 
 });
 </script>

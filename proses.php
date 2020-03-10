@@ -1112,14 +1112,16 @@ if(isset($_POST['proses']))
 
 
 
-	if($_POST['proses'] == 'load_data_materi')
+	
+	if($_POST['proses'] == 'load_data_mapel')
 	{
 		$query = "
-		  SELECT * FROM materi
+		  SELECT * FROM mapel
+		  INNER JOIN materi ON materi.materi_mapel_id = mapel.mapel_id
 		  INNER JOIN kelas ON kelas.kelas_id = materi.materi_kelas_id
 		  INNER JOIN user ON user.kelas = kelas.kelas_id
-		  WHERE user.user_id = '".$_SESSION['user_id']."' AND user.kelas=kelas.kelas_id
-		  ORDER BY materi.materi_id DESC
+		  WHERE mapel.mapel_id=materi.materi_mapel_id AND kelas.kelas_id=materi.materi_kelas_id AND kelas.kelas_id=user.kelas AND user.user_id = '".$_SESSION['user_id']."'
+		  GROUP BY mapel.mapel_id
 		  ";
 
 		  $statement = $connect->prepare($query);
@@ -1136,14 +1138,14 @@ if(isset($_POST['proses']))
                     <div class="card m-b-0">
                         <div class="card-header" role="tab" id="headingOne1" style="padding-left: 10px;padding-right: 10px;">
                             <h5 class="mb-0">
-                            <a class="link collapsed" data-toggle="collapse" data-parent="#accordion1" href="#'.$row['materi_id'].'" aria-expanded="false" aria-controls="collapseOne">
-                            	'.$row['materi_nama'].' <span class="pull-right"><small class="text-muted">'.tgl_indo($row["materi_tgl"]).'</small></span>
+                            <a class="link collapsed tombol_view_materi" data-toggle="collapse" data-parent="#accordion1" href="#'.$row['mapel_id'].'" aria-expanded="false" aria-controls="collapseOne" data-mapel_id="'.$row['mapel_id'].'">
+                            	'.$row['mapel_nama'].' <span class="pull-right"><small class="text-muted"></small></span>
                             </a>
                           </h5>
                         </div>
-                        <div id="'.$row['materi_id'].'" class="collapse" role="tabpanel" aria-labelledby="headingOne1" style="">
-                            <div class="card-body">                            	
-                                '.$row['materi_data'].'
+                        <div id="'.$row['mapel_id'].'" class="collapse" role="tabpanel" aria-labelledby="headingOne1" style="">
+                            <div class="card-body" id="view_list_materi'.$row['mapel_id'].'" style="padding-left: 5px;padding-right: 5px;padding-top: 5px;padding-bottom: 5px;">
+
                             </div>
                         </div>
                     </div>
@@ -1153,6 +1155,60 @@ if(isset($_POST['proses']))
 		echo $output;
 	}
 
+
+	if($_POST['proses'] == 'tampil_materi')
+	{
+		$query = "
+		  SELECT * FROM materi
+		  WHERE materi_mapel_id = '".$_POST["mapel_id"]."'
+		  ";
+
+		  $statement = $connect->prepare($query);
+
+		  $statement->execute();
+
+		  $result = $statement->fetchAll();
+		  $output ='<ul class="list-icons">';
+
+		  foreach($result as $row)
+		  {
+		    $output	.= '                
+                    <li>
+                    	<a href="view_materi.php?data='.$row['materi_id'].'"><i class="fa fa-check text-info"></i> '.$row['materi_nama'].'</a>
+                    </li>                
+            ';
+		}
+		$output .= '</ul>';	
+		echo $output;
+	}
+
+
+
+	if($_POST['proses'] == 'view_data_materi')
+	{
+		$query = "
+		  SELECT * FROM materi
+		  JOIN user ON user.user_id = materi.materi_user_id
+		  WHERE materi_id = '".$_POST['materi_id']."'
+		  ";
+
+		  $statement = $connect->prepare($query);
+
+		  $statement->execute();
+
+		  $result = $statement->fetchAll();
+		  $output ='';
+
+		  foreach($result as $row)
+		  {
+		    $output	.= '
+		    <h4 class="card-title">'.$row['materi_nama'].'</h4>
+            <h6 class="card-subtitle">'.tgl_ago($row['materi_tgl']).'  oleh:  '.$row['nama_depan'].' '.$row['nama_belakang'].'</h6>
+            <p class="text-justify">'.$row['materi_data'].'</p>
+            ';
+		}		
+		echo $output;
+	}
 
 
 
