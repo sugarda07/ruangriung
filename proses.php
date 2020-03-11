@@ -1160,7 +1160,10 @@ if(isset($_POST['proses']))
 	{
 		$query = "
 		  SELECT * FROM materi
-		  WHERE materi_mapel_id = '".$_POST["mapel_id"]."'
+		  INNER JOIN kelas ON kelas.kelas_id = materi.materi_kelas_id
+		  INNER JOIN user ON user.kelas=kelas.kelas_id
+		  WHERE  user.user_id='".$_SESSION["user_id"]."' AND materi_mapel_id = '".$_POST["mapel_id"]."'
+		  GROUP BY materi_id
 		  ";
 
 		  $statement = $connect->prepare($query);
