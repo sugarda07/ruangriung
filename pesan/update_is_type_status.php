@@ -1,20 +1,16 @@
 <?php
 
-//update_is_type_status.php
+include('../master/koneksi.php');
 
-include('../koneksi.php');
-include('../function.php');
+$exam = new Koneksi;
 
-session_start();
+$exam->user_session_private();
 
-$query = "
+$exam->query = "
 UPDATE login_details 
 SET is_type = '".$_POST["is_type"]."' 
 WHERE login_details_id = '".$_SESSION["login_details_id"]."'
 ";
-
-$statement = $connect->prepare($query);
-
-$statement->execute();
+$exam->execute_query();
 
 ?>

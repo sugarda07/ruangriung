@@ -1,10 +1,12 @@
 <?php
-include('../koneksi.php');
-include('../function.php');
-session_start();
-if(!isset($_SESSION['user_id'])) {
-  header("location:login.php");
-}
+
+//enroll_exam.php
+
+include('../master/koneksi.php');
+
+$exam = new Koneksi;
+
+$exam->user_session_private();
 
 ?>
 <!DOCTYPE html>
@@ -88,25 +90,7 @@ if(!isset($_SESSION['user_id'])) {
         </header>
         <aside class="left-sidebar">
             <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
-                        <li class="user-pro"> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><?php echo Get_profile_image_pesan($connect, $_SESSION["user_id"]); ?><span class="hide-menu"><?php echo Get_nama_user($connect, $_SESSION["user_id"]); ?></span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="../view_profil.php?data=<?php echo $_SESSION["user_id"]; ?>"><i class="ti-user"></i>&nbsp; My Profile</a></li>
-                                <li><a href="../logout.php"><i class="fa fa-power-off"></i>&nbsp; Logout</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-small-cap">--- MENU</li>
-                        <li> <a class="waves-effect waves-dark" href="../index.php" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Home</span></a></li>
-                        <li> <a class="waves-effect waves-dark" href="../post_all.php" aria-expanded="false"><i class="ti-search"></i><span class="hide-menu">Cari</span></a></li>
-                        <li> <a class="waves-effect waves-dark" href="../pencarian_posting.php" aria-expanded="false"><i class="ti-pencil-alt"></i><span class="hide-menu">Materi</span></a></li>
-                        <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Pesan</span></a></li>
-                    </ul>
-                </nav>
-                <!-- End Sidebar navigation -->
-            </div>
+
             <!-- End Sidebar scroll-->
         </aside>
         <div class="page-wrapper" style="background-color: white;">
@@ -135,7 +119,7 @@ if(!isset($_SESSION['user_id'])) {
               <a href="../post_all.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-search" style="font-size: 20px; color: #03a9f3;"></i></button></a>
             </div>
             <div class="col-3" style="padding: 10px">
-              <a href="../pencarian_posting.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
+              <a href="../materi.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="fa fa-heart-o" style="font-size: 20px; color: #03a9f3;"></i></button></a>
             </div>
             <div class="col-3" style="padding: 10px">
               <a href="index.php"><button type="button" class="btn btn-block btn-flat btn-link"><i class="ti-comments" style="font-size: 20px; color: #03a9f3;"></i></button></a>
@@ -173,48 +157,39 @@ if(!isset($_SESSION['user_id'])) {
     <script src="../assets/node_modules/sweetalert/sweetalert.min.js"></script>
     <script src="../assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
 </body>
-
-
-
-
-<script>
-  $(document).ready(function(){
-      
-    $('#cari_kontak').autocomplete({
-      source: "cari_kontak.php",
-      minLength: 1,
-      select: function(event, ui)
-      {
-        $('#cari_kontak').val(ui.item.value);
-      }
-    }).data('ui-autocomplete')._renderItem = function(ul, item){
-      return $("<li class='ui-autocomplete-row'></li>")
-        .data("item.autocomplete", item)
-        .append(item.label)
-        .appendTo(ul);
-    };
-
-  });
-</script>
+</html>
 
 <script>
 $(document).ready(function(){
 
-  setInterval(function(){
-    update_last_activity();
-    list_chat();
-    update_chat_history_data();
-  }, 5000);
+	setInterval(function(){
+		update_last_activity();
+		list_chat();
+		update_chat_history_data();
+	}, 5000);
+  
+	$('#cari_kontak').autocomplete({
+		source: "kontak_chat.php",
+		minLength: 1,
+		select: function(event, ui)
+		{
+			$('#cari_kontak').val(ui.item.value);
+		}
+	}).data('ui-autocomplete')._renderItem = function(ul, item){
+		return $("<li class='ui-autocomplete-row'></li>")
+		.data("item.autocomplete", item)
+		.append(item.label)
+		.appendTo(ul);
+	};
 
 	list_chat()
 
 	function list_chat()
     {
-     	var proses = 'list_chat';
      	$.ajax({
-          	url:'../proses.php',
+          	url:'../user_ajax_proses.php',
           	method:"POST",
-          	data:{proses:proses},
+          	data:{action:'list_chat', page:'chat'},
           	success:function(data)
           	{
             	$('#chat_list').html(data);
@@ -232,7 +207,6 @@ $(document).ready(function(){
             }
         })
     }
-
 
     function make_chat_dialog_box(to_user_id, to_user_name, to_foto)
     {
@@ -267,7 +241,7 @@ $(document).ready(function(){
         konten +=                       '<div class="card-body">';
         konten +=                           '<div class="chat-box">';
         konten +=                               '<ul class="chat-list chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';
-        konten +=                               fetch_user_chat_history(to_user_id);
+        konten +=                              fetch_user_chat_history(to_user_id);
         konten +=                               '</ul>';
         konten +=                            '</div>';
         konten +=                       '</div>';
@@ -289,239 +263,131 @@ $(document).ready(function(){
         $('#user_model_details').html(konten);
     }
 
-  $(document).on('click', '.start_chat', function(){
-    var to_user_id = $(this).data('touserid');
-    var to_user_name = $(this).data('tousername');
-    var to_foto = $(this).data('foto');
-    make_chat_dialog_box(to_user_id, to_user_name, to_foto);
+    $(document).on('click', '.start_chat', function(){
+		var to_user_id = $(this).data('touserid');
+		var to_user_name = $(this).data('tousername');
+		var to_foto = $(this).data('foto');
+		make_chat_dialog_box(to_user_id, to_user_name, to_foto);
 
-    $('#user_dialog_'+to_user_id).data('open');
-    $('html, body').animate({ scrollTop: 100000 }, 'fast');
-    document.getElementById('chat_message_'+to_user_id+'').focus();
-  });
+		$('#user_dialog_'+to_user_id).data('open');
+		$('html, body').animate({ scrollTop: 100000 }, 'fast');
+		document.getElementById('chat_message_'+to_user_id+'').focus();
+	});
 
-  $(document).on('click', '.send_chat', function(){
-    var to_user_id = $(this).attr('id');
-    var chat_message = $.trim($('#chat_message_'+to_user_id).val());
-    if(chat_message != '')
-    {
-      $.ajax({
-        url:"insert_chat.php",
-        method:"POST",
-        data:{to_user_id:to_user_id, chat_message:chat_message},
-        success:function(data)
-        {
-            $('#chat_message_'+to_user_id).val('');
-          $('#chat_history_'+to_user_id).html(data);
-          $('html, body').animate({ scrollTop: 100000 }, 'fast');
-          play_sound_send();
-          $('chat_message_'+to_user_id+'').focus();
-        }
-      })
-    }
-    else
-    {
-      $('chat_message_'+to_user_id+'').focus();
-    }
-  });
+	$(document).on('click', '.send_chat', function(){
+		var to_user_id = $(this).attr('id');
+		var chat_message = $.trim($('#chat_message_'+to_user_id).val());
+		if(chat_message != '')
+		{
+			$.ajax({
+				url:"insert_chat.php",
+				method:"POST",
+				data:{to_user_id:to_user_id, chat_message:chat_message},
+				success:function(data)
+				{
+					$('#chat_message_'+to_user_id).val('');
+					$('#chat_history_'+to_user_id).html(data);
+					$('html, body').animate({ scrollTop: 100000 }, 'fast');
+					play_sound_send();
+					$('chat_message_'+to_user_id+'').focus();
+				}
+			})
+		}
+		else
+		{
+			$('chat_message_'+to_user_id+'').focus();
+		}
+	});
 
-  function fetch_user_chat_history(to_user_id)
-  {
-    $.ajax({
-      url:"fetch_user_chat_history.php",
-      method:"POST",
-      data:{to_user_id:to_user_id},
-      success:function(data){
-        $('#chat_history_'+to_user_id).html(data);
-      }
-    })
-  }
+	function fetch_user_chat_history(to_user_id)
+	{
+		$.ajax({
+			url:"fetch_user_chat_history.php",
+			method:"POST",
+			data:{to_user_id:to_user_id},
+			success:function(data){
+			$('#chat_history_'+to_user_id).html(data);
+			}
+		})
+	}
 
+	function Get_foto(to_user_id)
+	{
+		$.ajax({
+			url:"fetch_foto.php",
+			method:"POST",
+			data:{to_user_id:to_user_id},
+			success:function(data){
+				$('#get_foto').html(data);
+			}
+		})
+	}
 
-  function Get_foto(to_user_id)
-  {
-    $.ajax({
-      url:"fetch_foto.php",
-      method:"POST",
-      data:{to_user_id:to_user_id},
-      success:function(data){
-        $('#get_foto').html(data);
-      }
-    })
-  }
+	function update_chat_history_data()
+	{
+		$('.chat_history').each(function(){
+			var to_user_id = $(this).data('touserid');
+			fetch_user_chat_history(to_user_id);
+		});
+	}
 
-  function update_chat_history_data()
-  {
-    $('.chat_history').each(function(){
-      var to_user_id = $(this).data('touserid');
-      fetch_user_chat_history(to_user_id);
-    });
-  }
+	$(document).on('focus', '.chat_message', function(){
+		var is_type = 'yes';
+		$.ajax({
+			url:"update_is_type_status.php",
+			method:"POST",
+			data:{is_type:is_type},
+			success:function()
+			{
 
-  $(document).on('focus', '.chat_message', function(){
-    var is_type = 'yes';
-    $.ajax({
-      url:"update_is_type_status.php",
-      method:"POST",
-      data:{is_type:is_type},
-      success:function()
-      {
+			}
+		})
+	});
 
-      }
-    })
-  });
+	$(document).on('blur', '.chat_message', function(){
+		var is_type = 'no';
+		$.ajax({
+			url:"update_is_type_status.php",
+			method:"POST",
+			data:{is_type:is_type},
+			success:function()
+			{
 
-  $(document).on('blur', '.chat_message', function(){
-    var is_type = 'no';
-    $.ajax({
-      url:"update_is_type_status.php",
-      method:"POST",
-      data:{is_type:is_type},
-      success:function()
-      {
-        
-      }
-    })
-  });
-
-
-  $(document).on('dblclick', '.remove_chat', function(){ 
-      var chat_message_id = $(this).attr('id');
-
-      swal({
-        title: "Anda Yakin?",
-        text: "Postingan ini akan di hapus",
-        type: "warning",
-        showCancelButton: true,
-        cancleButtonText: "Batal",
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Hapus",
-        closeOnConfirm: false
-      },
-      function(){
-        $.ajax({
-            url:"remove_chat.php",
-            method:"POST",
-            data:{chat_message_id:chat_message_id},
-            success: function(data){
-                swal({
-                    title : "Pesan",
-                    text: "Berhasil di Hapus",
-                    type: "success",
-                    timer: 5000
-                });
-            update_chat_history_data();
-            }
-        });        
-      });
-    });
+			}
+		})
+	});
 
 
+	$(document).on('dblclick', '.remove_chat', function(){ 
+		var chat_message_id = $(this).attr('id');
 
-
-
-
-setInterval(function(){   
-    checknotif();
-    checknotifchat();
-}, 10000);
-
-
-
-function checknotif() {
-    if (!Notification) {
-        $('body').append('<h4 style="color:red">*Browser does not support Web Notification</h4>');
-        return;
-    }
-    if (Notification.permission !== "granted")
-        Notification.requestPermission();
-    else {
-        $.ajax(
-        {
-            url : "json_notif.php",
-            type: "POST",
-            success: function(data, textStatus, jqXHR)
-            {
-                var data = jQuery.parseJSON(data);
-                if(data.result == true){
-                    var data_notif = data.notif;
-                    
-                    for (var i = data_notif.length - 1; i >= 0; i--) {
-                        var theurl = data_notif[i]['url'];
-                        var notifikasi = new Notification(data_notif[i]['title'], {
-                            icon: data_notif[i]['icon'],
-                            body: data_notif[i]['msg'],
-                        });
-                        notifikasi.onclick = function () {
-                            window.open(theurl); 
-                            notifikasi.close();     
-                        };
-                        setTimeout(function(){
-                            notifikasi.close();
-                        }, 5000);
-                    };
-                }else{
-
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown)
-            {
-
-            }
-        }); 
-
-    }
-};
-
-
-function checknotifchat() {
-    if (!Notification) {
-        $('body').append('<h4 style="color:red">*Browser does not support Web Notification</h4>');
-        return;
-    }
-    if (Notification.permission !== "granted")
-        Notification.requestPermission();
-    else {
-        $.ajax(
-        {
-            url : "json_notif_chat.php",
-            type: "POST",
-            success: function(data, textStatus, jqXHR)
-            {
-                var data = jQuery.parseJSON(data);
-                if(data.result == true){
-                    var data_notif = data.notif;
-                    
-                    for (var i = data_notif.length - 1; i >= 0; i--) {
-                        var theurl = data_notif[i]['url'];
-                        var notifikasi = new Notification(data_notif[i]['title'], {
-                            icon: data_notif[i]['icon'],
-                            body: data_notif[i]['msg'],
-                        });
-                        play_sound_message();
-                        notifikasi.onclick = function () {
-                            window.open(theurl); 
-                            notifikasi.close();     
-                        };
-                        setTimeout(function(){
-                            notifikasi.close();
-                        }, 5000);
-                    };
-                }else{
-
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown)
-            {
-
-            }
-        }); 
-
-    }
-};
-
-
-
+		swal({
+		title: "Anda Yakin?",
+		text: "Postingan ini akan di hapus",
+		type: "warning",
+		showCancelButton: true,
+		cancleButtonText: "Batal",
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "Hapus",
+		closeOnConfirm: false
+		},
+		function(){
+			$.ajax({
+			    url:"remove_chat.php",
+			    method:"POST",
+			    data:{chat_message_id:chat_message_id},
+			    success: function(data){
+			        swal({
+			            title : "Pesan",
+			            text: "Berhasil di Hapus",
+			            type: "success",
+			            timer: 5000
+			        });
+			    update_chat_history_data();
+			    }
+			});        
+		});
+	});
 
 
 
@@ -547,5 +413,3 @@ function checknotifchat() {
         audioElement.play()
     }
 </script>
-
-</html>

@@ -1,13 +1,12 @@
 <?php
 
-//insert_chat.php
+include('../master/koneksi.php');
 
-include('../koneksi.php');
-include('../function.php');
+$exam = new Koneksi;
 
-session_start();
+$exam->user_session_private();
 
-$data = array(
+$exam->data = array(
 	':to_user_id'		=>	$_POST['to_user_id'],
 	':from_user_id'		=>	$_SESSION['user_id'],
 	':chat_konten'		=>	nl2br($_POST['chat_message']),
@@ -15,17 +14,16 @@ $data = array(
 	':status'			=>	'1'
 );
 
-$query = "
+$exam->query = "
 INSERT INTO chat_message 
 (to_user_id, from_user_id, chat_konten, time_chat, status) 
 VALUES (:to_user_id, :from_user_id, :chat_konten, :time_chat, :status)
 ";
 
-$statement = $connect->prepare($query);
 
-if($statement->execute($data))
+if($exam->execute_query())
 {
-	echo fetch_user_chat_history($_SESSION['user_id'], $_POST['to_user_id'], $connect);
+	echo $exam->fetch_user_chat_history($_SESSION['user_id'], $_POST['to_user_id']);
 }
 
 ?>

@@ -2,19 +2,18 @@
 
 //update_last_activity.php
 
-include('../koneksi.php');
-include('../function.php');
+include('../master/koneksi.php');
 
-session_start();
+$exam = new Koneksi;
 
-$query = "
+$exam->user_session_private();
+
+$exam->query = "
 UPDATE login_details 
 SET last_activity = now() 
 WHERE login_details_id = '".$_SESSION["login_details_id"]."'
 ";
 
-$statement = $connect->prepare($query);
-
-$statement->execute();
+$exam->execute_query();
 
 ?>

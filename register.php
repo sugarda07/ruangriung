@@ -1,125 +1,62 @@
 <?php
-include('koneksi.php');
-session_start();
-if(isset($_SESSION['user_id']))
-{
-  header('location:index.php');
-}
+
+include('master/koneksi.php');
+
+$exam = new Koneksi;
+
+$exam->user_session_public();
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/R16.png">
     <title>RuangDIGITAL</title>
-    
-    <!-- page css -->
     <link href="assets/dist/css/pages/login-register-lock.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="assets/dist/css/style.min.css" rel="stylesheet">
-    
-    
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <link href="assets/dist/parsley.css" rel="stylesheet">
 </head>
-<style>
-  .box
-  {
-    width:100%;
-    max-width:600px;
-    background-color:#f9f9f9;
-    border:1px solid #ccc;
-    border-radius:5px;
-    padding:16px;
-    margin:0 auto;
-  }
-  input.parsley-success,
-  select.parsley-success,
-  textarea.parsley-success {
-    color: #468847;
-    background-color: #DFF0D8;
-    border: 1px solid #D6E9C6;
-  }
-  input.parsley-error,
-  select.parsley-error,
-  textarea.parsley-error {
-    color: #B94A48;
-    background-color: #F2DEDE;
-    border: 1px solid #EED3D7;
-  }
-  .parsley-errors-list {
-     margin: 2px 0 3px;
-     padding: 0;
-     list-style-type: none;
-     font-size: 0.9em;
-     line-height: 0.9em;
-     opacity: 0;
-
-     transition: all .3s ease-in;
-     -o-transition: all .3s ease-in;
-     -moz-transition: all .3s ease-in;
-     -webkit-transition: all .3s ease-in;
-  }
-  .parsley-errors-list.filled {
-    opacity: 1;
-  }
-  .parsley-type, .parsley-required, .parsley-equalto{
-    color:#ff0000;
-  } 
- </style>
 <body style="background-color: #4028d8;">
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
             <p class="loader__label">RuangDIGITAL</p>
         </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
     <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/login-register.jpg);">
         <div class="login-box card" style="border-radius: 0px;">
             <div class="card-body">
-                <form method="post" class="form-horizontal form-material" id="validate_form">
+            <span id="message"></span>
+                <form method="post" class="form-horizontal form-material" id="user_register_form">
                     <h3 class="box-title m-t-40 m-b-0">Registrasi</h3><small> </small>
                     <div class="form-group m-t-20">
                         <div class="col-xs-12">
-                            <input class="form-control" type="text" name="nama_depan" id="nama_depan" required data-parsley-pattern="^[a-zA-Z]+$" data-parsley-trigger="keyup" placeholder="Nama Depan">
+                            <input class="form-control" type="text" name="user_nama_depan" id="user_nama_depan" placeholder="Nama Depan">
                         </div>
                     </div>
                     <div class="form-group m-t-20">
                         <div class="col-xs-12">
-                            <input class="form-control" type="text" name="nama_belakang" id="nama_belakang" required data-parsley-pattern="^[a-zA-Z ]+$" data-parsley-trigger="keyup" placeholder="Nama Belakang">
+                            <input class="form-control" type="text" name="user_nama_belakang" id="user_nama_belakang" placeholder="Nama Belakang">
                         </div>
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="text" name="email" id="email" required data-parsley-type="email" data-parsley-trigger="focusout" data-parsley-checkemail data-parsley-checkemail-message="Email sudah terdaftar" placeholder="Email">
+                            <input class="form-control" type="text" name="user_email" id="user_email" placeholder="Email"  data-parsley-checkemail data-parsley-checkemail-message='Email Address already Exists'>
                         </div>
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="password" name="password" id="password" placeholder="Password" required data-parsley-length="[6, 16]" data-parsley-trigger="keyup">
+                            <input class="form-control" type="password" name="user_password" id="user_password" placeholder="Password">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input class="form-control" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" data-parsley-equalto="#password" data-parsley-trigger="keyup" required>
+                            <input class="form-control" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -132,7 +69,9 @@ if(isset($_SESSION['user_id']))
                     </div>
                     <div class="form-group text-center m-t-20">
                         <div class="col-xs-12">
-                            <input class="btn btn-info btn-lg btn-block btn-rounded waves-effect waves-light" type="submit" id="submit" name="submit" value="Registrasi">
+                        	<input type="hidden" name='page' value='register' />
+                    		<input type="hidden" name="action" value="register" />
+                            <input class="btn btn-info btn-lg btn-block btn-rounded waves-effect waves-light" type="submit" id="user_register" name="user_register" value="Registrasi">
                         </div>
                     </div>
                     <div class="form-group m-b-0">
@@ -144,62 +83,88 @@ if(isset($_SESSION['user_id']))
             </div>
         </div>
     </section>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-    <script src="assets/dist/parsley.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
     <script src="assets/node_modules/popper/popper.min.js"></script>
+    <script src="assets/dist/js/custom.min.js"></script>
+    <script src="assets/dist/parsley.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $(".preloader").fadeOut();
-        });
-        $(function() {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-        // ============================================================== 
-        // Login and Recover Password 
-        // ============================================================== 
-        $('#to-recover').on("click", function() {
-            $("#loginform").slideUp();
-            $("#recoverform").fadeIn();
-        });
-    </script>
-
-    <script>  
-      $(document).ready(function(){  
-
-      $('#validate_form').parsley();
-      $('#validate_form').on('submit', function(event){
-        event.preventDefault();
-        if($('#validate_form').parsley().isValid())
-        {
-          $.ajax({
-          url:"proses_registrasi.php",
-          method:"POST",
-          data:$(this).serialize(),
-          beforeSend:function(){
-          $('#submit').attr('disabled','disabled');
-          $('#submit').val('Submitting...');
-        },
-          success:function(data)
-          {
-            $('#validate_form')[0].reset();
-            $('#validate_form').parsley().reset();
-            $('#submit').attr('disabled',false);
-            $('#submit').val('Submit');
-            alert(data);
-          }
-          });
-        }
-        });
-      });  
-    </script>
+    <script src="assets/dist/js/perfect-scrollbar.jquery.min.js"></script>
 </body>
-
 </html>
+<script>
+
+$(document).ready(function(){
+
+	window.ParsleyValidator.addValidator('checkemail', {
+		validateString: function(value){
+			return $.ajax({
+				url:'user_ajax_proses.php',
+				method:'post',
+				data:{page:'register', action:'check_email', user_email:value},
+				dataType:"json",
+				async: false,
+				success:function(data)
+				{
+				return true;
+				}
+			});
+		}
+	});
+
+	$('#user_register_form').parsley();
+
+	$('#user_register_form').on('submit', function(event){
+		event.preventDefault();
+
+		$('#user_email').attr('required', 'required');
+
+		$('#user_email').attr('data-parsley-type', 'email');
+
+		$('#user_password').attr('required', 'required');
+
+		$('#confirm_password').attr('required', 'required');
+
+		$('#confirm_password').attr('data-parsley-equalto', '#user_password');
+
+		$('#user_nama_depan').attr('required', 'required');
+
+		$('#user_nama_depan').attr('data-parsley-pattern', '^[a-zA-Z]+$');
+
+		$('#user_nama_belakang').attr('required', 'required');
+
+		$('#user_nama_belakang').attr('data-parsley-pattern', '^[a-zA-Z]+$');
+
+		if($('#user_register_form').parsley().validate())
+		{
+			$.ajax({
+				url:'user_ajax_proses.php',
+				method:"POST",
+				data:new FormData(this),
+				dataType:"json",
+				contentType:false,
+				cache:false,
+				processData:false,
+				beforeSend:function()
+				{
+					$('#user_register').attr('disabled', 'disabled');
+					$('#user_register').val('please wait...');
+				},
+				success:function(data)
+				{
+					if(data.success)
+					{
+						$('#message').html('<div class="alert alert-success">Registrasi Berhasil...</div>');
+						$('#user_register_form')[0].reset();
+						$('#user_register_form').parsley().reset();
+					}
+					$('#user_register').attr('disabled', false);
+					$('#user_register').val('Register');
+				}
+			})
+		}
+
+	});
+	
+});
+
+</script>

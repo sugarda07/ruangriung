@@ -1,12 +1,12 @@
 <?php
 
 //fetch_user_chat_history.php
+include('../master/koneksi.php');
 
-include('../koneksi.php');
-include('../function.php');
+$exam = new Koneksi;
 
-session_start();
+$exam->user_session_private();
 
-echo fetch_user_chat_history($_SESSION['user_id'], $_POST['to_user_id'], $connect);
+echo $exam->fetch_user_chat_history($_SESSION['user_id'], $_POST['to_user_id']);
 
 ?>
