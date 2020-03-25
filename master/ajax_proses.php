@@ -1244,7 +1244,7 @@ if(isset($_POST['page']))
 				':materi_nama'		=>	$_POST['materi_nama'],
 				':materi_mapel_id'	=>	$_POST['materi_mapel_id'],
 				':materi_data'		=>	nl2br($_POST['materi_data']),
-				':materi_user_id'	=>	$_SESSION['user_id']
+				':materi_user_id'	=>	$_SESSION['admin_id']
 			);
 
 			$exam->query = "
@@ -1296,7 +1296,7 @@ if(isset($_POST['page']))
 			WHERE materi_id = :materi_id
 			";
 
-			$exam->execute_query($exam->data);
+			$exam->execute_query();
 
 			$output = array(
 				'success'	=>	'Materi berhasil diperbaharui'

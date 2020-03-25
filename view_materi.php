@@ -17,7 +17,7 @@ WHERE materi_id = '".$_GET["data"]."'
                 <div class="row">
                     <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
                         <div class="card" style="margin-bottom: 5px;margin-top: 5px;">
-                            <div class="card-body" id="view_data_materi" style="padding: 9px;">
+                            <div class="card-body" id="view_data_materi" style="padding-bottom: 50px;">
 
                             </div>                            
                         </div>
