@@ -141,6 +141,23 @@ include('header.php');
   	</div>
 </div>
 
+<div id="daftar_siswa_modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <h4 class="modal-title" id="judul_modal">Sekolah</h4>
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>        
+			<div class="modal-body" id="daftar_siswa">
+				
+			</div>        
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-info waves-effect pull-right" data-dismiss="modal">Close</button>
+			</div>
+		</div>         
+	</div>
+</div>
+
 <script>
 
 $(document).ready(function(){
@@ -276,6 +293,24 @@ $(document).ready(function(){
 			}
 		})
 	});
+
+	$(document).on('click', '.lihat_daftar_siswa', function(){  
+         var id = $(this).attr("id");
+         var kelas = $(this).data('kelas');  
+         if(id != '')  
+         {  
+            $.ajax({  
+				url:"ajax_proses.php",  
+				method:"POST",  
+				data:{id:id, action:'lihat_daftar_siswa', page:'kelas'},  
+				success:function(data){   
+				  $('#daftar_siswa').html(data);
+				  $('#judul_modal').text("Daftar Siswa "+kelas+"");
+				  $('#daftar_siswa_modal').modal('show');  
+				}  
+            });  
+        }            
+    });
 
 });
 

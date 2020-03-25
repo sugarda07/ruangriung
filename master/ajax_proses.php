@@ -445,6 +445,7 @@ if(isset($_POST['page']))
 
 			echo json_encode($output);
 		}
+
 		if($_POST['action'] == 'delete')
 		{
 			$exam->data = array(
@@ -931,7 +932,7 @@ if(isset($_POST['page']))
 				$sub_array[] = $row["kelas_nama"];
 				$sub_array[] = $row["kelas_jurusan"];
 
-				$sub_array[] = '<a href="" class="btn btn-info btn-sm">Lihat User</a>';
+				$sub_array[] = '<a href="#" class="btn btn-info btn-sm lihat_daftar_siswa" name="lihat_daftar_siswa" id="'.$row['kelas_id'].'" data-kelas="'.$row['kelas_nama'].'"><i class="fa fa-users"></i>  '.$exam->get_jumlah_siswa_kelas($row['kelas_id']).' Lihat User</a>';
 
 				$edit_button = '';
 				$delete_button = '';
@@ -951,7 +952,6 @@ if(isset($_POST['page']))
 			 	"data"    			=> 	$data
 			);
 			echo json_encode($output);
-
 		}
 
 		if($_POST['action'] == 'Add')
@@ -1025,6 +1025,7 @@ if(isset($_POST['page']))
 
 			echo json_encode($output);
 		}
+
 		if($_POST['action'] == 'delete')
 		{
 			$exam->data = array(
@@ -1043,6 +1044,42 @@ if(isset($_POST['page']))
 			);
 
 			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'lihat_daftar_siswa')
+		{
+			$exam->query = "
+			SELECT * FROM user
+			INNER JOIN kelas ON kelas.kelas_id=user.user_kelas_id
+			WHERE user.user_kelas_id = '".$_POST["id"]."'
+			";
+			$result = $exam->query_result();
+
+			$output = '<div class="table-responsive">
+							<table id="daftar_siswa_tabel" class="table table-bordered table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Nama</th>
+										<th>Email</th>
+									</tr>
+								</thead>';
+
+			foreach($result as $row)
+			{
+				$output .= '
+								<tr>
+									<td>'.$row["user_nama_depan"].'</td>
+									<td>'.$row["user_email"].'</td>
+								</tr>';
+			}
+			$output .= '</table></div>
+			<script>
+			  $(function () {
+			    $("#daftar_siswa_tabel").DataTable();
+			  });
+			</script>';
+
+			echo $output;
 		}
 	}
 	
@@ -1122,6 +1159,410 @@ if(isset($_POST['page']))
 				"recordsTotal"		=>	$total_rows,
 				"recordsFiltered"	=>	$filtered_rows,
 				"data"				=>	$data
+			);
+
+			echo json_encode($output);
+		}
+	}
+
+	if($_POST['page'] == 'materi')
+	{
+		if($_POST['action'] == 'ambil')
+		{
+			$output = array();
+
+			$exam->query = "
+			SELECT * FROM materi
+			WHERE ";
+
+			if(isset($_POST["search"]["value"]))
+			{
+			 	$exam->query .= 'materi.materi_nama LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+			
+			if(isset($_POST["order"]))
+			{
+				$exam->query .= 'ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY materi.materi_id DESC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST["length"] != -1)
+			{
+			 	$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filterd_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM materi
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+				$sub_array[] = substr($row["materi_nama"], 0, 100);
+				$sub_array[] = strip_tags(substr($row["materi_data"], 0, 160));
+				$sub_array[] = '<a href="kelas_materi.php?code='.$row['materi_id'].'" class="btn btn-success btn-sm">'.$exam->jumlah_kelasmateri($row['materi_id']).' Kelas</a>';
+				$sub_array[] = $row["materi_tgl"];
+
+				$edit_button = '';
+				$delete_button = '';
+
+				$edit_button = '<button type="button" name="edit_materi" class="btn btn-primary btn-sm edit_materi" id="'.$row['materi_id'].'">Edit</button>';
+
+				$delete_button = '<button type="button" name="delete_materi" class="btn btn-danger btn-sm delete_materi" id="'.$row['materi_id'].'">Delete</button>';
+
+				$sub_array[] = $edit_button . ' ' . $delete_button;
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+			 	"draw"    			=> 	intval($_POST["draw"]),
+			 	"recordsTotal"  	=>  $total_rows,
+			 	"recordsFiltered" 	=> 	$filterd_rows,
+			 	"data"    			=> 	$data
+			);
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'Addmateri')
+		{
+			$exam->data = array(
+				':materi_nama'		=>	$_POST['materi_nama'],
+				':materi_mapel_id'	=>	$_POST['materi_mapel_id'],
+				':materi_data'		=>	nl2br($_POST['materi_data']),
+				':materi_user_id'	=>	$_SESSION['user_id']
+			);
+
+			$exam->query = "
+			INSERT INTO materi
+			(materi_nama, materi_mapel_id, materi_data, materi_user_id) 
+			VALUES (:materi_nama, :materi_mapel_id, :materi_data, :materi_user_id)
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Materi Baru telah ditambahkan'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'edit_ambilmateri')
+		{
+			$exam->query = "
+			SELECT * FROM materi
+			WHERE materi_id = '".$_POST["materi_id"]."'
+			";
+
+			$result = $exam->query_result();
+
+			foreach($result as $row)
+			{
+				$output['materi_nama'] = $row['materi_nama'];
+
+				$output['materi_mapel_id'] = $row['materi_mapel_id'];
+
+				$output['materi_data'] = $row['materi_data'];
+			}
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'Edit_materi')
+		{
+			$exam->data = array(
+				':materi_nama'			=>	$_POST['materi_nama'],
+				':materi_data'			=>	$_POST['materi_data']
+			);
+
+			$exam->query = "
+			UPDATE materi
+			SET materi_nama = :materi_nama, materi_data = :materi_data  
+			WHERE materi_id = :materi_id
+			";
+
+			$exam->execute_query($exam->data);
+
+			$output = array(
+				'success'	=>	'Materi berhasil diperbaharui'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'delete_materi')
+		{
+			$exam->data = array(
+				':materi_id'	=>	$_POST['materi_id']
+			);
+
+			$exam->query = "
+			DELETE FROM materi
+			WHERE materi_id = :materi_id
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Materi telah dihapus'
+			);
+
+			echo json_encode($output);
+		}
+	}
+
+	if($_POST['page'] == 'kelasmateri')
+	{
+		if($_POST['action'] == 'ambil_kelas_materi')
+		{
+			$output = array();
+
+			$materi_id = $_POST['code'];
+
+			$exam->query = "
+			SELECT * FROM kelasmateri
+			INNER JOIN kelas ON kelas.kelas_id = kelasmateri.kelasmateri_kelas_id
+			WHERE kelasmateri.kelasmateri_materi_id = ".$materi_id." 
+			AND (
+			";
+
+			if(isset($_POST['search']['value']))
+			{
+				$exam->query .= 'kelas.kelas_nama LIKE "%'.$_POST["search"]["value"].'%" ';
+				$exam->query .= 'OR kelas.kelas_jurusan LIKE "%'.$_POST["search"]["value"].'%" ';
+				$exam->query .= 'OR kelas.kelas_sekolah LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+
+			$exam->query .= ')';
+
+			if(isset($_POST["order"]))
+			{
+				$exam->query .= '
+				ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' 
+				';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY kelasmateri.kelasmateri_materi_id ASC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST['length'] != -1)
+			{
+				$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filtered_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM kelasmateri
+			INNER JOIN kelas ON kelas.kelas_id = kelasmateri.kelasmateri_kelas_id
+			WHERE kelasmateri.kelasmateri_materi_id = ".$materi_id."
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+
+				$sub_array[] = $row['kelas_tingkat'];
+
+				$sub_array[] = $row['kelas_nama'];
+
+				$sub_array[] = $row['kelas_jurusan'];
+
+				$sub_array[] = $row['kelas_sekolah'];
+
+				$delete_button = '';
+
+				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete_kelasmateri" id="'.$row['kelasmateri_id'].'">Delete</button>';
+
+				$sub_array[] = $delete_button;
+
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+				"draw"		=>	intval($_POST["draw"]),
+				"recordsTotal"	=>	$total_rows,
+				"recordsFiltered"	=>	$filtered_rows,
+				"data"		=>	$data
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'add_kelasmateri')
+		{
+			$exam->data = array(
+				':kelasmateri_kelas_id'		=>	$_POST['kelas_id'],
+				':kelasmateri_materi_id'	=>  $_POST['code']
+			);
+
+			$exam->query = "
+			INSERT INTO kelasmateri
+			(kelasmateri_kelas_id, kelasmateri_materi_id) 
+			VALUES (:kelasmateri_kelas_id, :kelasmateri_materi_id)
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Materi Kelas berhasil di tambahkan'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'delete_kelasmateri')
+		{
+			$exam->data = array(
+				':kelasmateri_id'	=>	$_POST['kelasmateri_id']
+			);
+
+			$exam->query = "
+			DELETE FROM kelasmateri
+			WHERE kelasmateri_id = :kelasmateri_id
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Kelas Ujian berhasil di hapus'
+			);
+
+			echo json_encode($output);
+		}		
+	}
+
+	if($_POST['page'] == 'postingan')
+	{
+		if($_POST['action'] == 'ambil')
+		{
+			$output = array();
+
+			$exam->query = "
+			SELECT * FROM postingan
+			JOIN user 
+			WHERE user.user_id = postingan.user_id 
+			AND (
+			";
+
+			if(isset($_POST['search']['value']))
+			{
+				$exam->query .= 'postingan.post_konten LIKE "%'.$_POST["search"]["value"].'%" ';
+				$exam->query .= 'OR user.user_nama_depan LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+
+			$exam->query .= ')';
+
+			if(isset($_POST["order"]))
+			{
+				$exam->query .= '
+				ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' 
+				';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY postingan.post_id DESC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST['length'] != -1)
+			{
+				$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filtered_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM postingan
+			INNER JOIN user 
+			WHERE user.user_id = postingan.user_id 
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+
+				$nama 	= '';
+				$email 	= '';
+
+				$nama = $row['user_nama_depan'];
+				$email = $row['user_email'];
+
+				$sub_array[] = $nama.'  '.$email;
+
+				$sub_array[] = strip_tags($row['post_konten']);
+
+				$sub_array[] = $row['post_tgl'];
+
+				$delete_button = '';
+
+				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete_postingan" id="'.$row['post_id'].'">Hapus</button>';
+
+				$sub_array[] = $delete_button;
+
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+				"draw"		=>	intval($_POST["draw"]),
+				"recordsTotal"	=>	$total_rows,
+				"recordsFiltered"	=>	$filtered_rows,
+				"data"		=>	$data
+			);
+
+			echo json_encode($output);
+		}
+		
+		if($_POST['action'] == 'delete_postingan')
+		{
+			$exam->data = array(
+				':post_id'	=>	$_POST['post_id']
+			);
+
+			$exam->query = "
+			DELETE FROM postingan
+			WHERE post_id = :post_id
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Postingan berhasil di hapus'
 			);
 
 			echo json_encode($output);

@@ -1567,9 +1567,9 @@ if(isset($_POST['page']))
 			$exam->query = "
 			SELECT * FROM mapel
 			INNER JOIN materi ON materi.materi_mapel_id = mapel.mapel_id
-			INNER JOIN kelas ON kelas.kelas_id = materi.materi_kelas_id
-			INNER JOIN user ON user.user_kelas_id = kelas.kelas_id
-			WHERE mapel.mapel_id=materi.materi_mapel_id AND kelas.kelas_id=materi.materi_kelas_id AND kelas.kelas_id=user.user_kelas_id AND user.user_id = '".$_SESSION['user_id']."'
+			INNER JOIN kelasmateri ON kelasmateri.kelasmateri_materi_id = materi.materi_id
+			INNER JOIN user ON user.user_kelas_id = kelasmateri.kelasmateri_kelas_id
+			WHERE user.user_id = '".$_SESSION['user_id']."'
 			GROUP BY mapel.mapel_id
 			";
 
@@ -1584,8 +1584,7 @@ if(isset($_POST['page']))
 			        <div class="card m-b-0">
 			            <div class="card-header" role="tab" id="headingOne1" style="padding-left: 10px;padding-right: 10px;">
 			                <h5 class="mb-0">
-			                <a class="link collapsed tombol_view_materi" data-toggle="collapse" data-parent="#accordion1" href="#'.$row['mapel_id'].'" aria-expanded="false" aria-controls="collapseOne" data-mapel_id="'.$row['mapel_id'].'">
-			                	'.$row['mapel_nama'].' <span class="pull-right"><small class="text-muted"></small></span>
+			                <a class="link collapsed tombol_view_materi text-info" data-toggle="collapse" data-parent="#accordion1" href="#'.$row['mapel_id'].'" aria-expanded="false" aria-controls="collapseOne" data-mapel_id="'.$row['mapel_id'].'"><i class="fa fa-check-square-o"></i>  '.$row['mapel_nama'].' <span class="pull-right badge badge-info"><small class="">'.$exam->jumlah_materi_id($_SESSION['user_id'], $row['mapel_id']).'</small></span>
 			                </a>
 			              </h5>
 			            </div>
@@ -1605,15 +1604,15 @@ if(isset($_POST['page']))
 		{
 			$exam->query = "
 			SELECT * FROM materi
-			INNER JOIN kelas ON kelas.kelas_id = materi.materi_kelas_id
-			INNER JOIN user ON user.user_kelas_id = kelas.kelas_id
+			INNER JOIN kelasmateri ON kelasmateri.kelasmateri_materi_id = materi.materi_id
+			INNER JOIN user ON user.user_kelas_id = kelasmateri.kelasmateri_kelas_id
 			WHERE  user.user_id = '".$_SESSION["user_id"]."' AND materi_mapel_id = '".$_POST["mapel_id"]."'
 			GROUP BY materi_id
 			";
 
 			$result = $exam->query_result();
 
-			$output ='<ul class="list-icons">';
+			$output ='<ul class="list-icons" style="padding-left: 25px;">';
 
 			foreach($result as $row)
 			{

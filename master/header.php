@@ -34,6 +34,7 @@ $exam->admin_session_private();
     <link href="../assets/node_modules/jqueryui/jquery-ui.css" rel="stylesheet" type="text/css">
     <link href="../assets/crop/croppie.css" rel="stylesheet">
     <link href="../assets/dist/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/node_modules/html5-editor/bootstrap-wysihtml5.css" />
 
     <script src="../assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="../assets/dist/js/jquery.form.js"></script>
@@ -59,6 +60,7 @@ $exam->admin_session_private();
     <script src="../assets/dist/angular.min.js"></script>
     <script src="../assets/dist/bootstrap-datetimepicker.js"></script>
     <script src="../assets/dist/parsley.js"></script>
+    <script src="../assets/node_modules/tinymce/tinymce.min.js"></script>
 </head>
         
 
@@ -122,7 +124,9 @@ $exam->admin_session_private();
                         <li> <a class="waves-effect waves-dark" href="index.php" aria-expanded="false"><i class="fa fa-home"></i><span class="hide-menu">Home</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="user.php" aria-expanded="false"><i class="fa fa-group"></i><span class="hide-menu">User</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="kelas.php" aria-expanded="false"><i class="fa fa-sitemap"></i><span class="hide-menu">Kelas</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="materi.php" aria-expanded="false"><i class="fa fa-list-ul"></i><span class="hide-menu">Materi</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="ujian.php" aria-expanded="false"><i class="fa fa-list-ul"></i><span class="hide-menu">Ujian</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="postingan.php" aria-expanded="false"><i class="fa fa-list-ul"></i><span class="hide-menu">Postingan</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="logout.php" aria-expanded="false"><i class="fa fa-power-off"></i><span class="hide-menu">LogOut</span></a></li>
                     </ul>
                 </nav>

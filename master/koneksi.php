@@ -18,12 +18,12 @@ class Koneksi
 	function __construct()
 	{
 		$this->host = 'localhost';
-		$this->username = 'root';
-		$this->password = '';
-		$this->database = 'ruangdigital2';
-		//$this->username = 'smkikaka_ruangriung';
-		//$this->password = '123ruangriung456';
-		//$this->database = 'smkikaka_ruangdigital';
+		//$this->username = 'root';
+		//$this->password = '';
+		//$this->database = 'ruangdigital2';
+		$this->username = 'smkikaka_sugarda';
+		$this->password = 'sugarda69753308';
+		$this->database = 'smkikaka_ruangriung';
 
 		$this->home_page = 'http://localhost/ruangdigital/';
 
@@ -181,11 +181,45 @@ class Koneksi
 		return true;
 	}
 
+	function jumlah_materi_id($user_id, $materi_id)
+	{
+		$this->query = "
+		SELECT * FROM materi
+		INNER JOIN kelasmateri ON kelasmateri.kelasmateri_materi_id = materi.materi_id
+		INNER JOIN user ON user.user_kelas_id = kelasmateri.kelasmateri_kelas_id
+		WHERE  user.user_id = '$user_id' AND materi_mapel_id = '$materi_id'
+		GROUP BY materi_id
+		";
+
+		return $this->total_row();
+	}
+
 	function jumlah_soal($ujian_id)
 	{
 		$this->query = "
 		SELECT soal_id FROM soal
 		WHERE soal_ujian_id = '$ujian_id'
+		";
+
+		return $this->total_row();
+	}
+
+	function jumlah_kelasmateri($materi_id)
+	{
+		$this->query = "
+		SELECT kelasmateri_kelas_id FROM kelasmateri
+		WHERE kelasmateri_materi_id = '$materi_id'
+		";
+
+		return $this->total_row();
+	}
+
+	function get_jumlah_siswa_kelas($kelas_id)
+	{
+		$this->query = "
+		SELECT * FROM user
+		INNER JOIN kelas ON kelas.kelas_id=user.user_kelas_id
+		WHERE user.user_kelas_id = '$kelas_id'
 		";
 
 		return $this->total_row();
@@ -567,6 +601,20 @@ class Koneksi
 		foreach($result as $row)
 		{
 			$output .= '<option value="'.$row['kelas_id'].'">'.$row['kelas_sekolah'].' - '.$row['kelas_jurusan'].' - '.$row['kelas_nama'].'</option>';
+		}
+		return $output;
+	}
+
+	function mapel_list()
+	{
+		$this->query = "
+		SELECT mapel_id, mapel_nama FROM mapel
+		";
+		$result = $this->query_result();
+		$output = '';
+		foreach($result as $row)
+		{
+			$output .= '<option value="'.$row['mapel_id'].'">'.$row['mapel_nama'].'</option>';
 		}
 		return $output;
 	}
