@@ -70,7 +70,7 @@ else
 <script>
 
 $(document).ready(function(){
-	var code = "<?php echo $_GET["code"]; ?>";
+	var ujian_id = "<?php echo $ujian_id; ?>";
 
 	load_soal();
 	soal_navigation();
@@ -80,7 +80,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:"user_ajax_proses.php",
 			method:"POST",
-			data:{code:code, soal_id:soal_id, page:'proses_ujian', action:'load_soal'},
+			data:{ujian_id:ujian_id, soal_id:soal_id, page:'proses_ujian', action:'load_soal'},
 			success:function(data)
 			{
 				$('#single_question_area').html(data);
@@ -103,7 +103,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:"user_ajax_proses.php",
 			method:"POST",
-			data:{code:code, page:'proses_ujian', action:'soal_navigation'},
+			data:{ujian_id:ujian_id, page:'proses_ujian', action:'soal_navigation'},
 			success:function(data)
 			{
 				$('#question_navigation_area').html(data);
@@ -159,7 +159,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:"user_ajax_proses.php",
 			method:"POST",
-			data:{soal_id:soal_id, pilihan_jawaban:pilihan_jawaban, code:code, page:'proses_ujian', action:'jawaban'},
+			data:{soal_id:soal_id, pilihan_jawaban:pilihan_jawaban, ujian_id:ujian_id, page:'proses_ujian', action:'jawaban'},
 			success:function(data)
 			{
 
@@ -172,7 +172,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:"user_ajax_proses.php",
 			method:"POST",
-			data:{page:'proses_ujian', code:code, action:'konfirmasi_selesai'},
+			data:{page:'proses_ujian', ujian_id:ujian_id, action:'konfirmasi_selesai'},
 			success:function(data)
 			{
 				

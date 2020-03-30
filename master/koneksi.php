@@ -113,6 +113,21 @@ class Koneksi
 	  	return $data;
 	}
 
+	function Get_topik_id($code)
+	{
+		$this->query = "
+		SELECT topik_id FROM topik_quiz
+		WHERE topik_code = '$code'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['topik_id'];
+		}
+	}
+
 	function Get_ujian_id($code)
 	{
 		$this->query = "
@@ -126,6 +141,29 @@ class Koneksi
 		{
 			return $row['ujian_id'];
 		}
+	}
+
+	function  number_to_str($number)
+	{
+		$convertion = [1=>'a', 2 =>'b', 3=>'c', 4=>'d', 5=>'e'];
+        $array_data = str_split($number);
+        $new_data   = '';
+        foreach ($array_data as  $value) {
+            $new_data .= $convertion[$value]."";
+        }
+        return $new_data;
+	}
+
+	function str_to_number($string)
+	{
+		$convertion = ['a'=>1, 'b'=>2, 'c'=>3, 'd'=>4, 'e'=>5];
+        $string     = strtolower($string);
+        $array_data = str_split($string);
+        $new_data   = '';
+        foreach ($array_data as  $value) {
+            $new_data .= $convertion[$value]."";
+        }
+        return $new_data;
 	}
 
 	function kelasujian_list()
@@ -204,6 +242,16 @@ class Koneksi
 		return $this->total_row();
 	}
 
+	function jumlah_soal_quiz($topik_id)
+	{
+		$this->query = "
+		SELECT pilgan_id FROM soal_pilihan_ganda
+		WHERE pilgan_topik_id = '$topik_id'
+		";
+
+		return $this->total_row();
+	}
+
 	function jumlah_kelasmateri($materi_id)
 	{
 		$this->query = "
@@ -262,6 +310,24 @@ class Koneksi
 		}
 	}
 
+	function Upload_file_pilgan()
+	{
+		if(!empty($this->filedata['name']))
+		{
+			$extension = pathinfo($this->filedata['name'], PATHINFO_EXTENSION);
+
+			$new_name = uniqid() . '.' . $extension;
+
+			$_source_path = $this->filedata['tmp_name'];
+
+			$target_path = 'dokumen/gambar/' . $new_name;
+
+			move_uploaded_file($_source_path, $target_path);
+
+			return $new_name;
+		}
+	}
+
 	function user_session_private()
 	{
 		if(!isset($_SESSION['user_id']))
@@ -292,12 +358,12 @@ class Koneksi
 		return false;
 	}
 
-	function Get_jawaban_user($ujian_id, $user_id)
+	function Get_jawaban_user($soal_id, $user_id)
 	{
 		$this->query = "
 		SELECT jawaban_pilihan_user FROM jawaban 
-		WHERE jawaban_ujian_id = '".$ujian_id."' 
-		AND jawaban_user_id = '".$user_id."'
+		WHERE jawaban_soal_id = '$soal_id' 
+		AND jawaban_user_id = '$user_id'
 		";
 		$result = $this->query_result();
 		foreach($result as $row)
@@ -310,7 +376,7 @@ class Koneksi
 	{
 		$this->query = "
 		SELECT nilai_benar FROM ujian
-		WHERE ujian_id = '".$ujian_id."' 
+		WHERE ujian_id = '$ujian_id' 
 		";
 
 		$result = $this->query_result();
@@ -325,7 +391,7 @@ class Koneksi
 	{
 		$this->query = "
 		SELECT nilai_salah FROM ujian
-		WHERE ujian_id = '".$ujian_id."' 
+		WHERE ujian_id = '$ujian_id' 
 		";
 
 		$result = $this->query_result();
@@ -340,7 +406,7 @@ class Koneksi
 	{
 		$this->query = "
 		SELECT soal_kunci FROM soal
-		WHERE soal_id = '".$soal_id."' 
+		WHERE soal_id = '$soal_id' 
 		";
 
 		$result = $this->query_result();

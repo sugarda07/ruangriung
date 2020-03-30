@@ -12,24 +12,10 @@ include('header.php');
 
 ?>
 
-<br />
-<div class="card">
-	<div class="card-header">Online Exam</div>
-	<div class="card-body">
-		<div class="table-responsive">
-			<table class="table table-bordered table-striped table-hover" id="ujian_data_table">
-				<thead>
-					<tr>
-						<th>Judul</th>
-						<th>Nama Mapel</th>
-						<th>Tanggal</th>
-						<th>Durasi</th>
-						<th>Jumlah Soal</th>
-						<th>Status</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-			</table>
+		<div class="row">
+		    <div class="col-lg-8 col-xlg-9 col-md-7" id="data_ujian" style="padding-left: 0px; padding-right: 0px;">
+
+		    </div>
 		</div>
 	</div>
 </div>
@@ -42,38 +28,49 @@ include('header.php');
 
 $(document).ready(function(){
 
-	var dataTable = $('#ujian_data_table').DataTable({
-		"processing" : true,
-		"serverSide" : true,
-		"order" : [],
-		"ajax" : {
-			url:"user_ajax_proses.php",
-			type:"POST",
-			data:{action:'ambil', page:'ujian'}
-		},
-		"columnDefs":[
-			{
-				"targets":[5, 6],
-				"orderable":false,
-			},
-		],
-	});
+	load_data_ujian();
 
-	$(document).on('click', '#konfirmasi', function(){
-		ujian_id = $('#konfirmasi').data('ujian_id');
-		$.ajax({
-			url:"user_ajax_proses.php",
-			method:"POST",
-			data:{action:'konfirmasi', page:'ujian', ujian_id:ujian_id},
-			beforeSend:function()
-			{
-				$('#konfirmasi').attr('disabled', 'disabled');
-				$('#konfirmasi').text('please wait');
-			},
-			success:function()
-			{
-				dataTable.ajax.reload();
-			}
+    function load_data_ujian()
+    {
+        $.ajax({
+            url:"user_ajax_proses.php",
+            method:"POST",
+            data:{action:'load_data_ujian', page:'ujian'},
+            success:function(data)
+            {
+                $('#data_ujian').html(data);
+            }
+        });
+    }
+
+    $(document).on('click', '#konfirmasi', function(){ 
+		ujian_id = $(this).data('ujian_id');
+
+		swal({
+		title: "Konfirmasi",
+		text: "",
+		type: "warning",
+		showCancelButton: true,
+		cancleButtonText: "Batal",
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "Konfirmasi",
+		closeOnConfirm: false
+		},
+		function(){
+			$.ajax({
+			    url:"user_ajax_proses.php",
+			    method:"POST",
+			    data:{action:'konfirmasi', page:'ujian', ujian_id:ujian_id},
+			    success: function(data){
+			        swal({
+			            title : "Konfirmasi",
+			            text: "Berhasil",
+			            type: "success",
+			            timer: 5000
+			        });
+			    	load_data_ujian();
+			    }
+			});        
 		});
 	});
 

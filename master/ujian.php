@@ -26,9 +26,10 @@ include('header.php');
 				<thead>
 					<tr>
 						<th>Judul</th>
-						<th>Mapel</th>
+						<th>Durasi</th>
 						<th>Tanggal Ujian</th>
 						<th>Bank Soal</th>
+						<th>Hasil</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -61,13 +62,26 @@ include('header.php');
             			<div class="row">
               				<label class="col-md-4 text-right">Mata Pelajaran <span class="text-danger">*</span></label>
 	              			<div class="col-md-8">
-	                			<input type="text" name="ujian_mapel" id="ujian_mapel" class="form-control" />
+	                			<select name="ujian_mapel" id="ujian_mapel" class="form-control">
+		            				<option value="">Pilih Mapel</option>
+		            				<?php
+									echo $exam->mapel_list();
+									?>
+		            			</select>
 	                		</div>
             			</div>
           			</div>
           			<div class="form-group">
             			<div class="row">
-              				<label class="col-md-4 text-right">Tanggal ujian <span class="text-danger">*</span></label>
+              				<label class="col-md-4 text-right">Info <span class="text-danger">*</span></label>
+	              			<div class="col-md-8">
+	                			<input type="text" name="ujian_info" id="ujian_info" class="form-control" />
+	                		</div>
+            			</div>
+          			</div>
+          			<div class="form-group">
+            			<div class="row">
+              				<label class="col-md-4 text-right">Tanggal Ujian <span class="text-danger">*</span></label>
 	              			<div class="col-md-8">
 	                			<input type="text" name="ujian_tanggal" id="ujian_tanggal" class="form-control" readonly />
 	                		</div>
@@ -90,29 +104,29 @@ include('header.php');
           			</div>
           			<div class="form-group">
             			<div class="row">
-              				<label class="col-md-4 text-right">Jumlah Soal <span class="text-danger">*</span></label>
+              				<label class="col-md-4 text-right">Nilai Benar <span class="text-danger">*</span></label>
 	              			<div class="col-md-8">
-	                			<select name="ujian_jumlah_soal" id="ujian_jumlah_soal" class="form-control">
-	                				<option value="">Select</option>
-	                				<option value="5">5 Soal</option>
-	                				<option value="10">10 Soal</option>
-	                				<option value="25">25 Soal</option>
-	                				<option value="50">50 Soal</option>
-	                				<option value="100">100 Soal</option>
-	                				<option value="200">200 Soal</option>
-	                				<option value="300">300 Soal</option>
-	                			</select>
+	                			<input type="text" name="nilai_benar" id="nilai_benar" class="form-control" />
 	                		</div>
             			</div>
           			</div>
           			<div class="form-group">
             			<div class="row">
-              				<label class="col-md-4 text-right">Acak Soal <span class="text-danger">*</span></label>
+              				<label class="col-md-4 text-right">Nilai Salah <span class="text-danger">*</span></label>
 	              			<div class="col-md-8">
-	                			<select name="ujian_acak" id="ujian_acak" class="form-control">
+	                			<input type="text" name="nilai_salah" id="nilai_salah" class="form-control" />
+	                		</div>
+            			</div>
+          			</div>
+          			<div class="form-group">
+            			<div class="row">
+              				<label class="col-md-4 text-right">Status Soal <span class="text-danger">*</span></label>
+	              			<div class="col-md-8">
+	                			<select name="ujian_status" id="ujian_status" class="form-control">
 	                				<option value="">Select</option>
-	                				<option value="acak"> Acak </option>
-	                				<option value="tidak"> Tidak di Acak Soal</option>
+	                				<option value="Menunggu"> Menunggu </option>
+	                				<option value="Mulai"> Mulai</option>
+	                				<option value="Selesai"> Selesai</option>
 	                			</select>
 	                		</div>
             			</div>
@@ -162,7 +176,7 @@ include('header.php');
 
 <div class="modal" id="soalModal">
   	<div class="modal-dialog modal-lg">
-    	<form method="post" id="soal_form">
+    	<form class="form-horizontal m-t-40" method="post" id="soal_form">
       		<div class="modal-content">
       			<!-- Modal Header -->
         		<div class="modal-header">
@@ -173,67 +187,39 @@ include('header.php');
         		<!-- Modal body -->
         		<div class="modal-body">
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Judul Soal <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<input type="text" name="soal_teks" id="soal_teks" autocomplete="off" class="form-control" />
-	                		</div>
-            			</div>
+          				<label>Pertanyaan <span class="text-danger">*</span></label>
+                		<textarea name="soal_teks" id="soal_teks" rows="2" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Option 1 <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<input type="text" name="pilihan_teks_1" id="pilihan_teks_1" autocomplete="off" class="form-control" />
-	                		</div>
-            			</div>
+              			<label>A <span class="text-danger">*</span></label>
+	                	<textarea  type="text" name="pilihan_teks_1" id="pilihan_teks_1" rows="1" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Option 2 <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<input type="text" name="pilihan_teks_2" id="pilihan_teks_2" autocomplete="off" class="form-control" />
-	                		</div>
-            			</div>
+              			<label>B <span class="text-danger">*</span></label>
+	                	<textarea  type="text" name="pilihan_teks_2" id="pilihan_teks_2" rows="1" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Option 3 <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<input type="text" name="pilihan_teks_3" id="pilihan_teks_3" autocomplete="off" class="form-control" />
-	                		</div>
-            			</div>
+              			<label>C <span class="text-danger">*</span></label>
+	                	<textarea  type="text" name="pilihan_teks_3" id="pilihan_teks_3" rows="1" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Option 4 <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<input type="text" name="pilihan_teks_4" id="pilihan_teks_4" autocomplete="off" class="form-control" />
-	                		</div>
-            			</div>
+              			<label>D <span class="text-danger">*</span></label>
+	                	<textarea  type="text" name="pilihan_teks_4" id="pilihan_teks_4" rows="1" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Option 5 <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<input type="text" name="pilihan_teks_5" id="pilihan_teks_5" autocomplete="off" class="form-control" />
-	                		</div>
-            			</div>
+              			<label>E <span class="text-danger">*</span></label>
+	                	<textarea  type="text" name="pilihan_teks_5" id="pilihan_teks_5" rows="1" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
-            			<div class="row">
-              				<label class="col-md-4 text-right">Kunci <span class="text-danger">*</span></label>
-	              			<div class="col-md-8">
-	                			<select name="soal_kunci" id="soal_kunci" class="form-control">
-	                				<option value="">Select</option>
-	                				<option value="1">1 Option</option>
-	                				<option value="2">2 Option</option>
-	                				<option value="3">3 Option</option>
-	                				<option value="4">4 Option</option>
-	                				<option value="5">5 Option</option>
-	                			</select>
-	                		</div>
-            			</div>
+          				<label>Kunci <span class="text-danger">*</span></label>
+            			<select name="soal_kunci" id="soal_kunci" class="form-control">
+            				<option value="">Select</option>
+            				<option value="1">Pilihan A</option>
+            				<option value="2">Pilihan B</option>
+            				<option value="3">Pilihan C</option>
+            				<option value="4">Pilihan D</option>
+            				<option value="5">Pilihan E</option>
+            			</select>
           			</div>
         		</div>
 
@@ -271,7 +257,7 @@ $(document).ready(function(){
 		},
 		"columnDefs":[
 			{
-				"targets":[4],
+				"targets":[3, 4, 5],
 				"orderable":false,
 			},
 		],
@@ -315,9 +301,13 @@ $(document).ready(function(){
 
 		$('#ujian_durasi').attr('required', 'required');
 
-		$('#ujian_jumlah_soal').attr('required', 'required');
+		$('#nilai_benar').attr('required', 'required');
 
-		$('#ujian_acak').attr('required', 'required');
+		$('#nilai_salah').attr('required', 'required');
+
+		$('#ujian_status').attr('required', 'required');
+
+		$('#ujian_info').attr('required', 'required');
 
 		if($('#ujian_form').parsley().validate())
 		{
@@ -373,9 +363,13 @@ $(document).ready(function(){
 
 				$('#ujian_durasi').val(data.ujian_durasi);
 
-				$('#ujian_jumlah_soal').val(data.ujian_jumlah_soal);
+				$('#nilai_benar').val(data.nilai_benar);
 
-				$('#ujian_acak').val(data.ujian_acak);
+				$('#nilai_salah').val(data.nilai_salah);
+
+				$('#ujian_info').val(data.ujian_info);
+
+				$('#ujian_status').val(data.ujian_status);
 
 				$('#ujian_id').val(ujian_id);
 

@@ -319,7 +319,7 @@ if(isset($_POST['page']))
 				$sub_array = array();
 				$sub_array[] = html_entity_decode($row['ujian_judul']);
 
-				$sub_array[] = $row['ujian_mapel'];
+				$sub_array[] = $row['ujian_durasi'] .' Menit';
 
 				$sub_array[] = $row['ujian_tanggal'];
 
@@ -327,29 +327,22 @@ if(isset($_POST['page']))
 				$edit_button = '';
 				$delete_button = '';
 
-				if($exam->Batas_jumlah_soal($row['ujian_id']))
-				{
-					$soal_button = '
-					<button type="button" name="add_soal" class="btn btn-warning btn-sm add_soal" id="'.$row['ujian_id'].'">'.$exam->jumlah_soal($row['ujian_id']).' <small>Tambah Soal</small></button>
-					';
-				}
-				else
-				{
-					$soal_button = '
-					<a href="soal.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">Lihat Soal</a>
+				$soal_button = '
+					<a href="soal.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">'.$exam->jumlah_soal($row['ujian_id']).' Lihat Soal</a>
 					<a href="kelas_ujian.php?code='.$row['ujian_code'].'" class="btn btn-success btn-sm">Kelas</a>
-					';
-				}
+				';
 
 				$hasil_ujian = '<a href="hasil_ujian.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">Hasil Ujian</a>';
 
-				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit" id="'.$row['ujian_id'].'">Edit</button>';
+				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit" id="'.$row['ujian_id'].'"><i class="fa fa-pencil-square-o"></i> </button>';
 
-				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete" id="'.$row['ujian_id'].'">Delete</button>';
+				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete" id="'.$row['ujian_id'].'"><i class="fa fa-trash-o"></i></button>';
 
 				$sub_array[] = $soal_button;
 
-				$sub_array[] = $edit_button . ' ' . $delete_button .' '.$hasil_ujian;			
+				$sub_array[] = $hasil_ujian;
+
+				$sub_array[] = $edit_button . ' ' . $delete_button;			
 
 				$data[] = $sub_array;
 			}
@@ -372,15 +365,17 @@ if(isset($_POST['page']))
 				':ujian_mapel'			=>	$exam->clean_data($_POST['ujian_mapel']),
 				':ujian_tanggal'		=>	$_POST['ujian_tanggal'] . ':00',
 				':ujian_durasi'			=>	$_POST['ujian_durasi'],
-				':ujian_jumlah_soal'	=>	$_POST['ujian_jumlah_soal'],
-				':ujian_acak'			=>	$_POST['ujian_acak'],
+				':ujian_info'			=>	$_POST['ujian_info'],
+				':nilai_benar'			=>	$_POST['nilai_benar'],
+				':nilai_salah'			=>	$_POST['nilai_salah'],
+				':ujian_status'			=>	$_POST['ujian_status'],
 				':ujian_code'			=>	md5(rand())
 			);
 
 			$exam->query = "
 			INSERT INTO ujian
-			(ujian_admin_id, ujian_judul, ujian_mapel, ujian_tanggal, ujian_durasi, ujian_jumlah_soal, ujian_acak, ujian_code) 
-			VALUES (:ujian_admin_id, :ujian_judul, :ujian_mapel, :ujian_tanggal, :ujian_durasi, :ujian_jumlah_soal, :ujian_acak, :ujian_code)
+			(ujian_admin_id, ujian_judul, ujian_mapel, ujian_tanggal, ujian_durasi, ujian_info, nilai_benar, nilai_salah, ujian_status, ujian_code) 
+			VALUES (:ujian_admin_id, :ujian_judul, :ujian_mapel, :ujian_tanggal, :ujian_durasi, :ujian_info, :nilai_benar, :nilai_salah, :ujian_status, :ujian_code)
 			";
 
 			$exam->execute_query();
@@ -411,9 +406,13 @@ if(isset($_POST['page']))
 
 				$output['ujian_durasi'] = $row['ujian_durasi'];
 
-				$output['ujian_jumlah_soal'] = $row['ujian_jumlah_soal'];
+				$output['nilai_benar'] = $row['nilai_benar'];
 
-				$output['ujian_acak'] = $row['ujian_acak'];
+				$output['nilai_salah'] = $row['nilai_salah'];
+
+				$output['ujian_info'] = $row['ujian_info'];
+
+				$output['ujian_status'] = $row['ujian_status'];
 			}
 
 			echo json_encode($output);
@@ -426,14 +425,16 @@ if(isset($_POST['page']))
 				':ujian_mapel'			=>	$exam->clean_data($_POST['ujian_mapel']),
 				':ujian_tanggal'		=>	$_POST['ujian_tanggal'],
 				':ujian_durasi'			=>	$_POST['ujian_durasi'],
-				':ujian_jumlah_soal'	=>	$_POST['ujian_jumlah_soal'],
-				':ujian_acak'			=>	$_POST['ujian_acak'],
+				':nilai_benar'			=>	$_POST['nilai_benar'],
+				':nilai_salah'			=>	$_POST['nilai_salah'],
+				':ujian_info'			=>	$_POST['ujian_info'],
+				':ujian_status'			=>	$_POST['ujian_status'],
 				':ujian_id'				=>	$_POST['ujian_id']
 			);
 
 			$exam->query = "
 			UPDATE ujian
-			SET ujian_judul = :ujian_judul, ujian_mapel = :ujian_mapel, ujian_tanggal = :ujian_tanggal, ujian_durasi = :ujian_durasi, ujian_jumlah_soal = :ujian_jumlah_soal, ujian_acak = :ujian_acak  
+			SET ujian_judul = :ujian_judul, ujian_mapel = :ujian_mapel, ujian_tanggal = :ujian_tanggal, ujian_durasi = :ujian_durasi, nilai_benar = :nilai_benar, nilai_salah = :nilai_salah, ujian_info = :ujian_info, ujian_status = :ujian_status    
 			WHERE ujian_id = :ujian_id
 			";
 
@@ -652,7 +653,7 @@ if(isset($_POST['page']))
 		{
 			$exam->data = array(
 				':soal_ujian_id'		=>	$_POST['ujian_id'],
-				':soal_teks'			=>	$_POST['soal_teks'],
+				':soal_teks'			=>	nl2br($_POST['soal_teks']),
 				':soal_kunci'			=>	$_POST['soal_kunci']
 			);
 
@@ -784,7 +785,7 @@ if(isset($_POST['page']))
 
 			foreach($result as $row)
 			{
-				$output['soal_teks'] = html_entity_decode($row['soal_teks']);
+				$output['soal_teks'] = $row['soal_teks'];
 
 				$output['soal_kunci'] = $row['soal_kunci'];
 
@@ -812,7 +813,7 @@ if(isset($_POST['page']))
 		{
 			$exam->data = array(
 				':soal_id'				=>	$_POST['soal_id'],
-				':soal_teks'			=>	$_POST['soal_teks'],
+				':soal_teks'			=>	nl2br($_POST['soal_teks']),
 				':soal_kunci'			=>	$_POST['soal_kunci']
 			);
 
@@ -1563,6 +1564,578 @@ if(isset($_POST['page']))
 
 			$output = array(
 				'success'	=>	'Postingan berhasil di hapus'
+			);
+
+			echo json_encode($output);
+		}
+	}
+
+	if($_POST['page'] == 'quiz')
+	{
+		if($_POST['action'] == 'ambil_quiz')
+		{
+			$output = array();
+
+			$exam->query = "
+			SELECT * FROM topik_quiz
+			WHERE topik_admin_id = '".$_SESSION["admin_id"]."' 
+			AND (
+			";
+
+			if(isset($_POST['search']['value']))
+			{
+				$exam->query .= 'topik_judul LIKE "%'.$_POST["search"]["value"].'%" ';
+
+				$exam->query .= 'OR topik_mapel_id LIKE "%'.$_POST["search"]["value"].'%" ';
+
+				$exam->query .= 'OR topik_tgl LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+
+			$exam->query .= ')';
+
+			if(isset($_POST['order']))
+			{
+				$exam->query .= 'ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY topik_id DESC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST['length'] != -1)
+			{
+				$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filtered_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM topik_quiz
+			WHERE topik_admin_id = '".$_SESSION["admin_id"]."'
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+				$sub_array[] = html_entity_decode($row['topik_judul']);
+
+				$sub_array[] = $row['topik_mapel_id'];
+
+				$sub_array[] = $row['topik_tgl'];
+
+				$sub_array[] = $row['topik_waktu_soal'];
+
+				$soal_button = '';
+
+				$soal_button = '
+					<a href="daftar_soal.php?code='.$row['topik_code'].'" class="btn btn-info btn-sm">'.$exam->jumlah_soal_quiz($row['topik_id']).' Daftar Soal</a>
+					<a href="kelas_quiz.php?code='.$row['topik_code'].'" class="btn btn-success btn-sm">Kelas</a>
+					';
+
+				$sub_array[] = $soal_button;
+
+				$edit_button = '';
+				$delete_button = '';
+
+				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit" id="'.$row['topik_id'].'"><i class="fa fa-pencil-square-o"></i></button>';
+
+				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete" id="'.$row['topik_id'].'"><i class="fa fa-trash-o"></i></button>';
+
+				$sub_array[] = $edit_button . ' ' . $delete_button;
+
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+				"draw"				=>	intval($_POST["draw"]),
+				"recordsTotal"		=>	$total_rows,
+				"recordsFiltered"	=>	$filtered_rows,
+				"data"				=>	$data
+			);
+
+			echo json_encode($output);
+		}
+		
+		if($_POST['action'] == 'Add')
+		{
+			$exam->data = array(
+				':topik_admin_id'		=>	$_SESSION['admin_id'],
+				':topik_judul'			=>	$_POST['topik_judul'],
+				':topik_mapel_id'		=>	$_POST['topik_mapel_id'],
+				':topik_tgl'			=>	$_POST['topik_tgl'] . ':00',
+				':topik_waktu_soal'		=>	$_POST['topik_waktu_soal'],
+				':topik_info'			=>	$_POST['topik_info'],
+				':topik_status'			=>	$_POST['topik_status'],
+				':topik_code'			=>	md5(rand())
+			);
+
+			$exam->query = "
+			INSERT INTO topik_quiz
+			(topik_judul, topik_mapel_id, topik_admin_id, topik_tgl, topik_waktu_soal, topik_info, topik_status, topik_code) 
+			VALUES (:topik_judul, :topik_mapel_id, :topik_admin_id, :topik_tgl, :topik_waktu_soal, :topik_info, :topik_status, :topik_code)
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Data Quiz berhasil ditambahkan'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'edit_ambil')
+		{
+			$exam->query = "
+			SELECT * FROM topik_quiz
+			WHERE topik_id = '".$_POST["topik_id"]."'
+			";
+
+			$result = $exam->query_result();
+
+			foreach($result as $row)
+			{
+				$output['topik_judul'] = $row['topik_judul'];
+
+				$output['topik_mapel_id'] = $row['topik_mapel_id'];
+
+				$output['topik_tgl'] = $row['topik_tgl'];
+
+				$output['topik_waktu_soal'] = $row['topik_waktu_soal'];
+
+				$output['topik_info'] = $row['topik_info'];
+
+				$output['topik_status'] = $row['topik_status'];
+			}
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'Edit_quiz')
+		{
+			$exam->data = array(
+				':topik_judul'			=>	$_POST['topik_judul'],
+				':topik_mapel_id'		=>	$_POST['topik_mapel_id'],
+				':topik_tgl'			=>	$_POST['topik_tgl'] . ':00',
+				':topik_waktu_soal'		=>	$_POST['topik_waktu_soal'],
+				':topik_info'			=>	$_POST['topik_info'],
+				':topik_status'			=>	$_POST['topik_status'],
+				':topik_id'				=>	$_POST['topik_id']
+			);
+
+			$exam->query = "
+			UPDATE topik_quiz
+			SET topik_judul = :topik_judul, topik_mapel_id = :topik_mapel_id, topik_tgl = :topik_tgl, topik_waktu_soal = :topik_waktu_soal, topik_info = :topik_info, topik_status = :topik_status  
+			WHERE topik_id = :topik_id 
+			";
+
+			$exam->execute_query($exam->data);
+
+			$output = array(
+				'success'	=>	'Data Quiz Berhasil diperbaharui'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'delete')
+		{
+			$exam->data = array(
+				':topik_id'	=>	$_POST['topik_id']
+			);
+
+			$exam->query = "
+			DELETE FROM topik_quiz
+			WHERE topik_id = :topik_id
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Data Quiz Berhasil dihapus'
+			);
+
+			echo json_encode($output);
+		}
+	}
+
+	if($_POST['page'] == 'daftar_soal')
+	{
+		if($_POST['action'] == 'ambil')
+		{
+			$output = array();
+			$topik_id = '';
+			if(isset($_POST['code']))
+			{
+				$topik_id = $exam->Get_topik_id($_POST['code']);
+			}
+			$exam->query = "
+			SELECT * FROM soal_pilihan_ganda
+			WHERE pilgan_topik_id = '".$topik_id."' 
+			AND (
+			";
+
+			if(isset($_POST['search']['value']))
+			{
+				$exam->query .= 'pilgan_pertanyaan LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+
+			$exam->query .= ')';
+
+			if(isset($_POST["order"]))
+			{
+				$exam->query .= '
+				ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' 
+				';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY pilgan_id ASC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST['length'] != -1)
+			{
+				$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filtered_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM soal_pilihan_ganda 
+			WHERE pilgan_topik_id = '".$topik_id."'
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+
+				$sub_array[] = $row['pilgan_pertanyaan'];
+
+				$sub_array[] = $row['pilgan_kunci'];
+
+				$edit_button = '';
+				$delete_button = '';
+
+				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit" id="'.$row['pilgan_id'].'">Edit</button>';
+
+				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete" id="'.$row['pilgan_id'].'">Delete</button>';
+
+
+				$sub_array[] = $edit_button . ' ' . $delete_button;
+
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+				"draw"		=>	intval($_POST["draw"]),
+				"recordsTotal"	=>	$total_rows,
+				"recordsFiltered"	=>	$filtered_rows,
+				"data"		=>	$data
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'tambah')
+		{
+			$topik_id = '';
+			if(isset($_POST['topik_id']))
+			{
+				$topik_id = $exam->Get_topik_id($_POST['topik_id']);
+			}
+
+			$exam->data = array(
+				':pilgan_topik_id'		=>	$topik_id,
+				':pilgan_pertanyaan'	=>	$_POST['pilgan_pertanyaan'],
+				':pilgan_a'				=>	$_POST['pilgan_a'],
+				':pilgan_b'				=>	$_POST['pilgan_b'],
+				':pilgan_c'				=>	$_POST['pilgan_c'],
+				':pilgan_d'				=>	$_POST['pilgan_d'],
+				':pilgan_e'				=>	$_POST['pilgan_e'],
+				':pilgan_kunci'			=>	$_POST['pilgan_kunci']				
+			);
+
+			$exam->query = "
+			INSERT INTO soal_pilihan_ganda
+			(pilgan_topik_id, pilgan_pertanyaan, pilgan_a, pilgan_b, pilgan_c, pilgan_d, pilgan_e, pilgan_kunci) 
+			VALUES (:pilgan_topik_id, :pilgan_pertanyaan, :pilgan_a, :pilgan_b, :pilgan_c, :pilgan_d, :pilgan_e, :pilgan_kunci)
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'		=>	'Soal Berhasil ditambahkan'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'edit_ambil')
+		{
+			$exam->query = "
+			SELECT * FROM soal_pilihan_ganda
+			WHERE pilgan_id = '".$_POST["pilgan_id"]."'
+			";
+
+			$result = $exam->query_result();
+
+			foreach($result as $row)
+			{
+				$output['pilgan_pertanyaan'] = html_entity_decode($row['pilgan_pertanyaan']);
+
+				$output['pilgan_a'] = $row['pilgan_a'];
+
+				$output['pilgan_b'] = $row['pilgan_b'];
+
+				$output['pilgan_c'] = $row['pilgan_c'];
+
+				$output['pilgan_d'] = $row['pilgan_d'];
+
+				$output['pilgan_e'] = $row['pilgan_e'];
+
+				$output['pilgan_kunci'] = $row['pilgan_kunci'];
+			}
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'Edit')
+		{
+			$exam->data = array(
+				':pilgan_id'			=>	$_POST['pilgan_id'],
+				':pilgan_pertanyaan'	=>	$_POST['pilgan_pertanyaan'],
+				':pilgan_a'				=>	$_POST['pilgan_a'],
+				':pilgan_b'				=>	$_POST['pilgan_b'],
+				':pilgan_c'				=>	$_POST['pilgan_c'],
+				':pilgan_d'				=>	$_POST['pilgan_d'],
+				':pilgan_e'				=>	$_POST['pilgan_e'],
+				':pilgan_kunci'			=>	$_POST['pilgan_kunci']
+			);
+
+			$exam->query = "
+			UPDATE soal_pilihan_ganda
+			SET pilgan_pertanyaan = :pilgan_pertanyaan, pilgan_a = :pilgan_a, pilgan_b = :pilgan_b, pilgan_c = :pilgan_c, pilgan_d = :pilgan_d, pilgan_e = :pilgan_e, pilgan_kunci = :pilgan_kunci
+			WHERE pilgan_id = :pilgan_id
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Soal Berhasil di Perbaharui'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'delete')
+		{
+			$exam->data = array(
+				':pilgan_id'	=>	$_POST['pilgan_id']
+			);
+
+			$exam->query = "
+			DELETE FROM soal_pilihan_ganda
+			WHERE pilgan_id = :pilgan_id
+			";
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Soal telah di hapus'
+			);
+
+			echo json_encode($output);
+		}
+	}
+
+	if($_POST['page'] == 'kelasquiz')
+	{
+		if($_POST['action'] == 'ambil_kelas')
+		{
+			$output = array();
+			$topik_id = $exam->Get_topik_id($_POST['code']);
+			$exam->query = "
+			SELECT * FROM kelasquiz
+			INNER JOIN kelas ON kelas.kelas_id = kelasquiz.kelasquiz_kelas_id
+			WHERE kelasquiz.kelasquiz_topik_id = '".$topik_id."' 
+			AND (
+			";
+
+			if(isset($_POST['search']['value']))
+			{
+				$exam->query .= 'kelas.kelas_nama LIKE "%'.$_POST["search"]["value"].'%" ';
+				$exam->query .= 'OR kelas.kelas_jurusan LIKE "%'.$_POST["search"]["value"].'%" ';
+				$exam->query .= 'OR kelas.kelas_sekolah LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+
+			$exam->query .= ')';
+
+			if(isset($_POST["order"]))
+			{
+				$exam->query .= '
+				ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' 
+				';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY kelasquiz.kelasquiz_id ASC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST['length'] != -1)
+			{
+				$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filtered_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM kelasquiz
+			INNER JOIN kelas ON kelas.kelas_id = kelasquiz.kelasquiz_kelas_id
+			WHERE kelasquiz.kelasquiz_topik_id = '".$topik_id."'
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+
+				$sub_array[] = $row['kelas_tingkat'];
+
+				$sub_array[] = $row['kelas_nama'];
+
+				$sub_array[] = $row['kelas_jurusan'];
+
+				$sub_array[] = $row['kelas_sekolah'];
+
+				$status = '';
+
+				if($row['kelasquiz_status'] == 'Menunggu')
+				{
+					$status = '<span class="badge badge-warning">Menunggu</span>';
+				}
+
+				if($row['kelasquiz_status'] == 'Mulai')
+				{
+					$status = '<span class="badge badge-info">Mulai</span>';
+				}
+
+				if($row['kelasquiz_status'] == 'Selesai')
+				{
+					$status = '<span class="badge badge-success">Selesai</span>';
+				}
+
+				$sub_array[] = $status;
+
+				$delete_button = '';
+
+				$delete_button = '<button type="button" name="delete" class="btn btn-danger btn-sm delete_kelasquiz" id="'.$row['kelasquiz_id'].'">Delete</button>';
+
+				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit_status" id="'.$row['kelasquiz_id'].'">Status</button>';
+
+
+				$sub_array[] = $edit_button . ' ' . $delete_button;
+
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+				"draw"		=>	intval($_POST["draw"]),
+				"recordsTotal"	=>	$total_rows,
+				"recordsFiltered"	=>	$filtered_rows,
+				"data"		=>	$data
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'add_kelasquiz')
+		{
+			$topik_id = $exam->Get_topik_id($_POST['code']);
+			$exam->data = array(
+				':kelasquiz_kelas_id'		=>	$_POST['kelas_id'],
+				':kelasquiz_topik_id'		=>  $topik_id
+			);
+
+			$exam->query = "
+			INSERT INTO kelasquiz
+			(kelasquiz_kelas_id, kelasquiz_topik_id) 
+			VALUES (:kelasquiz_kelas_id, :kelasquiz_topik_id)
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Kelas Quiz berhasil di tambahkan'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'delete_kelasquiz')
+		{
+			$exam->data = array(
+				':kelasquiz_id'	=>	$_POST['kelasquiz_id']
+			);
+
+			$exam->query = "
+			DELETE FROM kelasquiz
+			WHERE kelasquiz_id = :kelasquiz_id
+			";
+
+			$exam->execute_query();
+
+			$output = array(
+				'success'	=>	'Kelas Quiz berhasil di hapus'
+			);
+
+			echo json_encode($output);
+		}
+
+		if($_POST['action'] == 'status_kelasquiz')
+		{
+			$exam->data = array(
+				':kelasquiz_id'		=>	$_POST['kelasquiz_id'],
+				':kelasquiz_status'	=>	$_POST['kelasquiz_status']
+			);
+
+			$exam->query = "
+			UPDATE kelasquiz
+			SET kelasquiz_status = :kelasquiz_status 
+			WHERE kelasquiz_id = :kelasquiz_id
+			";
+
+			$exam->execute_query($exam->data);
+
+			$output = array(
+				'success'	=>	'Status Kelas diganti'
 			);
 
 			echo json_encode($output);

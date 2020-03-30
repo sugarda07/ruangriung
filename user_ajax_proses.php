@@ -334,12 +334,12 @@ if(isset($_POST['page']))
 
 						if($status_ujian_user == 'Absen')
 						{
-							$kerjakan = '<a href="proses_ujian.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm">Kerjakan</a>';
+							$kerjakan = '<a href="tugas_proses.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm">Kerjakan</a>';
 						}
 
 						if($status_ujian_user == 'Sedang Mengerjakan')
 						{
-							$kerjakan = '<a href="proses_ujian.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm">Kerjakan</a>';
+							$kerjakan = '<a href="tugas_proses.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm">Kerjakan</a>';
 						}
 
 						if($status_ujian_user == 'Selesai')
@@ -371,30 +371,89 @@ if(isset($_POST['page']))
 			echo json_encode($output);
 		}
 
-		if($_POST['action'] == 'konfirmasi')
+		if($_POST['action'] == "load_data_ujian")
 		{
 			$exam->query = "
-			SELECT ujian_durasi FROM ujian 
-			WHERE ujian_id = '".$_POST['ujian_id']."'
+			SELECT * FROM kelasujian
+			INNER JOIN ujian ON ujian.ujian_id = kelasujian.kelasujian_ujian_id
+			INNER JOIN mapel ON mapel.mapel_id = ujian.ujian_mapel
+			INNER JOIN user ON user.user_kelas_id = kelasujian.kelasujian_kelas_id
+			WHERE user.user_id = '".$_SESSION['user_id']."'
+			ORDER BY kelasujian.kelasujian_id DESC
 			";
 
 			$result = $exam->query_result();
+
+			$output ='';
+
 			foreach($result as $row)
 			{
-				$exam->data = array(
-					':konfirmasi_user_id'	=>	$_SESSION['user_id'],
-					':konfirmasi_ujian_id'	=>	$_POST['ujian_id'],
-					':konfirmasi_durasi'	=>	$row['ujian_durasi']
-				);
+				$status_ujian_user = '';
 
-				$exam->query = "
-				INSERT INTO user_konfirmasi 
-				(konfirmasi_user_id, konfirmasi_ujian_id, konfirmasi_durasi) 
-				VALUES (:konfirmasi_user_id, :konfirmasi_ujian_id, :konfirmasi_durasi)
-				";
+				$kerjakan = '';				
 
-				$exam->execute_query();
-			}
+				if($row['kelasujian_status'] == 'Mulai')
+				{
+					if($exam->If_user_konfirmasi($row['ujian_id'], $_SESSION['user_id']))
+					{
+						$status_ujian_user = $exam->status_ujian_user($row['ujian_id'], $_SESSION['user_id']);
+
+						if($status_ujian_user == 'Absen')
+						{
+							$kerjakan .= '<a href="tugas_proses.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm pull-right">Kerjakan</a>';
+						}
+
+						if($status_ujian_user == 'Sedang Mengerjakan')
+						{
+							$kerjakan .= '<a href="tugas_proses.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm pull-right">Kerjakan</a>';
+						}
+
+						if($status_ujian_user == 'Selesai')
+						{
+							$kerjakan .= '<a href="hasil.php?code='.$row["ujian_code"].'" class="btn btn-success btn-sm pull-right">Lihat Hasil</a>';
+						}
+					}
+					else
+					{
+						$kerjakan .= '<button type="button" name="konfirmasi" id="konfirmasi" class="btn btn-warning btn-sm pull-right" data-ujian_id="'.$row['ujian_id'].'">Konfirmasi</button>';
+					}
+				}
+				else
+				{
+					
+				}
+
+				$output	.= '
+			    <div class="card" style="margin-bottom: 5px;margin-top: 5px;">
+                    <div class="card-body">
+                        <h4 class="card-title" style="margin-bottom: 3px;">'.$row['ujian_judul'].'</h4>
+                        <p class="card-text" style="margin-bottom: 0px;">Nama Mapel: '.$row['mapel_nama'].'</p>
+                        <p class="card-text" style="margin-bottom: 0px;"> Jumlah Soal: '.$exam->jumlah_soal($row['ujian_id']).' (Durasi '.$row['ujian_durasi'].' Menit)</p>
+                        <p class="card-text" style="margin-bottom: 0px;">Info Soal: '.$row['ujian_info'].'</p>
+                        <p class="card-text" style="margin-bottom: 5px;"><small class="text-muted">'.$row['ujian_tanggal'].' - Status: '.$row['kelasujian_status'].'</small></p>
+                        '.$kerjakan.'
+                    </div>
+                </div>
+			';
+			}		
+			echo $output;
+		}
+
+		if($_POST['action'] == 'konfirmasi')
+		{
+			$exam->data = array(
+				':konfirmasi_user_id'	=>	$_SESSION['user_id'],
+				':konfirmasi_ujian_id'	=>	$_POST['ujian_id']
+			);
+
+			$exam->query = "
+			INSERT INTO user_konfirmasi 
+			(konfirmasi_user_id, konfirmasi_ujian_id) 
+			VALUES (:konfirmasi_user_id, :konfirmasi_ujian_id)
+			";
+
+			$exam->execute_query();
+
 
 			$exam->query = "
 			SELECT soal_id FROM soal 
@@ -425,13 +484,11 @@ if(isset($_POST['page']))
 	{
 		if($_POST['action'] == 'load_soal')
 		{
-			$ujian_id = $exam->Get_ujian_id($_POST['code']);
-
 			if($_POST['soal_id'] == '')
 			{
 				$exam->query = "
 				SELECT * FROM soal 
-				WHERE soal_ujian_id = '".$ujian_id."' 
+				WHERE soal_ujian_id = '".$_POST["ujian_id"]."'
 				ORDER BY soal_id ASC 
 				LIMIT 1
 				";
@@ -451,14 +508,14 @@ if(isset($_POST['page']))
 			foreach($result as $row)
 			{
 				$output .= '
-				<h3>'.$row["soal_teks"].'</h3>
+				<h4>'.$row["soal_teks"].'</h4>
 				<hr />
 				<br />
 				<div class="row">
 				';
 
 				$exam->query = "
-				SELECT * FROM pilihan_soal 
+				SELECT * FROM pilihan_soal
 				WHERE pilihan_soal_id = '".$row['soal_id']."'
 				";
 				$sub_result = $exam->query_result();
@@ -467,12 +524,23 @@ if(isset($_POST['page']))
 
 				foreach($sub_result as $sub_row)
 				{
+					$is_checked= '';
+
+					if($exam->Get_jawaban_user($row['soal_id'], $_SESSION['user_id']) == $count)
+					{
+						$is_checked = 'checked';
+					}
+
 					$output .= '
-					<div class="col-md-6" style="margin-bottom:32px;">
-						<div class="radio">
-							<label><h4><input type="radio" name="pilihan_'.$row["soal_id"].'" class="pilihan_jawaban" data-soal_id="'.$row["soal_id"].'" data-id="'.$count.'"/>&nbsp;'.$sub_row["pilihan_teks"].'</h4></label>
-						</div>
-					</div>
+					<div class="col-12" style="padding: 7px;">
+						<fieldset class="controls">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" name="pilihan_1" id="no_'.$count.'" class="custom-control-input pilihan_jawaban" aria-invalid="false" data-soal_id="'.$row["soal_id"].'" data-id="'.$count.'"  '.$is_checked.'>
+                                <label class="custom-control-label" for="no_'.$count.'">'.$sub_row["pilihan_teks"].'</label>
+                            </div>
+                        	<div class="help-block"></div>
+                        </fieldset>
+	                </div>
 					';
 
 					$count = $count + 1;
@@ -480,91 +548,113 @@ if(isset($_POST['page']))
 				$output .= '
 				</div>
 				';
-				$exam->query = "
-				SELECT soal_id FROM soal 
-				WHERE soal_id < '".$row['soal_id']."' 
-				AND soal_ujian_id = '".$ujian_id."' 
-				ORDER BY soal_id DESC 
-				LIMIT 1";
-
-				$previous_result = $exam->query_result();
-
-				$previous_id = '';
-				$next_id = '';
-
-				foreach($previous_result as $previous_row)
-				{
-					$previous_id = $previous_row['soal_id'];
-				}
-
-				$exam->query = "
-				SELECT soal_id FROM soal 
-				WHERE soal_id > '".$row['soal_id']."' 
-				AND soal_ujian_id = '".$ujian_id."' 
-				ORDER BY soal_id ASC 
-				LIMIT 1";
-  				
-  				$next_result = $exam->query_result();
-
-  				foreach($next_result as $next_row)
-				{
-					$next_id = $next_row['soal_id'];
-				}
-
-				$if_previous_disable = '';
-				$if_next_disable = '';
-
-				if($previous_id == "")
-				{
-					$if_previous_disable = 'disabled';
-				}
-				
-				if($next_id == "")
-				{
-					$if_next_disable = 'disabled';
-				}
-
-				$output .= '
-					<br /><br />
-				  	<div align="center">
-				   		<button type="button" name="previous" class="btn btn-info btn-lg previous" id="'.$previous_id.'" '.$if_previous_disable.'>Previous</button>
-				   		<button type="button" name="next" class="btn btn-warning btn-lg next" id="'.$next_id.'" '.$if_next_disable.'>Next</button>
-				  	</div>
-				  	<br /><br />';
 			}
 
 			echo $output;
 		}
 
-		if($_POST['action'] == 'soal_navigation')
+		if($_POST['action'] == 'navigasi_arah')
 		{
-			$ujian_id = $exam->Get_ujian_id($_POST['code']);
+			$exam->query = "
+			SELECT soal_id FROM soal 
+			WHERE soal_id < '".$_POST['soal_id']."' 
+			AND soal_ujian_id = '".$_POST["ujian_id"]."' 
+			ORDER BY soal_id DESC 
+			LIMIT 1";
+
+			$previous_result = $exam->query_result();
+
+			$previous_id = '';
+			$next_id = '';
+			$output = '';
+
+			foreach($previous_result as $previous_row)
+			{
+				$previous_id = $previous_row['soal_id'];
+			}
 
 			$exam->query = "
+			SELECT soal_id FROM soal 
+			WHERE soal_id > '".$_POST['soal_id']."' 
+			AND soal_ujian_id = '".$_POST["ujian_id"]."' 
+			ORDER BY soal_id ASC 
+			LIMIT 1";
+				
+			$next_result = $exam->query_result();
+
+			foreach($next_result as $next_row)
+			{
+				$next_id = $next_row['soal_id'];
+			}
+
+			$if_previous_disable = '';
+			$if_next_disable = '';
+
+			if($previous_id == '')
+			{
+				$if_previous_disable = 'disabled';
+			}
+			
+			if($next_id == '')
+			{
+				$if_next_disable = 'disabled';
+			}
+
+			$output .= '
+	                <div class="col-4" style="padding: 5px">
+	                    <button type="button" name="previous" class="btn btn-block btn-info previous" id="'.$previous_id.'" '.$if_previous_disable.'><i class="fa fa-angle-double-left"></i> Sebelumnya</button>
+	                </div>
+	                <div class="col-4" style="padding: 5px">
+	                    
+	                </div>
+	                <div class="col-4" style="padding: 5px">
+	                    <button type="button" name="next" class="btn btn-block btn-info next" id="'.$next_id.'" '.$if_next_disable.'>Selanjutnya <i class="fa fa-angle-double-right"></i></button>
+	                </div>
+	        ';
+	        echo $output;
+		}
+
+		if($_POST['action'] == 'soal_navigation')
+		{
+			$exam->query = "
 				SELECT soal_id FROM soal 
-				WHERE soal_ujian_id = '".$ujian_id."' 
+				WHERE soal_ujian_id = '".$_POST["ujian_id"]."' 
 				ORDER BY soal_id ASC 
 				";
 			$result = $exam->query_result();
 			$output = '
-			<div class="card">
-				<div class="card-header">Navigasi Soal</div>
-				<div class="card-body">
-					<div class="row">
+			<div class="row">
 			';
 			$count = 1;
 			foreach($result as $row)	
 			{
+				$sudah_isi= '';
+				$isi_jawab= '';
+
+				if($exam->Get_jawaban_user($row['soal_id'], $_SESSION['user_id']) != '0')
+				{
+					$sudah_isi = 'btn-info';
+
+					$jawaban_user = $exam->Get_jawaban_user($row['soal_id'], $_SESSION['user_id']);
+
+					$jawaban_user_str = $exam->number_to_str($jawaban_user);
+
+					$isi_jawab = '<span class="badge badge-success text-white">'.$jawaban_user_str.'</span>';
+				}
+				else
+				{
+					$sudah_isi = 'btn-default';
+				}
+
 				$output .= '
-				<div class="col-md-2" style="margin-bottom:24px;">
-					<button type="button" class="btn btn-primary btn-lg navigasi_soal" data-soal_id="'.$row["soal_id"].'">'.$count.'</button>
-				</div>
+				<div class="col-4" style="padding-bottom: 10px; padding-top: 10px;">
+                    <button type="button" class="btn waves-effect waves-light '.$sudah_isi.' btn-block navigasi_soal" data-soal_id="'.$row["soal_id"].'">'.$count.' '.$isi_jawab.'</button>
+                </div>
 				';
-				$count++;
+				$count = $count + 1;
 			}
 			$output .= '
 				</div>
-			</div></div>
 			';
 			echo $output;
 		}
@@ -595,7 +685,7 @@ if(isset($_POST['page']))
 					<table class="table table-bordered">
 						<tr>
 							<th>Name</th>
-							<td>'.$row["user_user_nama_depan"].'</td>
+							<td>'.$row["user_nama_depan"].'</td>
 						</tr>
 						<tr>
 							<th>Email ID</th>
@@ -611,11 +701,9 @@ if(isset($_POST['page']))
 
 		if($_POST['action'] == 'jawaban')
 		{
-			$ujian_id = $exam->Get_ujian_id($_POST['code']);
+			$nilai_benar = $exam->Get_nilai_benar($_POST["ujian_id"]);
 
-			$nilai_benar = $exam->Get_nilai_benar($ujian_id);
-
-			$nilai_salah = $exam->Get_nilai_salah($ujian_id);
+			$nilai_salah = $exam->Get_nilai_salah($_POST["ujian_id"]);
 
 			$kunci_jawaban = $exam->Get_kunci_jawaban($_POST['soal_id']);
 
@@ -639,7 +727,7 @@ if(isset($_POST['page']))
 			UPDATE jawaban 
 			SET jawaban_pilihan_user = :jawaban_pilihan_user, nilai = :nilai 
 			WHERE jawaban_user_id = '".$_SESSION["user_id"]."' 
-			AND jawaban_ujian_id = '".$ujian_id."' 
+			AND jawaban_ujian_id = '".$_POST["ujian_id"]."' 
 			AND jawaban_soal_id = '".$_POST["soal_id"]."'
 			";
 			$exam->execute_query();
@@ -647,11 +735,9 @@ if(isset($_POST['page']))
 
 		if($_POST['action'] == 'konfirmasi_selesai')
 		{
-			$ujian_id = $exam->Get_ujian_id($_POST['code']);
-
 			$exam->data = array(
 				':konfirmasi_user_id'	=>	$_SESSION['user_id'],
-				':konfirmasi_ujian_id'	=>	$ujian_id,
+				':konfirmasi_ujian_id'	=>	$_POST["ujian_id"],
 				':konfirmasi_status'	=>	'Selesai',
 			);
 
@@ -2586,6 +2672,125 @@ if(isset($_POST['page']))
 		 	{
 				$output = 'Nobody has share nothing';
 		 	}
+		}
+	}
+
+	if($_POST['page'] == 'tugas')
+	{
+		if($_POST['action'] == "load_data_tugas")
+		{
+			$exam->query = "
+			SELECT * FROM kelasujian
+			INNER JOIN ujian ON ujian.ujian_id = kelasujian.kelasujian_ujian_id
+			INNER JOIN mapel ON mapel.mapel_id = ujian.ujian_mapel
+			INNER JOIN user ON user.user_kelas_id = kelasujian.kelasujian_kelas_id
+			WHERE user.user_id = '".$_SESSION['user_id']."'
+			ORDER BY kelasujian.kelasujian_id DESC
+			";
+
+			$result = $exam->query_result();
+
+			$output ='';
+
+			foreach($result as $row)
+			{
+				$status_ujian_user = '';
+
+				$kerjakan = '';				
+
+				if($row['kelasujian_status'] == 'Mulai')
+				{
+					if($exam->If_user_konfirmasi($row['ujian_id'], $_SESSION['user_id']))
+					{
+						$status_ujian_user = $exam->status_ujian_user($row['ujian_id'], $_SESSION['user_id']);
+
+						if($status_ujian_user == 'Absen')
+						{
+							$kerjakan = '<a href="tugas_proses.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm pull-right">Kerjakan</a>';
+						}
+
+						if($status_ujian_user == 'Sedang Mengerjakan')
+						{
+							$kerjakan = '<a href="tugas_proses.php?code='.$row["ujian_code"].'" class="btn btn-info btn-sm pull-right">Kerjakan</a>';
+						}
+
+						if($status_ujian_user == 'Selesai')
+						{
+							$kerjakan = '<a href="hasil.php?code='.$row["ujian_code"].'" class="btn btn-success btn-sm pull-right">Lihat Hasil</a>';
+						}
+					}
+					else
+					{
+						$kerjakan = '<button type="button" name="konfirmasi" id="konfirmasi" class="btn btn-warning btn-sm pull-right" data-ujian_id="'.$row['ujian_id'].'">Konfirmasi</button>';
+					}
+				}
+				else
+				{
+					
+				}
+
+				$output	.= '
+			    <div class="card" style="margin-bottom: 5px;margin-top: 5px;">
+                    <div class="card-body">
+                        <h4 class="card-title" style="margin-bottom: 3px;">'.$row['ujian_judul'].'</h4>
+                        <p class="card-text" style="margin-bottom: 0px;">Nama Mapel: '.$row['mapel_nama'].'</p>
+                        <p class="card-text" style="margin-bottom: 0px;"> Jumlah Soal: '.$exam->jumlah_soal($row['ujian_id']).' (Durasi '.$row['ujian_durasi'].' Menit)</p>
+                        <p class="card-text" style="margin-bottom: 0px;">Info Soal: '.$row['ujian_info'].'</p>
+                        <p class="card-text" style="margin-bottom: 5px;"><small class="text-muted">'.$row['ujian_tanggal'].' - Status: '.$row['kelasujian_status'].'</small></p>
+                        '.$kerjakan.'
+                    </div>
+                </div>
+			';
+			}		
+			echo $output;
+		}
+
+		if($_POST['action'] == "tampil_tugas")
+		{
+			$exam->query = "
+			SELECT * FROM materi
+			INNER JOIN kelasmateri ON kelasmateri.kelasmateri_materi_id = materi.materi_id
+			INNER JOIN user ON user.user_kelas_id = kelasmateri.kelasmateri_kelas_id
+			WHERE  user.user_id = '".$_SESSION["user_id"]."' AND materi_mapel_id = '".$_POST["mapel_id"]."'
+			GROUP BY materi_id
+			";
+
+			$result = $exam->query_result();
+
+			$output ='<ul class="list-icons" style="padding-left: 25px;">';
+
+			foreach($result as $row)
+			{
+				$output	.= '                
+			    <li>
+			        <a href="view_materi.php?data='.$row['materi_id'].'"><i class="fa fa-check text-info"></i> '.$row['materi_nama'].'</a>
+			    </li>';
+			}
+			$output .= '</ul>';	
+			echo $output;
+		}
+
+		if($_POST['action'] == "view_data_materi")
+		{
+			$exam->query = "
+			SELECT * FROM materi
+			JOIN user ON user.user_id = materi.materi_user_id
+			WHERE materi_id = '".$_POST['materi_id']."'
+			";
+
+			$result = $exam->query_result();
+
+			$output ='';
+
+			foreach($result as $row)
+			{
+				$output	.= '
+				<h4 class="card-title">'.$row['materi_nama'].'</h4>
+				<h6 class="card-subtitle">'.$exam->tgl_ago($row['materi_tgl']).'  oleh:  '.$row['user_nama_depan'].' '.$row['user_nama_belakang'].'</h6>
+				<p class="text-justify">'.$row['materi_data'].'</p>
+				';
+			}		
+			echo $output;
 		}
 	}
 	

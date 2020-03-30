@@ -1,32 +1,30 @@
 <?php
 
-//soal.php
-
 include('header.php');
 
 ?>
 <br />
 <nav aria-label="breadcrumb">
   	<ol class="breadcrumb">
-    	<li class="breadcrumb-item"><a href="ujian.php">Ujian List</a></li>
-    	<li class="breadcrumb-item active" aria-current="page">Soal List</li>
+    	<li class="breadcrumb-item"><a href="quiz.php">Quiz List</a></li>
+    	<li class="breadcrumb-item active" aria-current="page">Daftar Soal</li>
   	</ol>
 </nav>
 <div class="card">
 	<div class="card-header">
 		<div class="row">
 			<div class="col-md-9">
-				<h3 class="panel-title">Soal List</h3>
+				<h3 class="panel-title">Daftar Soal</h3>
 			</div>
 			<div class="col-md-3" align="right">
-				<button type="button" id="<?php echo $exam->Get_ujian_id($_GET["code"]); ?>" class="btn btn-info btn-sm add_soal">Tambah Soal</button>
+				<button type="button" id="add_soal" class="btn btn-info btn-sm">Tambah Soal</button>
 			</div>
 		</div>
 	</div>
 	<div class="card-body">
 		<span id="message_operation"></span>
 		<div class="table-responsive">
-			<table id="soal_data_table" class="table table-bordered table-striped table-hover">
+			<table id="daftar_soal_data_table" class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>
 						<th>Soal</th>
@@ -41,7 +39,7 @@ include('header.php');
 
 <div class="modal" id="soalModal">
   	<div class="modal-dialog modal-lg">
-    	<form class="form-horizontal m-t-40" method="post" id="soal_form">
+    	<form method="post" id="soal_form">
       		<div class="modal-content">
       			<!-- Modal Header -->
         		<div class="modal-header">
@@ -52,38 +50,38 @@ include('header.php');
         		<!-- Modal body -->
         		<div class="modal-body">
           			<div class="form-group">
-          				<label>Pertanyaan <span class="text-danger">*</span></label>
-                		<textarea name="soal_teks" id="soal_teks" rows="2" class="form-control"></textarea>
+          				<label>Soal <span class="text-danger">*</span></label>
+                		<textarea  type="text" name="pilgan_pertanyaan" id="pilgan_pertanyaan" rows="2" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
               			<label>A <span class="text-danger">*</span></label>
-	                	<textarea  type="text" name="pilihan_teks_1" id="pilihan_teks_1" rows="1" class="form-control"></textarea>
+	                	<textarea  type="text" name="pilgan_a" id="pilgan_a" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
               			<label>B <span class="text-danger">*</span></label>
-	                	<textarea  type="text" name="pilihan_teks_2" id="pilihan_teks_2" rows="1" class="form-control"></textarea>
+	                	<textarea  type="text" name="pilgan_b" id="pilgan_b" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
               			<label>C <span class="text-danger">*</span></label>
-	                	<textarea  type="text" name="pilihan_teks_3" id="pilihan_teks_3" rows="1" class="form-control"></textarea>
+	                	<textarea  type="text" name="pilgan_c" id="pilgan_c" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
               			<label>D <span class="text-danger">*</span></label>
-	                	<textarea  type="text" name="pilihan_teks_4" id="pilihan_teks_4" rows="1" class="form-control"></textarea>
+	                	<textarea  type="text" name="pilgan_d" id="pilgan_d" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
               			<label>E <span class="text-danger">*</span></label>
-	                	<textarea  type="text" name="pilihan_teks_5" id="pilihan_teks_5" rows="1" class="form-control"></textarea>
+	                	<textarea  type="text" name="pilgan_e" id="pilgan_e" class="form-control"></textarea>
           			</div>
           			<div class="form-group">
           				<label>Kunci <span class="text-danger">*</span></label>
-            			<select name="soal_kunci" id="soal_kunci" class="form-control">
+            			<select name="pilgan_kunci" id="pilgan_kunci" class="form-control">
             				<option value="">Select</option>
-            				<option value="1">Pilihan A</option>
-            				<option value="2">Pilihan B</option>
-            				<option value="3">Pilihan C</option>
-            				<option value="4">Pilihan D</option>
-            				<option value="5">Pilihan E</option>
+            				<option value="A">Pilihan A</option>
+            				<option value="B">Pilihan B</option>
+            				<option value="C">Pilihan C</option>
+            				<option value="D">Pilihan D</option>
+            				<option value="E">Pilihan E</option>
             			</select>
           			</div>
         		</div>
@@ -91,15 +89,10 @@ include('header.php');
 	        	<!-- Modal footer -->
 	        	<div class="modal-footer">
 	        		<input type="hidden" name="soal_id" id="soal_id" />
-
-	        		<input type="hidden" name="ujian_id" id="hidden_ujian_id" />
-
-	        		<input type="hidden" name="page" value="soal" />
-
-	        		<input type="hidden" name="action" id="hidden_action" value="Add" />
-
-	        		<input type="submit" name="soal_button_action" id="soal_button_action" class="btn btn-success btn-sm" value="Add" />
-
+	          		<input type="hidden" name="topik_id" id="topik_id" value="<?php echo $_GET["code"]; ?>" />
+	          		<input type="hidden" name="page" value="daftar_soal" />
+	          		<input type="hidden" name="action" id="hidden_action" value="tambah" />
+	          		<input type="submit" name="soal_button_action" id="soal_button_action" class="btn btn-success btn-sm" value="Add" />
 	          		<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
 	        	</div>
         	</div>
@@ -134,32 +127,17 @@ include('header.php');
 <script>
 
 $(document).ready(function(){
-
-	if ($("#soal_teks").length > 0) {
-            tinymce.init({
-                selector: "textarea#soal_teks",
-                theme: "modern",
-                height: 300,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                    "save table contextmenu directionality emoticons template paste textcolor"
-                ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
-
-            });
-        }
 	
 	var code = "<?php echo $_GET["code"]; ?>";
 
-	var dataTable = $('#soal_data_table').DataTable({
+	var dataTable = $('#daftar_soal_data_table').DataTable({
 		"processing" :true,
 		"serverSide" :true,
 		"order" :[],
 		"ajax" :{
 			url:"ajax_proses.php",
 			method:"POST",
-			data:{action:'ambil', page:'soal', code:code}
+			data:{action:'ambil', page:'daftar_soal', code:code}
 		},
 		"columnDefs":[
 			{
@@ -174,28 +152,31 @@ $(document).ready(function(){
 	$('#soal_form').on('submit', function(event){
 		event.preventDefault();
 
-		$('#soal_teks').attr('required', 'required');
+		$('#pilgan_pertanyaan').attr('required', 'required');
 
-		$('#soal_pilihan_1').attr('required', 'required');
+		$('#pilgan_a').attr('required', 'required');
 
-		$('#soal_pilihan_2').attr('required', 'required');
+		$('#pilgan_b').attr('required', 'required');
 
-		$('#soal_pilihan_3').attr('required', 'required');
+		$('#pilgan_c').attr('required', 'required');
 
-		$('#soal_pilihan_4').attr('required', 'required');
+		$('#pilgan_d').attr('required', 'required');
 
-		$('#soal_pilihan_5').attr('required', 'required');
+		$('#pilgan_e').attr('required', 'required');
 
-		$('#soal_kunci').attr('required', 'required');
+		$('#pilgan_kunci').attr('required', 'required');
 
 		if($('#soal_form').parsley().validate())
 		{
 			$.ajax({
 				url:"ajax_proses.php",
 				method:"POST",
-				data:$(this).serialize(),
-				dataType:"json",
-				beforeSend:function(){
+				data:new FormData(this),
+		        dataType:"json",
+		        contentType:false,
+		        cache:false,
+		        processData:false,
+		        beforeSend:function(){
 					$('#soal_button_action').attr('disabled', 'disabled');
 
 					$('#soal_button_action').val('Validate...');
@@ -206,7 +187,7 @@ $(document).ready(function(){
 					{
 						$('#message_operation').html('<div class="alert alert-success">'+data.success+'</div>');
 
-						reset_soal_form();
+						reset_form();
 						dataTable.ajax.reload();
 						$('#soalModal').modal('hide');
 					}
@@ -219,46 +200,44 @@ $(document).ready(function(){
 		}
 	});
 
-	function reset_soal_form()
+	function reset_form()
 	{
-		$('#soal_modal_title').text('Tambah');
+		$('#modal_title').text('Tambah Data Soal');
 		$('#soal_button_action').val('Add');
-		$('#hidden_action').val('Add');
+		$('#action').val('tambah');
 		$('#soal_form')[0].reset();
 		$('#soal_form').parsley().reset();
 	}
 
-	$(document).on('click', '.add_soal', function(){
-		reset_soal_form();
+	$('#add_soal').click(function(){
+		reset_form();
 		$('#soalModal').modal('show');
 		$('#message_operation').html('');
-		ujian_id = $(this).attr('id');
-		$('#hidden_ujian_id').val(ujian_id);
 	});
 
-	var soal_id = '';
+	var pilgan_id = '';
 
 	$(document).on('click', '.edit', function(){
-		soal_id = $(this).attr('id');
-		reset_soal_form();
+		pilgan_id = $(this).attr('id');
+		reset_form();
 		$.ajax({
 			url:"ajax_proses.php",
 			method:"POST",
-			data:{action:'edit_ambil', soal_id:soal_id, page:'soal'},
+			data:{action:'edit_ambil', pilgan_id:pilgan_id, page:'daftar_soal'},
 			dataType:"json",
 			success:function(data)
 			{
-				$('#soal_teks').val(data.soal_teks);
-				$('#pilihan_teks_1').val(data.pilihan_teks_1);
-				$('#pilihan_teks_2').val(data.pilihan_teks_2);
-				$('#pilihan_teks_3').val(data.pilihan_teks_3);
-				$('#pilihan_teks_4').val(data.pilihan_teks_4);
-				$('#pilihan_teks_5').val(data.pilihan_teks_5);
-				$('#soal_kunci').val(data.soal_kunci);
-				$('#soal_id').val(soal_id);
-				$('#soal_modal_title').text('Edit Detail Soal');
+				$('#pilgan_pertanyaan').val(data.pilgan_pertanyaan);
+				$('#pilgan_a').val(data.pilgan_a);
+				$('#pilgan_b').val(data.pilgan_b);
+				$('#pilgan_c').val(data.pilgan_c);
+				$('#pilgan_d').val(data.pilgan_d);
+				$('#pilgan_e').val(data.pilgan_e);
+				$('#pilgan_kunci').val(data.pilgan_kunci);
+				$('#pilgan_id').val(pilgan_id);
 				$('#soal_button_action').val('Edit');
-				$('#hidden_action').val('Edit');
+				$('#action').val('Edit');
+				$('#modal_title').text('Edit Detail Soal');
 				$('#soalModal').modal('show');
 			}
 		})
@@ -266,7 +245,7 @@ $(document).ready(function(){
 
 
 	$(document).on('click', '.delete', function(){
-		soal_id = $(this).attr('id');
+		pilgan_id = $(this).attr('id');
 		$('#deleteModal').modal('show');
 	});
 
@@ -274,7 +253,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:"ajax_proses.php",
 			method:"POST",
-			data:{soal_id:soal_id, action:'delete', page:'soal'},
+			data:{pilgan_id:pilgan_id, action:'delete', page:'daftar_soal'},
 			dataType:"json",
 			success:function(data)
 			{

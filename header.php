@@ -152,7 +152,7 @@ if(isset($_SESSION['user_id']))
                         <li> <a class="waves-effect waves-dark" href="post_all.php" aria-expanded="false"><i class="fa fa-search"></i><span class="hide-menu">Cari</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="cari_postingan.php" aria-expanded="false"><i class="fa fa-hashtag"></i><span class="hide-menu">Cari Postingan</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="materi.php" aria-expanded="false"><i class="fa fa-file-text-o"></i><span class="hide-menu">Materi</span></a></li>
-                        <li> <a class="waves-effect waves-dark" href="ujian_user.php" aria-expanded="false"><i class="fa fa-edge"></i><span class="hide-menu">e-Learning</span></a></li>
+                        <li> <a class="waves-effect waves-dark" href="ujian_user.php" aria-expanded="false"><i class="fa fa-edge"></i><span class="hide-menu">Tugas/Quiz</span></a></li>
                         <li> <a class="waves-effect waves-dark" href="pesan/index.php" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Pesan</span></a></li>
                     </ul>
                 </nav>
