@@ -133,7 +133,7 @@ include('header.php');
 </div>
 
 <div class="modal" id="uploadModal">
-  	<div class="modal-dialog modal-lg">
+  	<div class="modal-dialog">
   		<div class="modal-content">
   			<!-- Modal Header -->
     		<div class="modal-header">
@@ -151,7 +151,7 @@ include('header.php');
 						<input type="file" name="filesoal" style="margin-top:15px;" />  
 					</div>  
 					<div class="col-md-5"> 
-						<input type="text" name="soal_ujian_id" id="hidden_soal_ujian_id" />
+						<input type="hidden" name="soal_ujian_id" id="hidden_soal_ujian_id" />
 						<input type="submit" name="upload" id="upload" value="Import" style="margin-top:10px;" class="btn btn-info" />  
 					</div>  
 					<div style="clear:both"></div>  
