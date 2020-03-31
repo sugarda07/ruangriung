@@ -509,8 +509,7 @@ if(isset($_POST['page']))
 			{
 				$output .= '
 				<h4>'.$row["soal_teks"].'</h4>
-				<hr />
-				<br />
+				<hr style="margin-top: 10px; margin-bottom: 10px;" />
 				<div class="row">
 				';
 

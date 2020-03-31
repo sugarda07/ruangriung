@@ -1,7 +1,5 @@
 <?php
 
-date_default_timezone_set('Asia/Jakarta');
-
 class Koneksi
 {
 	var $host;
@@ -17,6 +15,7 @@ class Koneksi
 
 	function __construct()
 	{
+		date_default_timezone_set('Asia/Jakarta');
 		$this->host = 'localhost';
 		//$this->username = 'root';
 		//$this->password = '';

@@ -23,7 +23,7 @@ if(isset($_GET["code"]))
 	$result = $exam->query_result();
 
 	$output = '
-	<h3 align="center">Hasil Ujian</h3>
+	<h3 align="center">Hasil Quiz</h3>
 	<table width="100%" border="1" cellpadding="5" cellspacing="0">
 		<tr>
 			<th>Pertanyaan</th>
@@ -113,7 +113,7 @@ if(isset($_GET["code"]))
 
 	$pdf->set_paper('letter','landscape');
 
-	$file_name = 'Hasil Ujian.pdf';
+	$file_name = 'Hasil Quiz.pdf';
 
 	$pdf->loadHtml($output);
 

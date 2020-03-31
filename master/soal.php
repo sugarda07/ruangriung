@@ -19,6 +19,7 @@ include('header.php');
 				<h3 class="panel-title">Soal List</h3>
 			</div>
 			<div class="col-md-3" align="right">
+				<button type="button" id="<?php echo $exam->Get_ujian_id($_GET["code"]); ?>" class="btn btn-info btn-sm upload_soal">Upload Soal</button>
 				<button type="button" id="<?php echo $exam->Get_ujian_id($_GET["code"]); ?>" class="btn btn-info btn-sm add_soal">Tambah Soal</button>
 			</div>
 		</div>
@@ -131,25 +132,45 @@ include('header.php');
   	</div>
 </div>
 
+<div class="modal" id="uploadModal">
+  	<div class="modal-dialog modal-lg">
+  		<div class="modal-content">
+  			<!-- Modal Header -->
+    		<div class="modal-header">
+      			<h4 class="modal-title" id="upload_modal_title"></h4>
+      			<button type="button" class="close" data-dismiss="modal">&times;</button>
+    		</div>
+
+    		<!-- Modal body -->
+    		<div class="modal-body">
+    			<form  method="post" enctype="multipart/form-data" action="import.php">  
+					<div class="col-md-3">  
+						<label>Add More Data</label>  
+					</div>  
+					<div class="col-md-4">  
+						<input type="file" name="filesoal" style="margin-top:15px;" />  
+					</div>  
+					<div class="col-md-5"> 
+						<input type="text" name="soal_ujian_id" id="hidden_soal_ujian_id" />
+						<input type="submit" name="upload" id="upload" value="Import" style="margin-top:10px;" class="btn btn-info" />  
+					</div>  
+					<div style="clear:both"></div>  
+                </form>
+    		</div> 
+
+        	<!-- Modal footer -->
+        	<div class="modal-footer">
+          		<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+        	</div>
+    	</div>
+  	</div>
+</div>
+
 <script>
 
 $(document).ready(function(){
 
-	if ($("#soal_teks").length > 0) {
-            tinymce.init({
-                selector: "textarea#soal_teks",
-                theme: "modern",
-                height: 300,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                    "save table contextmenu directionality emoticons template paste textcolor"
-                ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
 
-            });
-        }
-	
 	var code = "<?php echo $_GET["code"]; ?>";
 
 	var dataTable = $('#soal_data_table').DataTable({
@@ -236,6 +257,13 @@ $(document).ready(function(){
 		$('#hidden_ujian_id').val(ujian_id);
 	});
 
+	$(document).on('click', '.upload_soal', function(){
+		$('#uploadModal').modal('show');
+		$('#message_operation').html('');
+		ujian_id = $(this).attr('id');
+		$('#hidden_soal_ujian_id').val(ujian_id);
+	});
+
 	var soal_id = '';
 
 	$(document).on('click', '.edit', function(){
@@ -284,6 +312,38 @@ $(document).ready(function(){
 			}
 		})
 	});
+
+	$('#upload_form').on('submit', function(event){
+		event.preventDefault();
+
+
+			$.ajax({
+				url:"import.php",
+				method:"POST",
+				data:$(this).serialize(),
+				dataType:"json",
+				beforeSend:function(){
+					$('#button_action').attr('disabled', 'disabled');
+
+					$('#button_action').val('Validate...');
+				},
+				success:function(data)
+				{
+					if(data.success)
+					{
+						$('#message_operation').html('<div class="alert alert-success">'+data.success+'</div>');
+
+						dataTable.ajax.reload();
+						$('#uploadModal').modal('hide');
+					}
+
+					$('#button_action').attr('disabled', false);
+
+					$('#button_action').val($('#hidden_action').val());
+				}
+			});
+	});
+ 
 
 });
 
