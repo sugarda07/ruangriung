@@ -47,6 +47,7 @@ if(isset($_POST['page']))
 				':user_username'		=>	$user_username,
 				':user_nama_depan'		=>	$_POST['user_nama_depan'],
 				':user_nama_belakang'	=>	$_POST['user_nama_belakang'],
+				':user_kelas_id'		=>	$_POST['user_kelas_id'],
 				':user_foto'			=>	'user.png',
 				':user_timestamp'		=>	$current_datetime,
 				':user_email_verified'	=>	'yes',
@@ -55,9 +56,9 @@ if(isset($_POST['page']))
 
 			$exam->query = "
 			INSERT INTO user
-			(user_email, user_password, user_verfication_code, user_username, user_nama_depan, user_nama_belakang, user_foto, user_timestamp, user_email_verified, user_pwd)
+			(user_email, user_password, user_verfication_code, user_username, user_nama_depan, user_nama_belakang, user_kelas_id, user_foto, user_timestamp, user_email_verified, user_pwd)
 			VALUES 
-			(:user_email, :user_password, :user_verfication_code, :user_username, :user_nama_depan, :user_nama_belakang, :user_foto, :user_timestamp, :user_email_verified, :user_pwd)
+			(:user_email, :user_password, :user_verfication_code, :user_username, :user_nama_depan, :user_nama_belakang, :user_kelas_id, :user_foto, :user_timestamp, :user_email_verified, :user_pwd)
 			";
 
 			$exam->execute_query();
@@ -508,7 +509,7 @@ if(isset($_POST['page']))
 			foreach($result as $row)
 			{
 				$output .= '
-				<h4>'.$row["soal_teks"].'</h4>
+				<p>'.$row["soal_teks"].'</p>
 				<hr style="margin-top: 10px; margin-bottom: 10px;" />
 				<div class="row">
 				';
@@ -535,7 +536,7 @@ if(isset($_POST['page']))
 						<fieldset class="controls">
                             <div class="custom-control custom-radio">
                                 <input type="radio" name="pilihan_1" id="no_'.$count.'" class="custom-control-input pilihan_jawaban" aria-invalid="false" data-soal_id="'.$row["soal_id"].'" data-id="'.$count.'"  '.$is_checked.'>
-                                <label class="custom-control-label" for="no_'.$count.'">'.$sub_row["pilihan_teks"].'</label>
+                                <label class="custom-control-label" style="font-family: Poppins; text-align: justify; font-size: 15px;" for="no_'.$count.'">'.$sub_row["pilihan_teks"].'</label>
                             </div>
                         	<div class="help-block"></div>
                         </fieldset>
@@ -654,6 +655,7 @@ if(isset($_POST['page']))
 			}
 			$output .= '
 				</div>
+				<br/>
 			';
 			echo $output;
 		}

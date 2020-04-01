@@ -23,7 +23,6 @@
     <link href="assets/crop/croppie.css" rel="stylesheet">
     <link href="assets/dist/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/dist/TimeCircles.css" />
-    <link rel="stylesheet" href="assets/magnific/css/style.css">
     <link href="assets/dist/css/pages/other-pages.css" rel="stylesheet">
     <link href="assets/dist/css/pages/ui-bootstrap-page.css" rel="stylesheet">
     <link href="assets/node_modules/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
@@ -143,7 +142,7 @@ if(isset($_SESSION['user_id']))
                                 <li><a href="view_profil.php?data=<?php echo $code_user; ?>"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
                                 <li><a href="javascript:void(0)" class="edit_profilModal"><i class="fa fa-cogs"></i>&nbsp; Setting Profil</a></li>
                                 <li><a href="javascript:void(0)"><i class="fa fa-camera-retro"></i><label for="upload_fotoprofil" style="margin-bottom: 0px;">&nbsp; Ganti Foto Profil </label></a></li>
-                                <li><a href="javascript:void(0)" class="gantipasswordModal"><i class="fa fa-camera-retro"></i>&nbsp; Ganti Password</a></li>
+                                <li><a href="javascript:void(0)" class="gantipasswordModal"><i class="mdi mdi-account-key"></i>&nbsp; Ganti Password</a></li>
                                 <li><a href="logout.php"><i class="fa fa-power-off"></i>&nbsp; Logout</a></li>
                             </ul>
                         </li>

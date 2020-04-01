@@ -23,7 +23,7 @@ AND jawaban.jawaban_user_id = '".$_SESSION["user_id"]."'
 $result = $exam->query_result();
 
 ?>
-
+<div class="row">
 <br />
 <div class="card">
 	<div class="card-header">
@@ -70,7 +70,7 @@ $result = $exam->query_result();
 
 		echo '
 		<div class="card-body">
-		<h6 class="card-title text-justify" style="margin-bottom: 3px;"> '.$row['soal_teks'].'</h6>
+		<p class="card-title text-justify" style="margin-bottom: 3px;"> '.$row['soal_teks'].'</hp>
 		<ul class="list-icons">
 		';
 
@@ -108,8 +108,8 @@ $result = $exam->query_result();
 		}
 		echo '
 		</ul>
-		<p class="card-text" style="margin-bottom: 0px;">Kunci Jawaban: <b>'.$kunci_jawaban.'</b></p>
-		<p class="card-text" style="margin-bottom: 0px;">Hasil: '.$hasil_soal.' Nilai: '.$row["nilai"].'</p>
+		<p class="card-text text-justify" style="margin-bottom: 0px;">Kunci Jawaban: <b>'.$kunci_jawaban.'</b></p>
+		<p class="card-text text-justify" style="margin-bottom: 0px;">Hasil: '.$hasil_soal.' Nilai: '.$row["nilai"].'</p>
 		</div>
 		<hr style="margin-bottom: 3px; margin-top: 3px;">
 		';
@@ -136,6 +136,7 @@ $result = $exam->query_result();
 
 		
 	<br><br>
+</div>
 </div>
 <?php include('footer.php');?>
 </div>

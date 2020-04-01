@@ -63,8 +63,8 @@ $(document).ready(function(){
 			    data:{action:'konfirmasi', page:'ujian', ujian_id:ujian_id},
 			    success: function(data){
 			        swal({
-			            title : "Konfirmasi",
-			            text: "Berhasil",
+			            title : "Konfirmasi Berhasil",
+			            text: "Silahkan Tap Tombol Kerjakan",
 			            type: "success",
 			            timer: 5000
 			        });

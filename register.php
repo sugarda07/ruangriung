@@ -44,6 +44,18 @@ $exam->user_session_public();
                             <input class="form-control" type="text" name="user_nama_belakang" id="user_nama_belakang" placeholder="Nama Belakang">
                         </div>
                     </div>
+                    <div class="form-group m-t-20">
+                        <div class="col-xs-12">
+                            <select name="user_kelas_id" id="user_kelas_id" class="form-control input-lg">
+                                <option value="">Pilih Kelas</option>
+                                <?php
+
+                                echo $exam->kelasujian_list();
+
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
                             <input class="form-control" type="text" name="user_email" id="user_email" placeholder="Email"  data-parsley-checkemail data-parsley-checkemail-message='Email Address already Exists'>
@@ -133,6 +145,8 @@ $(document).ready(function(){
 		$('#user_nama_belakang').attr('required', 'required');
 
 		$('#user_nama_belakang').attr('data-parsley-pattern', '^[a-zA-Z]+$');
+
+        $('#user_kelas_id').attr('required', 'required');
 
 		if($('#user_register_form').parsley().validate())
 		{
