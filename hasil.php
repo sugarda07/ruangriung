@@ -66,6 +66,11 @@ $result = $exam->query_result();
 			$hasil_soal = '<span class="badge badge-danger">Salah</span>';
 		}
 
+		if($row['nilai'] == '-0')
+		{
+			$hasil_soal = '<span class="badge badge-danger">Salah</span>';
+		}
+
 		
 
 		echo '

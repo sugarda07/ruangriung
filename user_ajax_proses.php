@@ -2494,7 +2494,7 @@ if(isset($_POST['page']))
 				    if($row['user_id'] != $_SESSION["user_id"])
 				    {
 				    $output	.= '
-				    	<a href="'.$link.'">
+				    	<a href="'.$link.'" style="padding:9px;">
 							<div class="user-img" style="margin-bottom: 0px;"> '.$user_foto.' </div>
 							<div class="mail-contnet" style="width: 80%;">
 								<h5>'.strip_tags($row["user_nama_depan"]).' <span class="time pull-right">  </span></h5>
@@ -2508,7 +2508,7 @@ if(isset($_POST['page']))
 				    else
 				    {
 				    	$output	.= '
-				    	<a href="'.$link.'">
+				    	<a href="'.$link.'" style="padding:9px;">
 							<div class="user-img" style="margin-bottom: 0px;"> '.$user_foto.' </div>
 							<div class="mail-contnet" style="width: 80%;">
 								<h5>'.strip_tags($row["user_nama_depan"]).' <span class="time pull-right"></span></h5>

@@ -13,7 +13,7 @@ include('header.php');
                     <!-- Column -->
                     <div class="col-lg-8 col-xlg-9 col-md-7" style="padding-left: 0px; padding-right: 0px;">
                         <div class="card" style="margin-bottom: 65px;margin-top: 5px;">
-                            <div class="card-body">
+                            <div class="card-body" style="padding: 10px;">
                                 <div class="message-box">
                                     <div class="message-widget message-scroll" id="load_notif">
 
