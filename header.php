@@ -32,7 +32,8 @@
     <link href="assets/node_modules/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
     <link href="assets/node_modules/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="assets/dist/parsley.css" rel="stylesheet">
-    
+    <link href="assets/magnific/css/style.css" rel="stylesheet">
+
 
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="assets/dist/js/jquery.form.js"></script>

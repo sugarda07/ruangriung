@@ -142,6 +142,52 @@ class Koneksi
 		}
 	}
 
+	function Get_nama_ujian($code)
+	{
+		$this->query = "
+		SELECT ujian_judul FROM ujian
+		WHERE ujian_code = '$code'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['ujian_judul'];
+		}
+	}
+
+	function Get_nama_mapel($code)
+	{
+		$this->query = "
+		SELECT * FROM ujian
+		JOIN mapel ON mapel.mapel_id = ujian.ujian_mapel
+		WHERE ujian.ujian_code = '$code'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['mapel_nama'];
+		}
+	}
+
+	function Get_tanggal_ujian($code)
+	{
+		$this->query = "
+		SELECT ujian_tanggal FROM ujian
+		WHERE ujian_code = '$code'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['ujian_tanggal'];
+		}
+	}
+
 	function  number_to_str($number)
 	{
 		$convertion = [1=>'a', 2 =>'b', 3=>'c', 4=>'d', 5=>'e'];
@@ -267,6 +313,66 @@ class Koneksi
 		SELECT * FROM user
 		INNER JOIN kelas ON kelas.kelas_id=user.user_kelas_id
 		WHERE user.user_kelas_id = '$kelas_id'
+		";
+
+		return $this->total_row();
+	}
+
+	function get_kelas_ujian($ujian_id)
+	{
+		$this->query = "
+		SELECT * FROM kelasujian
+		INNER JOIN kelas ON kelas.kelas_id = kelasujian.kelasujian_kelas_id
+		WHERE kelasujian_ujian_id = '".$ujian_id."'
+		";
+
+		return $this->total_row();
+	}
+
+	function get_hasil_ujian($ujian_id)
+	{
+		$this->query = "
+		SELECT 	* FROM jawaban  
+		INNER JOIN user 
+		ON user.user_id = jawaban.jawaban_user_id 
+		WHERE jawaban.jawaban_ujian_id = '$ujian_id' 
+		GROUP BY user.user_id
+		";
+
+		return $this->total_row();
+	}
+
+	function total_pengguna()
+	{
+		$this->query = "
+		SELECT * FROM user
+		";
+
+		return $this->total_row();
+	}
+
+	function total_postingan()
+	{
+		$this->query = "
+		SELECT * FROM postingan
+		";
+
+		return $this->total_row();
+	}
+
+	function total_materi()
+	{
+		$this->query = "
+		SELECT * FROM materi
+		";
+
+		return $this->total_row();
+	}
+
+	function total_quiz()
+	{
+		$this->query = "
+		SELECT * FROM ujian
 		";
 
 		return $this->total_row();
@@ -450,6 +556,20 @@ class Koneksi
 				$foto_profil = '<img src="data/akun/profil/'.$row['user_foto'].'" alt="user" class="img-circle"/>';				
 			}
 			return $foto_profil;
+		}
+	}
+
+	function Get_nama_kelas($kelas_id)
+	{
+		$this->query = "
+		SELECT kelas_nama FROM kelas 
+		WHERE kelas_id = '$kelas_id'
+		";  
+		$result = $this->query_result();
+		$foto_profil = '';
+		foreach($result as $row)
+		{
+			return $row['kelas_nama'];
 		}
 	}
 
@@ -736,6 +856,55 @@ class Koneksi
 		return $output;
 	}
 
+	function tgl_indo($tgl) {
+		$tanggal = substr($tgl,8,2);
+		$bulan = getBulan(substr($tgl,5,2));
+		$tahun = substr($tgl,0,4);
+		return $tanggal.' '.$bulan.' '.$tahun;     
+	}
+
+	function getBulan($bln)
+	{
+		switch ($bln)
+		{
+			case 1: 
+				return "Januari";
+				break;
+			case 2:
+				return "Februari";
+				break;
+			case 3:
+				return "Maret";
+				break;
+			case 4:
+				return "April";
+				break;
+			case 5:
+				return "Mei";
+				break;
+			case 6:
+				return "Juni";
+				break;
+			case 7:
+				return "Juli";
+				break;
+			case 8:
+				return "Agustus";
+				break;
+			case 9:
+				return "September";
+				break;
+			case 10:
+				return "Oktober";
+				break;
+			case 11:
+				return "November";
+				break;
+			case 12:
+				return "Desember";
+				break;
+		}
+	}
 
 	function tgl_ago($timestamp)  
 	{  
@@ -790,57 +959,6 @@ class Koneksi
 		{
 			return date('d F Y', strtotime($timestamp));
 		}  
-	}
-
-	function tgl_indo($tgl)
-	{
-		$tanggal = substr($tgl,8,2);
-		$bulan = getBulan(substr($tgl,5,2));
-		$tahun = substr($tgl,0,4);
-		return $tanggal.' '.$bulan.' '.$tahun;     
-	}
-
-	function getBulan($bln)
-	{
-		switch ($bln)
-		{
-			case 1: 
-			  return "Januari";
-			  break;
-			case 2:
-			  return "Februari";
-			  break;
-			case 3:
-			  return "Maret";
-			  break;
-			case 4:
-			  return "April";
-			  break;
-			case 5:
-			  return "Mei";
-			  break;
-			case 6:
-			  return "Juni";
-			  break;
-			case 7:
-			  return "Juli";
-			  break;
-			case 8:
-			  return "Agustus";
-			  break;
-			case 9:
-			  return "September";
-			  break;
-			case 10:
-			  return "Oktober";
-			  break;
-			case 11:
-			  return "November";
-			  break;
-			case 12:
-			  return "Desember";
-			  break;
-		}
 	}
 
 	function Get_user_foto_chat($user_id)

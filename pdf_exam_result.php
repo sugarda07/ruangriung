@@ -64,6 +64,11 @@ if(isset($_GET["code"]))
 			$question_result = 'Salah';
 		}
 
+		if($row['nilai'] == '-0')
+		{
+			$question_result = 'Salah';
+		}
+
 		$output .= '
 		<tr>
 			<td>'.$row["soal_teks"].'</td>

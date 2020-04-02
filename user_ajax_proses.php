@@ -62,6 +62,22 @@ if(isset($_POST['page']))
 			";
 
 			$exam->execute_query();
+
+			$notif_text = 'Registrasi Baru';
+			$exam->data = array(
+			    ':notif_pengirim_id'    =>  $receiver_email,
+			    ':notif_text'    		=>  $notif_text,
+			    ':notif_read'    		=>  'no',
+			    ':notif_time'       	=>  $current_datetime
+			);
+
+			$exam->query = "
+			INSERT INTO notif_admin 
+			(notif_pengirim_id, notif_text, notif_read, notif_time) 
+			VALUES (:notif_pengirim_id, :notif_text, :notif_read, :notif_time)
+			";
+
+			$exam->execute_query();
 			
 			$output = array(
 				'success'		=>	true
@@ -1556,7 +1572,7 @@ if(isset($_POST['page']))
 	        SELECT * FROM postingan
 	        JOIN user ON postingan.user_id = user.user_id
 			WHERE postingan.user_id != '".$_SESSION["user_id"]."'
-			ORDER BY postingan.post_id DESC
+			ORDER BY postingan.post_id ASC
 			LIMIT ".$_POST["start"].", ".$_POST["limit"]."
 	        ";
 	        $result = $exam->query_result();

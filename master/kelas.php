@@ -25,9 +25,9 @@ include('header.php');
 			<table id="kelas_data_tabel" class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>
-						<th>Tingkat</th>
 						<th>Nama Kelas</th>
 						<th>Jurusan</th>
+						<th>Sekolah</th>
 						<th>Rombel</th>
 						<th>Action</th>
 					</tr>

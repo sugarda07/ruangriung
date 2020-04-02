@@ -12,8 +12,14 @@ if(isset($_GET["code"]))
 {
 	$ujian_id = $exam->Get_ujian_id($_GET["code"]);
 
+	$nama_ujian = $exam->Get_nama_ujian($_GET["code"]);
+
+	$nama_mapel = $exam->Get_nama_mapel($_GET["code"]);
+
+	$tanggal_ujian = $exam->Get_tanggal_ujian($_GET["code"]);
+
 	$exam->query = "
-	SELECT user.user_id, user.user_foto, user.user_nama_depan, sum(jawaban.nilai) as total_nilai 
+	SELECT user.user_id, user.user_foto, user.user_nama_depan, user.user_nama_belakang, user.user_kelas_id, sum(jawaban.nilai) as total_nilai 
 	FROM jawaban  
 	INNER JOIN user
 	ON user.user_id = jawaban.jawaban_user_id 
@@ -25,28 +31,42 @@ if(isset($_GET["code"]))
 	$result = $exam->query_result();
 
 	$output = '
-	<h2 align="center">Hasil Ujian</h2><br />
+	<h4 align="center" style="margin: 0 px;">'.$nama_mapel.'</h4>
+	<h2 align="center" style="margin: 3 px;">'.$nama_ujian.'</h2>
+	<h6 align="center" style="margin-top: 0 px;">'.date('l, d F Y', strtotime($tanggal_ujian)).'</h6>
 	<table width="100%" border="1" cellpadding="5" cellspacing="0">
 		<tr>
-			<th>Peringkat</th>
-			<th>Image</th>
-			<th>Nama User</th>
-			<th>Status</th>
-			<th>Nilai</th>
+			<th align="center">Rank</th>
+			<th align="center">Foto</th>
+			<th align="center">Nama User</th>
+			<th align="center">Kelas</th>
+			<th align="center">Status</th>
+			<th align="center">Hasil</th>
+			<th align="center">Nilai</th>
 		</tr>
-	';
+	';	
 
 	$count = 1;
 
 	foreach($result as $row)
 	{
+		$jumlah_soal = $exam->jumlah_soal($ujian_id);
+
+		$jumlah_benar = $row["total_nilai"];
+
+		$jumlah_salah = $jumlah_soal - $jumlah_benar;
+
+		$nilai = $jumlah_benar * 100 / $jumlah_soal;
+
 		$output .= '
 		<tr>
-			<td>'.$count.'</td>
-			<td><img src="../data/akun/profil/'.$row["user_foto"].'" width="75" /></td>
-			<td>'.$row["user_nama_depan"].'</td>
-			<td>'.$exam->status_ujian_user($ujian_id, $row["user_id"]).'</td>
-			<td>'.$row["total_nilai"].'</td>
+			<td align="center" width="2%">'.$count.'</td>
+			<td align="center"><img src="../data/akun/profil/'.$row["user_foto"].'" width="50" /></td>
+			<td>'.$row["user_nama_depan"].' '.$row["user_nama_belakang"].'</td>
+			<td>'.$exam->Get_nama_kelas($row["user_kelas_id"]).'</td>
+			<td align="center">'.$exam->status_ujian_user($ujian_id, $row["user_id"]).'</td>
+			<td align="center">B: '.$jumlah_benar.' - S: '.$jumlah_salah.'</td>
+			<td align="center">'.number_format($nilai, 2).'</td>
 		</tr>
 		';
 

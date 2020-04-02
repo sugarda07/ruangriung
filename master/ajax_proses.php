@@ -120,6 +120,76 @@ if(isset($_POST['page']))
 		}
 	}
 
+	if($_POST['page'] == 'index')
+	{
+		if($_POST['action'] == 'pengguna_baru')
+		{
+			$output = array();
+
+			$exam->query = "
+			SELECT * FROM notif_admin
+			INNER JOIN user ON user.user_email = notif_admin.notif_pengirim_id
+			WHERE ";
+
+			if(isset($_POST["search"]["value"]))
+			{
+			 	$exam->query .= 'user.user_nama_depan LIKE "%'.$_POST["search"]["value"].'%" ';
+			 	$exam->query .= 'OR user.user_email LIKE "%'.$_POST["search"]["value"].'%" ';
+			}
+			
+			if(isset($_POST["order"]))
+			{
+				$exam->query .= 'ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
+			}
+			else
+			{
+				$exam->query .= 'ORDER BY notif_admin.notif_id DESC ';
+			}
+
+			$extra_query = '';
+
+			if($_POST["length"] != -1)
+			{
+			 	$extra_query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+			}
+
+			$filterd_rows = $exam->total_row();
+
+			$exam->query .= $extra_query;
+
+			$result = $exam->query_result();
+
+			$exam->query = "
+			SELECT * FROM notif_admin
+			INNER JOIN user ON user.user_email = notif_admin.notif_pengirim_id
+			WHERE notif_admin.notif_read = 'no'
+			";
+
+			$total_rows = $exam->total_row();
+
+			$data = array();
+
+			foreach($result as $row)
+			{
+				$sub_array = array();
+				$sub_array[] = $row["user_id"];
+				$sub_array[] = '<img src="../data/akun/profil/'.$row["user_foto"].'" class="img-thumbnail" width="50" />';
+				$sub_array[] = $row["user_nama_depan"];
+				$sub_array[] = $row["user_email"];								
+				$sub_array[] = $row["user_timestamp"];
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+			 	"draw"    			=> 	intval($_POST["draw"]),
+			 	"recordsTotal"  	=>  $total_rows,
+			 	"recordsFiltered" 	=> 	$filterd_rows,
+			 	"data"    			=> 	$data
+			);
+			echo json_encode($output);	
+		}
+	}
+
 	if($_POST['page'] == 'user')
 	{
 		if($_POST['action'] == 'fetch')
@@ -329,10 +399,10 @@ if(isset($_POST['page']))
 
 				$soal_button = '
 					<a href="soal.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">'.$exam->jumlah_soal($row['ujian_id']).' Lihat Soal</a>
-					<a href="kelas_ujian.php?code='.$row['ujian_code'].'" class="btn btn-success btn-sm">Kelas</a>
+					<a href="kelas_ujian.php?code='.$row['ujian_code'].'" class="btn btn-success btn-sm">'.$exam->get_kelas_ujian($row['ujian_id']).' Kelas</a>
 				';
 
-				$hasil_ujian = '<a href="hasil_ujian.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">Hasil Ujian</a>';
+				$hasil_ujian = '<a href="hasil_ujian.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">'.$exam->get_hasil_ujian($row['ujian_id']).' Hasil Ujian</a>';
 
 				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit" id="'.$row['ujian_id'].'"><i class="fa fa-pencil-square-o"></i> </button>';
 
@@ -903,7 +973,7 @@ if(isset($_POST['page']))
 			}
 			else
 			{
-				$exam->query .= 'ORDER BY kelas_id DESC ';
+				$exam->query .= 'ORDER BY kelas_id ASC ';
 			}
 
 			$extra_query = '';
@@ -928,10 +998,10 @@ if(isset($_POST['page']))
 
 			foreach($result as $row)
 			{
-				$sub_array = array();
-				$sub_array[] = $row["kelas_tingkat"];
+				$sub_array = array();				
 				$sub_array[] = $row["kelas_nama"];
 				$sub_array[] = $row["kelas_jurusan"];
+				$sub_array[] = $row["kelas_sekolah"];
 
 				$sub_array[] = '<a href="#" class="btn btn-info btn-sm lihat_daftar_siswa" name="lihat_daftar_siswa" id="'.$row['kelas_id'].'" data-kelas="'.$row['kelas_nama'].'"><i class="fa fa-users"></i>  '.$exam->get_jumlah_siswa_kelas($row['kelas_id']).' Lihat User</a>';
 
@@ -1091,7 +1161,7 @@ if(isset($_POST['page']))
 			$output = array();
 			$ujian_id = $exam->Get_ujian_id($_POST["code"]);
 			$exam->query = "
-			SELECT user.user_id, user.user_foto, user.user_nama_depan, sum(jawaban.nilai) as total_nilai  
+			SELECT user.user_id, user.user_foto, user.user_nama_depan, user.user_nama_belakang, user.user_kelas_id, sum(jawaban.nilai) as total_nilai  
 			FROM jawaban  
 			INNER JOIN user 
 			ON user.user_id = jawaban.jawaban_user_id 
@@ -1132,7 +1202,7 @@ if(isset($_POST['page']))
 			$result = $exam->query_result();
 
 			$exam->query = "
-			SELECT 	user.user_foto, user.user_nama_depan, sum(jawaban.nilai) as total_nilai  
+			SELECT 	user.user_foto, user.user_nama_depan, user.user_nama_belakang, user.user_kelas_id, sum(jawaban.nilai) as total_nilai  
 			FROM jawaban  
 			INNER JOIN user 
 			ON user.user_id = jawaban.jawaban_user_id 
@@ -1147,11 +1217,21 @@ if(isset($_POST['page']))
 
 			foreach($result as $row)
 			{
+				$jumlah_soal = $exam->jumlah_soal($ujian_id);
+
+				$jumlah_benar = $row["total_nilai"];
+
+				$jumlah_salah = $jumlah_soal - $jumlah_benar;
+
+				$nilai = $jumlah_benar * 100 / $jumlah_soal;
+
 				$sub_array = array();
-				$sub_array[] = '<img src="../data/akun/profil/'.$row["user_foto"].'" class="img-thumbnail" width="75" />';
-				$sub_array[] = $row["user_nama_depan"];
+				$sub_array[] = '<img src="../data/akun/profil/'.$row["user_foto"].'" class="img-thumbnail" width="50" />';
+				$sub_array[] = $row["user_nama_depan"] .' '. $row["user_nama_belakang"];
+				$sub_array[] = $exam->Get_nama_kelas($row["user_kelas_id"]);
 				$sub_array[] = $exam->status_ujian_user($ujian_id, $row["user_id"]);
-				$sub_array[] = $row["total_nilai"];
+				$sub_array[] = 'B: '.$jumlah_benar.' - S: '.$jumlah_salah;
+				$sub_array[] = number_format($nilai, 2);
 				$data[] = $sub_array;
 			}
 
