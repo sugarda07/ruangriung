@@ -23,12 +23,11 @@ include('header.php');
 			<table class="table table-bordered table-striped table-hover" id="user_data_table">
 				<thead>
 					<tr>
-						<th>Image</th>
+						<th>#</th>
 						<th>User Name</th>
-						<th>Email Address</th>
-						<th>Gender</th>
-						<th>Mobile No.</th>
-						<th>Email Verified</th>
+						<th>Kelas</th>
+						<th>Sekolah</th>
+						<th>Verified</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -75,7 +74,7 @@ $(document).ready(function(){
 		},
 		"columnDefs":[
 			{
-				"targets":[0,6],
+				"targets":[0,5],
 				"orderable":false,
 			},
 		],

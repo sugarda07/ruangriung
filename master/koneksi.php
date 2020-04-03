@@ -207,6 +207,38 @@ class Koneksi
 		}
 	}
 
+	function Get_kelas_nama($user_id)
+	{
+		$this->query = "
+		SELECT * FROM user
+		JOIN kelas ON kelas.kelas_id = user.user_kelas_id
+		WHERE user.user_id = '$user_id'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['kelas_nama'];
+		}
+	}
+
+	function Get_sekolah_nama($user_id)
+	{
+		$this->query = "
+		SELECT * FROM user
+		JOIN kelas ON kelas.kelas_id = user.user_kelas_id
+		WHERE user.user_id = '$user_id'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['kelas_sekolah'];
+		}
+	}
+
 	function Get_tanggal_ujian($code)
 	{
 		$this->query = "
@@ -1031,12 +1063,12 @@ class Koneksi
 			}  
 			else  
 			{  
-				return "$days hari yang lalu";  
+				return date('d F Y, h:i:s', strtotime($timestamp));  
 			}  
 		}  
 		else  
 		{
-			return date('d F Y', strtotime($timestamp));
+			return date('d F Y, h:i:s', strtotime($timestamp));
 		}  
 	}
 

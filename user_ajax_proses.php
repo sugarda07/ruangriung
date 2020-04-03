@@ -618,13 +618,13 @@ if(isset($_POST['page']))
 
 			$output .= '
 	                <div class="col-4" style="padding: 5px">
-	                    <button type="button" name="previous" class="btn btn-block btn-info previous" id="'.$previous_id.'" '.$if_previous_disable.'><i class="fa fa-angle-double-left"></i> Sebelumnya</button>
+	                    <button type="button" name="previous" class="btn btn-block btn-info previous" id="'.$previous_id.'" '.$if_previous_disable.'><i class="fa fa-angle-double-left"></i> <i class="fa fa-angle-double-left"></i> <i class="fa fa-angle-double-left"></i></button>
 	                </div>
 	                <div class="col-4" style="padding: 5px">
 	                    
 	                </div>
 	                <div class="col-4" style="padding: 5px">
-	                    <button type="button" name="next" class="btn btn-block btn-info next" id="'.$next_id.'" '.$if_next_disable.'>Selanjutnya <i class="fa fa-angle-double-right"></i></button>
+	                    <button type="button" name="next" class="btn btn-block btn-info next" id="'.$next_id.'" '.$if_next_disable.'><i class="fa fa-angle-double-right"></i> <i class="fa fa-angle-double-right"></i> <i class="fa fa-angle-double-right"></i></button>
 	                </div>
 	        ';
 	        echo $output;

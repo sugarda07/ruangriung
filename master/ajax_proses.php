@@ -240,11 +240,10 @@ if(isset($_POST['page']))
 			foreach($result as $row)
 			{
 				$sub_array = array();
-				$sub_array[] = '<img src="../data/akun/profil/'.$row["user_foto"].'" class="img-thumbnail" width="75" />';
-				$sub_array[] = $row["user_nama_depan"];
-				$sub_array[] = $row["user_email"];
-				$sub_array[] = $row["user_jk"];
-				$sub_array[] = $row["user_hp"];
+				$sub_array[] = '<img src="../data/akun/profil/'.$row["user_foto"].'" class="img-thumbnail" width="50" />';
+				$sub_array[] = $row["user_nama_depan"].' '.$row["user_nama_belakang"].'<br>'.$row["user_email"];
+				$sub_array[] = $exam->Get_kelas_nama($row["user_id"]);
+				$sub_array[] = $exam->Get_sekolah_nama($row["user_id"]);
 				$is_email_verified = '';
 				if($row["user_email_verified"] == 'yes')
 				{
@@ -391,18 +390,18 @@ if(isset($_POST['page']))
 
 				$sub_array[] = $row['ujian_durasi'] .' Menit';
 
-				$sub_array[] = $row['ujian_tanggal'];
+				$sub_array[] = $exam->tgl_ago($row['ujian_tanggal']);
 
 				$soal_button = '';
 				$edit_button = '';
 				$delete_button = '';
 
 				$soal_button = '
-					<a href="soal.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">'.$exam->jumlah_soal($row['ujian_id']).' Lihat Soal</a>
-					<a href="kelas_ujian.php?code='.$row['ujian_code'].'" class="btn btn-success btn-sm">'.$exam->get_kelas_ujian($row['ujian_id']).' Kelas</a>
+					<a href="soal.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">'.$exam->jumlah_soal($row['ujian_id']).' Soal</a>
+					<a href="kelas_ujian.php?code='.$row['ujian_code'].'" class="btn btn-warning btn-sm">'.$exam->get_kelas_ujian($row['ujian_id']).' Kelas</a>
 				';
 
-				$hasil_ujian = '<a href="hasil_ujian.php?code='.$row['ujian_code'].'" class="btn btn-info btn-sm">'.$exam->get_hasil_ujian($row['ujian_id']).' Hasil Ujian</a>';
+				$hasil_ujian = '<a href="hasil_ujian.php?code='.$row['ujian_code'].'" class="btn btn-success btn-sm">'.$exam->get_hasil_ujian($row['ujian_id']).' Hasil Ujian</a>';
 
 				$edit_button = '<button type="button" name="edit" class="btn btn-primary btn-sm edit" id="'.$row['ujian_id'].'"><i class="fa fa-pencil-square-o"></i> </button>';
 
@@ -1294,17 +1293,17 @@ if(isset($_POST['page']))
 			foreach($result as $row)
 			{
 				$sub_array = array();
-				$sub_array[] = substr($row["materi_nama"], 0, 100);
-				$sub_array[] = strip_tags(substr($row["materi_data"], 0, 160));
+				$sub_array[] = substr($row["materi_nama"], 0, 30);
+				$sub_array[] = strip_tags(substr($row["materi_data"], 0, 50));
 				$sub_array[] = '<a href="kelas_materi.php?code='.$row['materi_id'].'" class="btn btn-success btn-sm">'.$exam->jumlah_kelasmateri($row['materi_id']).' Kelas</a>';
-				$sub_array[] = $row["materi_tgl"];
+				$sub_array[] = $exam->tgl_ago($row["materi_tgl"]);
 
 				$edit_button = '';
 				$delete_button = '';
 
-				$edit_button = '<button type="button" name="edit_materi" class="btn btn-primary btn-sm edit_materi" id="'.$row['materi_id'].'">Edit</button>';
+				$edit_button = '<button type="button" name="edit_materi" class="btn btn-primary btn-sm edit_materi" id="'.$row['materi_id'].'"><i class="fa fa-pencil-square-o"></i></button>';
 
-				$delete_button = '<button type="button" name="delete_materi" class="btn btn-danger btn-sm delete_materi" id="'.$row['materi_id'].'">Delete</button>';
+				$delete_button = '<button type="button" name="delete_materi" class="btn btn-danger btn-sm delete_materi" id="'.$row['materi_id'].'"><i class="fa fa-trash-o"></i></button>';
 
 				$sub_array[] = $edit_button . ' ' . $delete_button;
 				$data[] = $sub_array;
@@ -1606,9 +1605,9 @@ if(isset($_POST['page']))
 
 				$sub_array[] = $nama.'  '.$email;
 
-				$sub_array[] = strip_tags($row['post_konten']);
+				$sub_array[] = strip_tags(substr($row['post_konten'], 0, 80));
 
-				$sub_array[] = $row['post_tgl'];
+				$sub_array[] = $exam->tgl_ago($row['post_tgl']);
 
 				$delete_button = '';
 
