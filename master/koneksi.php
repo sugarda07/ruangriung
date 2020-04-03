@@ -24,7 +24,7 @@ class Koneksi
 		$this->password = 'sugarda69753308';
 		$this->database = 'smkikaka_ruangriung';
 
-		$this->home_page = 'http://localhost/ruangdigital/';
+		$this->home_page = 'http://localhost/ruangriung/';
 
 		$this->connect = new PDO("mysql:host=$this->host; dbname=$this->database;charset=utf8mb4", "$this->username", "$this->password");
 
@@ -142,6 +142,25 @@ class Koneksi
 		}
 	}
 
+	function get_nama_kelas_user($ujian_id, $user_id)
+	{
+		$this->query = "
+		SELECT * FROM user
+		INNER JOIN kelas ON kelas.kelas_id = user.user_kelas_id
+		INNER JOIN kelasujian ON kelasujian.kelasujian_kelas_id = kelas.kelas_id
+		INNER JOIN ujian ON ujian.ujian_id = kelasujian.kelasujian_ujian_id
+		WHERE ujian.ujian_id = '$ujian_id' 
+		AND user.user_id = '$user_id'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['kelas_nama'];
+		}
+	}
+
 	function Get_nama_ujian($code)
 	{
 		$this->query = "
@@ -154,6 +173,21 @@ class Koneksi
 		foreach($result as $row)
 		{
 			return $row['ujian_judul'];
+		}
+	}
+
+	function durasi_soal($code)
+	{
+		$this->query = "
+		SELECT ujian_durasi FROM ujian
+		WHERE ujian_code = '$code'
+		";
+
+		$result = $this->query_result();
+
+		foreach($result as $row)
+		{
+			return $row['ujian_durasi'];
 		}
 	}
 
@@ -556,6 +590,51 @@ class Koneksi
 				$foto_profil = '<img src="data/akun/profil/'.$row['user_foto'].'" alt="user" class="img-circle"/>';				
 			}
 			return $foto_profil;
+		}
+	}
+
+	function Get_foto_user($user_id)
+	{
+		$this->query = "
+		SELECT user_foto, user_nama_depan FROM user 
+		WHERE user_id = '$user_id'
+		";  
+		$result = $this->query_result();
+		$foto_profil = '';
+		foreach($result as $row)
+		{
+			if($row["user_foto"] == 'user.png')
+			{
+				$foto_profil = '<img src="data/akun/profil/user.png" width="80"/>';				
+			}
+			else
+			{
+				$foto_profil = '<img src="data/akun/profil/'.$row['user_foto'].'" width="80"/>';				
+			}
+			return $foto_profil;
+		}
+	}
+
+	function Get_nilai_user($user_id, $ujian_id)
+	{
+		$this->query = "
+		SELECT SUM(nilai) as total_nilai FROM jawaban 
+		WHERE jawaban_user_id = '$user_id' 
+		AND jawaban_ujian_id = '$ujian_id'
+		";  
+		$result = $this->query_result();		
+
+		foreach($result as $row)
+		{
+			$jumlah_soal = $this->jumlah_soal($ujian_id);
+
+			$jumlah_benar = $row["total_nilai"];
+
+			$jumlah_salah = $jumlah_soal - $jumlah_benar;
+
+			$nilai = $jumlah_benar * 100 / $jumlah_soal;
+
+			return $nilai;
 		}
 	}
 

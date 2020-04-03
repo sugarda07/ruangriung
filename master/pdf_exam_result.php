@@ -35,7 +35,7 @@ if(isset($_GET["code"]))
 	<h2 align="center" style="margin: 3 px;">'.$nama_ujian.'</h2>
 	<h6 align="center" style="margin-top: 0 px;">'.date('l, d F Y', strtotime($tanggal_ujian)).'</h6>
 	<table width="100%" border="1" cellpadding="5" cellspacing="0">
-		<tr>
+		<tr style="background-color: #03a9f3;;">
 			<th align="center">Rank</th>
 			<th align="center">Foto</th>
 			<th align="center">Nama User</th>

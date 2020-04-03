@@ -8,7 +8,7 @@ $nama_ujian = $exam->Get_nama_ujian($_GET["code"]);
 <br />
 <nav aria-label="breadcrumb">
   	<ol class="breadcrumb">
-    	<li class="breadcrumb-item"><a href="ujian.php">Ujian List</a></li>
+    	<li class="breadcrumb-item"><a href="ujian.php">Quiz List</a></li>
     	<li class="breadcrumb-item active" aria-current="page">Hasil Quiz</li>
   	</ol>
 </nav>

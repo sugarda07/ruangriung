@@ -12,7 +12,7 @@ include('header.php');
 	<div class="card-header">
 		<div class="row">
 			<div class="col-md-9">
-				<h3 class="panel-title">Data Ujian Online</h3>
+				<h3 class="panel-title">Data Quiz Online</h3>
 			</div>
 			<div class="col-md-3" align="right">
 				<button type="button" id="add_button" class="btn btn-info btn-sm">Tambah</button>
@@ -27,7 +27,7 @@ include('header.php');
 					<tr>
 						<th>Judul</th>
 						<th>Durasi</th>
-						<th>Tanggal Ujian</th>
+						<th>Tanggal Quiz</th>
 						<th>Bank Soal</th>
 						<th>Hasil</th>
 						<th>Action</th>
@@ -52,7 +52,7 @@ include('header.php');
         		<div class="modal-body">
           			<div class="form-group">
             			<div class="row">
-              				<label class="col-md-4 text-right">Judul Ujian <span class="text-danger">*</span></label>
+              				<label class="col-md-4 text-right">Judul Quiz <span class="text-danger">*</span></label>
 	              			<div class="col-md-8">
 	                			<input type="text" name="ujian_judul" id="ujian_judul" class="form-control" />
 	                		</div>
@@ -81,7 +81,7 @@ include('header.php');
           			</div>
           			<div class="form-group">
             			<div class="row">
-              				<label class="col-md-4 text-right">Tanggal Ujian <span class="text-danger">*</span></label>
+              				<label class="col-md-4 text-right">Tanggal Quiz <span class="text-danger">*</span></label>
 	              			<div class="col-md-8">
 	                			<input type="text" name="ujian_tanggal" id="ujian_tanggal" class="form-control" readonly />
 	                		</div>

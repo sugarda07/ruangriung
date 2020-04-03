@@ -12,6 +12,12 @@ include('header.php');
 
 $ujian_id = $exam->Get_ujian_id($_GET['code']);
 
+$nama_ujian = $exam->Get_nama_ujian($_GET["code"]);
+
+$nama_mapel = $exam->Get_nama_mapel($_GET["code"]);
+
+$tanggal_ujian = $exam->Get_tanggal_ujian($_GET["code"]);
+
 $exam->query = "
 SELECT * FROM soal 
 INNER JOIN jawaban 
@@ -28,15 +34,16 @@ $result = $exam->query_result();
 <div class="card">
 	<div class="card-header">
 		<div class="row">
-			<div class="col-md-8">Hasil Quiz</div>
+			<div class="col-md-8">Hasil Quiz <?php echo $nama_ujian; ?></div>
 			<div class="col-md-4" align="right">
-				<a href="pdf_exam_result.php?code=<?php echo $_GET["code"]; ?>" class="btn btn-danger btn-sm" target="_blank">PDF</a>
+				<a href="pdf_exam_result.php?code=<?php echo $_GET["code"]; ?>" class="btn btn-danger btn-sm" target="_blank">Download PDF</a>
 			</div>
 		</div>
 	</div>
 	
 	<?php
 	$total_mark = 0;
+	$no = 1;
 
 	foreach($result as $row)
 	{
@@ -71,12 +78,10 @@ $result = $exam->query_result();
 			$hasil_soal = '<span class="badge badge-danger">Salah</span>';
 		}
 
-		
-
 		echo '
 		<div class="card-body">
-		<p class="card-title text-justify" style="margin-bottom: 3px;"> '.$row['soal_teks'].'</hp>
-		<ul class="list-icons">
+		<h5 class="card-title text-justify" style="margin-bottom: 3px;">'.$row['soal_teks'].'</h5>
+		<div class="row">
 		';
 
 		$count = 1;
@@ -86,16 +91,24 @@ $result = $exam->query_result();
 
 			if($exam->Get_jawaban_user($row['soal_id'], $_SESSION['user_id']) == $count)
 			{
-				$is_checked = '<i class="fa fa-check-square-o text-success"></i>';
+				$is_checked = '<input type="radio" id="no_'.$count.'" class="custom-control-input" aria-invalid="false" checked>';
 			}
 			else
 			{
-				$is_checked = '<i class="fa fa-times text-danger"></i>';
+				$is_checked = '<input type="radio" id="no_'.$count.'" class="custom-control-input" aria-invalid="false" disabled>';
 			}
 
 			echo '
 			
-                <li style="margin: 0px;"><a href="javascript:void(0)" class="text-justify">'.$is_checked.' '.$sub_row["pilihan_teks"].'</a></li>
+                <div class="col-12" style="padding: 7px;">
+					<fieldset class="controls">
+                        <div class="custom-control custom-radio">
+                            '.$is_checked.'
+                            <label class="custom-control-label" style="font-family: Poppins; text-align: justify; font-size: 15px;" for="no_'.$count.'">'.$sub_row["pilihan_teks"].'</label>
+                        </div>
+                    	<div class="help-block"></div>
+                    </fieldset>
+                </div>
             
 				';
 
@@ -112,12 +125,13 @@ $result = $exam->query_result();
 			}
 		}
 		echo '
-		</ul>
+		</div>
 		<p class="card-text text-justify" style="margin-bottom: 0px;">Kunci Jawaban: <b>'.$kunci_jawaban.'</b></p>
 		<p class="card-text text-justify" style="margin-bottom: 0px;">Hasil: '.$hasil_soal.' Nilai: '.$row["nilai"].'</p>
 		</div>
 		<hr style="margin-bottom: 3px; margin-top: 3px;">
 		';
+		$no = $no + 1;
 	}
 
 	$exam->query = "
@@ -130,9 +144,18 @@ $result = $exam->query_result();
 
 	foreach($marks_result as $row)
 	{
+		$jumlah_soal = $exam->jumlah_soal($ujian_id);
+
+		$jumlah_benar = $row["total_nilai"];
+
+		$jumlah_salah = $jumlah_soal - $jumlah_benar;
+
+		$nilai = $jumlah_benar * 100 / $jumlah_soal;
+
 		echo '
 		<div class="card-footer">
-			<h3 class="pull-right"><span class="badge badge-success">Total Nilai: '.$row["total_nilai"].'</span></h3>
+			<h5 class="card-text text-justify" style="margin-bottom: 0px;">Benar: '.$jumlah_benar.' - Salah: '.$jumlah_salah.'</h5>
+			<h3 class="pull-right"><span class="badge badge-success">Nilai: '.number_format($nilai, 2).'</span></h3>
 		</div>
 		';
 	}
