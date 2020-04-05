@@ -73,7 +73,7 @@ $foto_status = $exam->Get_foto_status($_SESSION["user_id"]);
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="button" style="padding-top: 0px; padding-bottom: 0px;"><label for="upload_posting_gambar" style="margin-bottom: 0px;"><i class="fa fa-camera" style="font-size:18px;"></i></label></a>
                 <textarea class="form-control mention" type="text" rows="3" name="posting_gambar_konten" id="posting_gambar_konten" placeholder="Tulis sesuatu ..."  style="border-radius: 9px;"></textarea>
-                <button type="submit" name="share_post_gambar" id="share_post_gambar" class="btn btn-info waves-effect waves-light crop_posting_gambar">Post </button>
+                <button type="submit" name="share_post_gambar" id="share_post_gambar" class="btn btn-info waves-effect waves-light crop_posting_gambar"><i class="mdi mdi-send">  </i></button>
             </div>
         </form>
       </div>         
@@ -196,7 +196,6 @@ $(document).ready(function(){
             }, 1000);
         }
     });
-
     
 
 });

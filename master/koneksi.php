@@ -944,7 +944,11 @@ class Koneksi
 		{
 			if($row["is_type"] == 'yes')
 			{
-			$output = '<span class="text-muted"><em> sedang mengetik...</em></span>';
+				$output = '<span class="text-muted"><em> sedang mengetik...</em></span>';
+			}
+			if($row["is_type"] == 'no')
+			{
+				$output = '';
 			}
 		}
 		return $output;

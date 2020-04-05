@@ -29,8 +29,12 @@ include('header.php');
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card" id="dynamic_kontak">
-                                        
+                                    <div class="card">
+                                        <div class="card-body" style="padding: 5px;">
+                                            <div class="message-box" id="dynamic_kontak">
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="post_gallery" role="tabpanel">

@@ -1603,12 +1603,7 @@ if(isset($_POST['page']))
 			$result = $exam->query_result();
 			$total_data = $exam->total_row();
 
-			$output = '
-			<div class="card-body" style="padding: 5px;">
-				<h5 class="card-title" style="padding-left: 10px;"> </h5>
-					<div class="message-box">
-			        	<div class="message-widget message-scroll">
-			';
+			$output = '<div class="message-widget message-scroll">';
 
 			if($total_data > 0)
 			{
@@ -1650,15 +1645,9 @@ if(isset($_POST['page']))
 			}
 			else
 			{
-				$output .= '
-				
-				';
+				$output .= '';
 			}
-			$output .= '
-					</div>
-			    </div>
-			</div>
-			';
+			$output .= '</div>';
 			echo $output;
 		}
 	}
@@ -2675,7 +2664,7 @@ if(isset($_POST['page']))
 	                        <div class="mail-contnet" style="width: 81%;">
 	                            <h5>'.strip_tags($row["user_nama_depan"]).' <span class="time pull-right">'.$exam->tgl_ago($data["time_chat"]).'</span></h5>
 	                            <span class="mail-desc">
-	                            	'.$status_pesan.'  '.$exam->fetch_is_type_status($row['user_id']).'  <span class="time pull-right">'.$exam->count_unseen_message($row['user_id'], $_SESSION['user_id']).'</span>
+	                            	'.$status_pesan.'    <span class="time pull-right">'.$exam->count_unseen_message($row['user_id'], $_SESSION['user_id']).'</span>
 	                            </span>
 	                           
 	                        </div>
